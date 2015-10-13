@@ -12,18 +12,18 @@ function CreateObject() {
 CreateObject.prototype.boxGeometry = function(tex, geoX, geoY, geoZ) {
     texture = THREE.ImageUtils.loadTexture(tex);
     geometry = new THREE.BoxGeometry(geoX, geoY, geoZ);
-    material = new THREE.MeshBasicMaterial({ map: texture});
+    material = new THREE.MeshPhongMaterial({ map: texture});
     object = new THREE.Mesh(geometry, material);
     return object;
 };
 
 /*
- Prototype function that creates a Three.JS circle
- Returns CircleGeometry Object
+ Prototype function that creates a Three.JS sphere
+ Returns SphereGeometry Object
  */
-CreateObject.prototype.circleGeometry = function(tex, rad, width, height) {
+CreateObject.prototype.sphereGeometry = function(tex, rad, width, height) {
     texture = THREE.ImageUtils.loadTexture(tex);
-    geometry = new THREE.CircleGeometry(rad, width, height);
+    geometry = new THREE.SphereGeometry(rad, width, height);
     material = new THREE.MeshPhongMaterial({ map: texture});
     object = new THREE.Mesh(geometry, material);
     return object;
@@ -36,7 +36,7 @@ CreateObject.prototype.circleGeometry = function(tex, rad, width, height) {
 CreateObject.prototype.planeGeometry = function(tex, geoX, geoY, geoZ) {
     texture = THREE.ImageUtils.loadTexture(tex);
     geometry = new THREE.PlaneGeometry(geoX, geoY, geoZ);
-    material = new THREE.MeshBasicMaterial({ map: texture});
+    material = new THREE.MeshPhongMaterial({ map: texture});
     object = new THREE.Mesh(geometry, material);
     return object;
 };

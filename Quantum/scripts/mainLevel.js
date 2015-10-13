@@ -22,14 +22,21 @@ var init = function() {
         antialias: true
     });
 
-    // Clear window to black and set size
-    renderer.setClearColor(0x000000);
-    renderer.setSize(width, height);
-
     // Create Ground
     var ground = createObject.boxGeometry("resources/texture_grass.jpg", 5000, 5000, 30);
     scene.add(ground);
-    rotateObject(ground, [-1.3,0.0,0.6]);
+    rotateObject(ground, [-1.3,0.0,0.0]);
+
+    // Set sun orbit around ground
+    var groundOrbit = new THREE.Object3D();
+    ground.add(groundOrbit)
+    // Create sun
+    var sun = createObject.sphereGeometry("resources/texture_sun.jpg", 100, 16, 16);
+    groundOrbit.add(sun);
+    sun.position.set(0, 0, 3000);
+    // Create Light
+    var lightPoint = createLight.lightPoint();
+    sun.add(lightPoint);
 
     // Create Building 1
     var building1 = createObject.boxGeometry("resources/texture_woodPane.jpg", 200, 200, 500);
@@ -49,9 +56,19 @@ var init = function() {
     bridge.position.z = 100;
     bridge.position.y = -400;
 
+    // Create atmospheric white light
+    var amb = new THREE.AmbientLight(0xFF9999);
+    scene.add(amb);
+
+    // Clear window to black and set size
+    renderer.setClearColor(0x000000);
+    renderer.setSize(width, height);
+
     // Render the scene
     function render() {
         rotateObject(ground, [0.0,0.0,0.01]);
+        rotateObject(groundOrbit, [0.0,0.01,0.0]);
+        rotateObject(sun, [0.0,0.01,0.0]);
         renderer.render(scene, camera);
         window.requestAnimFrame(render);
     }
