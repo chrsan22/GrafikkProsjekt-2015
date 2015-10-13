@@ -24,14 +24,35 @@ var init = function() {
     renderer.setClearColor(0x000000);
     renderer.setSize(width, height);
 
-    // getObject
+    // Create Ground
     var createObject = new CreateObject();
-    scene.add(createObject.planeGeometry("resources/texture_grass.jpg", 5000, 5000, 1, "ground"));
-    scene.add(createObject.boxGeometry("resources/texture_woodPane.jpg", 200, 200, 500, "box1"));
+    var ground = createObject.boxGeometry("resources/texture_grass.jpg", 5000, 5000, 30);
+    scene.add(ground);
+
+    // Create Building 1
+    var building1 = createObject.boxGeometry("resources/texture_woodPane.jpg", 200, 200, 500);
+    ground.add(building1);
+    building1.add(bridge);
+    building1.position.z = 280;
+    building1.position.y = 400;
+
+    // Create Building 2
+    var building2 = createObject.boxGeometry("resources/texture_woodPane.jpg", 200, 200, 500);
+    ground.add(building2);
+    building2.position.z = 280;
+    building2.position.y = -400;
+
+    // Create Bridge
+    var bridge = createObject.boxGeometry("resources/texture_woodPane.jpg", 100, 700, 100);
+    bridge.position.z = 100;
+    bridge.position.y = -400;
+
+    rotateObject(ground, [-1.3,0.0,0.6]);
 
 
     // Render the scene
     function render() {
+        rotateObject(ground, [0.0,0.0,0.01]);
         renderer.render(scene, camera);
         window.requestAnimFrame(render);
     }
