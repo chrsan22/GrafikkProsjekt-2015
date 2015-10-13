@@ -9,6 +9,8 @@ var init = function() {
     var canvas = document.getElementById("canvas");
     var scene = new THREE.Scene();
     var camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
+    var createObject = new CreateObject();
+    var createLight = new CreateLight();
 
     // Add camera to scene
     scene.add(camera);
@@ -25,14 +27,13 @@ var init = function() {
     renderer.setSize(width, height);
 
     // Create Ground
-    var createObject = new CreateObject();
     var ground = createObject.boxGeometry("resources/texture_grass.jpg", 5000, 5000, 30);
     scene.add(ground);
+    rotateObject(ground, [-1.3,0.0,0.6]);
 
     // Create Building 1
     var building1 = createObject.boxGeometry("resources/texture_woodPane.jpg", 200, 200, 500);
     ground.add(building1);
-    building1.add(bridge);
     building1.position.z = 280;
     building1.position.y = 400;
 
@@ -44,11 +45,9 @@ var init = function() {
 
     // Create Bridge
     var bridge = createObject.boxGeometry("resources/texture_woodPane.jpg", 100, 700, 100);
+    building1.add(bridge);
     bridge.position.z = 100;
     bridge.position.y = -400;
-
-    rotateObject(ground, [-1.3,0.0,0.6]);
-
 
     // Render the scene
     function render() {
