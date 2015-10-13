@@ -26,7 +26,9 @@ var init = function() {
 
     // getObject
     var createObject = new CreateObject();
-    scene.add(createObject.planeGeometry("resources/texture_grass.jpg", 5000, 5000, 1));
+    scene.add(createObject.planeGeometry("resources/texture_grass.jpg", 5000, 5000, 1, "ground"));
+    scene.add(createObject.boxGeometry("resources/texture_woodPane.jpg", 200, 200, 500, "box1"));
+
 
     // Render the scene
     function render() {
