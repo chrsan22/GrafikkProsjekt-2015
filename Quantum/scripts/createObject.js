@@ -7,7 +7,7 @@ function CreateObject() {
 
 /*
     Prototype function that creates a Three.JS box
-    Returns BoxGeometry Object
+    Returns BoxGeometry Mesh
  */
 CreateObject.prototype.boxGeometry = function(tex, geoX, geoY, geoZ) {
     texture = THREE.ImageUtils.loadTexture(tex);
@@ -21,7 +21,7 @@ CreateObject.prototype.boxGeometry = function(tex, geoX, geoY, geoZ) {
 
 /*
  Prototype function that creates a Three.JS sphere
- Returns SphereGeometry Object
+ Returns SphereGeometry Mesh
  */
 CreateObject.prototype.sphereGeometry = function(tex, rad, width, height) {
     texture = THREE.ImageUtils.loadTexture(tex);
@@ -33,12 +33,13 @@ CreateObject.prototype.sphereGeometry = function(tex, rad, width, height) {
 
 /*
  Prototype function that creates a Three.JS plane
- Returns PlaneGeometry Object
+ Returns PlaneGeometry Mesh
  */
 CreateObject.prototype.planeGeometry = function(tex, geoX, geoY, geoZ) {
     texture = THREE.ImageUtils.loadTexture(tex);
     geometry = new THREE.PlaneGeometry(geoX, geoY, geoZ);
     material = new THREE.MeshPhongMaterial({ map: texture});
     object = new THREE.Mesh(geometry, material);
+    object.receiveShadow = true;
     return object;
 };

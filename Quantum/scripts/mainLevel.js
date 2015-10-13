@@ -28,7 +28,6 @@ var init = function() {
 
     // Create Ground
     var ground = createObject.planeGeometry("resources/texture_grass.jpg", 3000, 3000, 1);
-    ground.receiveShadow = true;
     scene.add(ground);
     rotateObject(ground, [-1.3,0.0,0.0]);
 
@@ -56,10 +55,15 @@ var init = function() {
     building2.position.y = -400;
 
     // Create Bridge
-    var bridge = createObject.boxGeometry("resources/texture_woodPane.jpg", 100, 700, 100);
+    var bridge = createObject.boxGeometry("resources/texture_woodPane.jpg", 20, 700, 20);
     building1.add(bridge);
     bridge.position.z = 100;
     bridge.position.y = -400;
+
+    // Create Street
+    var street = createObject.planeGeometry("resources/texture_street.jpg", 1000, 200, 0);
+    ground.add(street);
+    street.position.z = 5;
 
     // Create atmospheric white light
     var ambientLight = createLight.ambientLight();
@@ -68,6 +72,7 @@ var init = function() {
     // Clear window to black and set size
     renderer.setClearColor(0x000000);
     renderer.setSize(width, height);
+
 
     // Render the scene
     function render() {
