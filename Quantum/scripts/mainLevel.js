@@ -24,6 +24,9 @@ var init = function() {
     renderer.setClearColor(0x000000);
     renderer.setSize(width, height);
 
+    // getObject
+    var createObject = new CreateObject();
+    scene.add(createObject.planeGeometry("resources/texture_grass.jpg", 5000, 5000, 1));
 
     // Render the scene
     function render() {
