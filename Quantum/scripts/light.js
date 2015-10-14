@@ -20,6 +20,6 @@ CreateLight.prototype.directLight = function() {
 
 CreateLight.prototype.ambientLight = function() {
     light = new THREE.AmbientLight(0x303030);
-    //light.castShadow = true;
+    light.castShadow = true;
     return light;
 };
