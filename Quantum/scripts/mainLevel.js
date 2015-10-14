@@ -12,7 +12,6 @@ var init = function() {
     var createObject = new CreateObject();
     var createLight = new CreateLight();
 
-
     // Starting position for camera (x, y, z)
     camera.position.set(0,0,10000);
 
@@ -73,6 +72,14 @@ var init = function() {
     renderer.setClearColor(0x000000);
     renderer.setSize(width, height);
 
+    // Resize function
+    function onWindowResize() {
+        width = window.innerWidth;
+        height = window.innerHeight;
+
+        renderer.setSize(width, height);
+    }
+    window.addEventListener('resize', onWindowResize, false);
 
     // Render the scene
     function render() {
