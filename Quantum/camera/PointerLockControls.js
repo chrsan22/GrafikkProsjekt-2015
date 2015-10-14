@@ -35,7 +35,7 @@ THREE.PointerLockControls = function ( camera ) {
 
     document.addEventListener( 'mousemove', onMouseMove, false );
 
-    this.enabled = false;
+    this.enabled = true;
 
     this.getObject = function () {
 
