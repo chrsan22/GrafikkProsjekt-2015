@@ -22,7 +22,7 @@ var init = function() {
     });
 
     // Renderer Shadows
-    renderer.shadowMapEnabled = true;
+    renderer.shadowMap.Enabled = true;
     renderer.shadowMapSoft = true;
 
     // Create Ground
