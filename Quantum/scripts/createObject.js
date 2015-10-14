@@ -12,7 +12,7 @@ function CreateObject() {
 CreateObject.prototype.boxGeometry = function(tex, geoX, geoY, geoZ) {
     texture = THREE.ImageUtils.loadTexture(tex);
     geometry = new THREE.BoxGeometry(geoX, geoY, geoZ);
-    material = new THREE.MeshPhongMaterial({ map: texture});
+    material = new THREE.MeshPhongMaterial({ map: texture });
     object = new THREE.Mesh(geometry, material);
     object.castShadow = true;
     object.receiveShadow = true;
@@ -25,6 +25,7 @@ CreateObject.prototype.boxGeometry = function(tex, geoX, geoY, geoZ) {
  */
 CreateObject.prototype.sphereGeometry = function(tex, rad, width, height) {
     texture = THREE.ImageUtils.loadTexture(tex);
+    texture.flipY = false;
     geometry = new THREE.SphereGeometry(rad, width, height);
     material = new THREE.MeshBasicMaterial({ map: texture});
     object = new THREE.Mesh(geometry, material);
@@ -37,6 +38,7 @@ CreateObject.prototype.sphereGeometry = function(tex, rad, width, height) {
  */
 CreateObject.prototype.planeGeometry = function(tex, geoX, geoY, geoZ) {
     texture = THREE.ImageUtils.loadTexture(tex);
+    texture.flipY = false;
     geometry = new THREE.PlaneGeometry(geoX, geoY, geoZ);
     material = new THREE.MeshPhongMaterial({ map: texture});
     object = new THREE.Mesh(geometry, material);

@@ -13,7 +13,7 @@ var init = function() {
     var createLight = new CreateLight();
 
     // Starting position for camera (x, y, z)
-    camera.position.set(0,0,10000);
+    camera.position.set(0,0,1000);
 
     // Create renderer, set antialias to true if possible
     var renderer = new THREE.WebGLRenderer({
@@ -66,6 +66,12 @@ var init = function() {
     bridge.position.z = 100;
     bridge.position.y = -400;
 
+    // Create Tardis
+    var tardis = createObject.boxGeometry("resources/texture_tardis.png", 100, 100, 250);
+    ground.add(tardis);
+    tardis.position.z = 125;
+    tardis.position.y = -600;
+
     // Create Street
     var street = createObject.planeGeometry("resources/texture_street.jpg", 200, 2000, 0);
     ground.add(street);
@@ -94,6 +100,7 @@ var init = function() {
         rotateObject(ground, [0.0,0.0,0.01]);
         rotateObject(groundOrbit, [0.0,0.0,0.0]);
         rotateObject(sun, [0.0,0.01,0.0]);
+        //rotateObject(skyBox, [0.01,0.01,0.01]);
         renderer.render(scene, camera);
         window.requestAnimFrame(render);
     }
