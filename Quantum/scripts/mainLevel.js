@@ -25,6 +25,13 @@ var init = function() {
     renderer.shadowMapEnabled = true;
     renderer.shadowMapSoft = true;
 
+    // Create Skybox
+    var skyBoxGeometry = new THREE.CubeGeometry( 20000, 20000, 10000 );
+    texture = THREE.ImageUtils.loadTexture("resources/texture_skybox.jpg");
+    var skyBoxMaterial = new THREE.MeshBasicMaterial( { map: texture, side: THREE.BackSide } );
+    var skyBox = new THREE.Mesh( skyBoxGeometry, skyBoxMaterial );
+    scene.add(skyBox);
+
     // Create Ground
     var ground = createObject.planeGeometry("resources/texture_grass.jpg", 3000, 3000, 1);
     scene.add(ground);
@@ -35,8 +42,8 @@ var init = function() {
     ground.add(groundOrbit)
     // Create sun
     var sun = createObject.sphereGeometry("resources/texture_sun.jpg", 100, 16, 16);
-    groundOrbit.add(sun);
-    sun.position.set(0, 0, 3000);
+    scene.add(sun);
+    sun.position.set(1500, 3000, -2000);
     // Create Light
     var lightPoint = createLight.directLight();
     sun.add(lightPoint);
@@ -85,7 +92,7 @@ var init = function() {
     // Render the scene
     function render() {
         rotateObject(ground, [0.0,0.0,0.01]);
-        rotateObject(groundOrbit, [0.0,0.01,0.0]);
+        rotateObject(groundOrbit, [0.0,0.0,0.0]);
         rotateObject(sun, [0.0,0.01,0.0]);
         renderer.render(scene, camera);
         window.requestAnimFrame(render);
