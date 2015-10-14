@@ -1,7 +1,3 @@
-/**
- * Created by endre on 06.09.15.
- */
-
 "use strict";
 
 /**
@@ -14,16 +10,16 @@ function Camera(keyboardState) {
 
     this.position = vec3(0,0,0);
     this.forwardDirection = vec3(0,0,1);
-    this.upDirection = vec3(0,1,0);
-    this.leftDirection = vec3(1,0,0);
+    this.upDirection = vec3(0,-1,0);
+    this.leftDirection = vec3(-1,0,0);
 
     this.viewMatrix = lookAt(this.position, add(this.position, this.forwardDirection), this.upDirection);
 
     // The speed the camera moves with when position is changed.
-    this.speed = 0.01;
+    this.speed = 0.20;
 
     // mouseSensitivity is a way of controlling how sensitive the system is when moving mouse.
-    this.mouseSensitivity = 0.5;
+    this.mouseSensitivity = 0.9;
 
     // Properties mostly concerned with mouse movement
     this.mouse = {
@@ -65,13 +61,19 @@ Camera.prototype.update = function(timestampMillis) {
 Camera.prototype._updatePosition = function(timestampMillis) {
     var seconds = timestampMillis / 1000;
 
-    //  How far should we move in the forward direction?
-    var forwardStep = scale(this.speed*seconds, this.forwardDirection);
-    var leftStep = scale(this.speed*seconds, this.leftDirection);
-    var upStep = scale(this.speed*seconds, this.upDirection);
 
-    // TODO: Handle movement along the vertical direction
-    // TODO: Handle movement along the horizontal direction
+    //  How far should we move in the forward direction?
+    var forwardStep = scale(this.speed, this.forwardDirection);
+    var leftStep = scale(this.speed, this.leftDirection);
+    var upStep = scale(this.speed, this.upDirection);
+
+    if (this.keyboardState.pressed('a')) {
+        this.position = add(this.position, negate(leftStep));
+    }
+
+    if (this.keyboardState.pressed('d')) {
+        this.position = add(this.position, leftStep);
+    }
 
     // Handle keyboard inputs, only forward is handled for now
     if (this.keyboardState.pressed('w')) {
@@ -82,21 +84,14 @@ Camera.prototype._updatePosition = function(timestampMillis) {
         this.position = add(this.position, negate(forwardStep));
     }
 
-    if (this.keyboardState.pressed('left')) {
-        this.position = add(this.position, leftStep);
-    }
-
-    if (this.keyboardState.pressed('right')) {
-        this.position = add(this.position, negate(leftStep));
-    }
-
-    if (this.keyboardState.pressed('up')) {
+    if (this.keyboardState.pressed('space')) {
         this.position = add(this.position, upStep);
     }
 
-    if (this.keyboardState.pressed('down')) {
+    if (this.keyboardState.pressed('ctrl')) {
         this.position = add(this.position, negate(upStep));
     }
+
 };
 
 /**
@@ -107,44 +102,45 @@ Camera.prototype._updatePosition = function(timestampMillis) {
 Camera.prototype._updateOrientation = function(timestampMillis) {
     // Lets handle the mouse.deltaX and mouse.deltaY as degrees, use mouseSensitivity
     // as a way of controlling how much the system should react to orientation change.
-
     var rotations = mat4();
 
     var yawAngle = 0;
+    var rotAngle = 0;
     var pitchAngle = 0;
-    var rollAngle = 0;
 
     if (!this.mouse.consumedUpdate) {
         yawAngle = -1 * this.mouseSensitivity * this.mouse.deltaX;
+        pitchAngle = -1 * this.mouseSensitivity * this.mouse.deltaY;
         this.mouse.consumedUpdate = true;
-        var yawRotation = rotate(yawAngle, this.upDirection);
-        rotations = mult(rotations, yawRotation);
     }
-
-    if (this.keyboardState.pressed('a')) {
-        pitchAngle = 1;
-        var pitchRotation = rotate(pitchAngle, this.leftDirection);
-        rotations = mult(rotations, pitchRotation);
-    }
-
-    if (this.keyboardState.pressed('d')) {
-        pitchAngle = -1;
-        var pitchRotation = rotate(pitchAngle, this.leftDirection);
-        rotations = mult(rotations, pitchRotation);
-    }
-
-    if (this.keyboardState.pressed('e')) {
-        rollAngle = 1;
-        var rollRotation = rotate(rollAngle, this.forwardDirection);
-        rotations = mult(rotations, rollRotation);
-    }
-
+    // Rotates around the Z axis, using the q and e keys.
     if (this.keyboardState.pressed('q')) {
-        rollAngle = -1;
-        var rollRotation = rotate(rollAngle, this.forwardDirection);
-        rotations = mult(rotations, rollRotation);
+        rotAngle = -1.5;
+    } else if (this.keyboardState.pressed('e')){
+        rotAngle = 1.5;
     }
 
+    // Rotates around the Y axis, using the left/right keys.
+    if (this.keyboardState.pressed('right')) {
+        yawAngle = -1.5;
+    }     else if (this.keyboardState.pressed('left')) {
+        yawAngle = 1.5;
+    }
+
+    if (this.keyboardState.pressed('down')) {
+        pitchAngle = -1;
+    }   else if(this.keyboardState.pressed('up')) {
+        pitchAngle = 1;
+    }
+
+    // Rotate so and so degrees about the upDirection
+    var yawRotation = rotate(yawAngle, this.upDirection);
+    var pitchRotation = rotate(pitchAngle, this.leftDirection);
+    var rollRotation = rotate(rotAngle, this.forwardDirection);
+
+    rotations = mult(rotations, yawRotation);
+    rotations = mult(rotations, rollRotation);
+    rotations = mult(rotations, pitchRotation);
 
     // Finally update the forward and up direction
     this.setForwardDirection(vec3(
@@ -153,11 +149,18 @@ Camera.prototype._updateOrientation = function(timestampMillis) {
         dot(vec3(rotations[2]), this.forwardDirection)
     ));
 
+    this.setRightDirection(vec3(
+        dot(vec3(rotations[0]), this.leftDirection),
+        dot(vec3(rotations[1]), this.leftDirection),
+        dot(vec3(rotations[2]), this.leftDirection)
+    ));
+
     this.setUpDirection(vec3(
         dot(vec3(rotations[0]), this.upDirection),
         dot(vec3(rotations[1]), this.upDirection),
         dot(vec3(rotations[2]), this.upDirection)
     ));
+
 };
 
 /**
@@ -174,6 +177,14 @@ Camera.prototype.setPosition = function(position) {
  */
 Camera.prototype.setForwardDirection = function(forwardDirection) {
     this.forwardDirection = normalize(vec3(forwardDirection));
+};
+
+Camera.prototype.setRightDirection = function(leftDirection) {
+    this.leftDirection = normalize(vec3(leftDirection));
+};
+
+Camera.prototype.setUpDirection = function(upDirection) {
+    this.upDirection = normalize(vec3(upDirection));
 };
 
 /**
