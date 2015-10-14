@@ -42,27 +42,28 @@ var init = function() {
     sun.add(lightPoint);
 
     // Create Building 1
-    var building1 = createObject.boxGeometry("resources/texture_woodPane.jpg", 200, 200, 500);
+    var building1 = createObject.boxGeometry("resources/texture_skyscraper.jpg", 200, 200, 500);
     ground.add(building1);
     building1.position.z = 250;
     building1.position.y = 400;
 
     // Create Building 2
-    var building2 = createObject.boxGeometry("resources/texture_woodPane.jpg", 200, 200, 500);
+    var building2 = createObject.boxGeometry("resources/texture_skyscraper.jpg", 200, 200, 500);
     ground.add(building2);
     building2.position.z = 250;
     building2.position.y = -400;
 
     // Create Bridge
-    var bridge = createObject.boxGeometry("resources/texture_woodPane.jpg", 20, 700, 20);
+    var bridge = createObject.boxGeometry("resources/texture_bridge.jpg", 20, 700, 20);
     building1.add(bridge);
     bridge.position.z = 100;
     bridge.position.y = -400;
 
     // Create Street
-    var street = createObject.planeGeometry("resources/texture_street.jpg", 1000, 200, 0);
+    var street = createObject.planeGeometry("resources/texture_street.jpg", 200, 2000, 0);
     ground.add(street);
     street.position.z = 5;
+    rotateObject(street, [0.0,0.0,1.6]);
 
     // Create atmospheric white light
     var ambientLight = createLight.ambientLight();
