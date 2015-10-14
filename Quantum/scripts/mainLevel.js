@@ -12,9 +12,9 @@ var init = function() {
     var createObject = new CreateObject();
     var createLight = new CreateLight();
 
-    // Add camera to scene
-    scene.add(camera);
-    camera.position.z = 10000;
+
+    // Starting position for camera (x, y, z)
+    camera.position.set(0,0,10000);
 
     // Create renderer, set antialias to true if possible
     var renderer = new THREE.WebGLRenderer({
