@@ -9,13 +9,14 @@ function CreateObject() {
     Prototype function that creates a Three.JS box
     Returns BoxGeometry Mesh
  */
-CreateObject.prototype.boxGeometry = function(tex, geoX, geoY, geoZ) {
+CreateObject.prototype.boxGeometry = function(tex, geoX, geoY, geoZ, posX, posY, posZ, giveShadow, getShadow) {
     texture = THREE.ImageUtils.loadTexture(tex);
     geometry = new THREE.BoxGeometry(geoX, geoY, geoZ);
     material = new THREE.MeshPhongMaterial({ map: texture });
     object = new THREE.Mesh(geometry, material);
-    object.castShadow = true;
-    object.receiveShadow = true;
+    object.castShadow = giveShadow;
+    object.receiveShadow = getShadow;
+    object.position.set(posX, posY, posZ);
     return object;
 };
 
@@ -23,12 +24,15 @@ CreateObject.prototype.boxGeometry = function(tex, geoX, geoY, geoZ) {
  Prototype function that creates a Three.JS sphere
  Returns SphereGeometry Mesh
  */
-CreateObject.prototype.sphereGeometry = function(tex, rad, width, height) {
+CreateObject.prototype.sphereGeometry = function(tex, rad, width, height, posX, posY, posZ, giveShadow, getShadow) {
     texture = THREE.ImageUtils.loadTexture(tex);
     texture.flipY = false;
     geometry = new THREE.SphereGeometry(rad, width, height);
     material = new THREE.MeshBasicMaterial({ map: texture});
     object = new THREE.Mesh(geometry, material);
+    object.castShadow = giveShadow;
+    object.receiveShadow = getShadow;
+    object.position.set(posX, posY, posZ);
     return object;
 };
 
@@ -36,12 +40,14 @@ CreateObject.prototype.sphereGeometry = function(tex, rad, width, height) {
  Prototype function that creates a Three.JS plane
  Returns PlaneGeometry Mesh
  */
-CreateObject.prototype.planeGeometry = function(tex, geoX, geoY, geoZ) {
+CreateObject.prototype.planeGeometry = function(tex, geoX, geoY, geoZ, posX, posY, posZ, giveShadow, getShadow) {
     texture = THREE.ImageUtils.loadTexture(tex);
     texture.flipY = false;
     geometry = new THREE.PlaneGeometry(geoX, geoY, geoZ);
     material = new THREE.MeshPhongMaterial({ map: texture});
     object = new THREE.Mesh(geometry, material);
-    object.receiveShadow = true;
+    object.castShadow = giveShadow;
+    object.receiveShadow = getShadow;
+    object.position.set(posX, posY, posZ);
     return object;
 };

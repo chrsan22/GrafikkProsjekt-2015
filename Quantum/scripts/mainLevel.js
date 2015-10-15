@@ -13,7 +13,7 @@ var init = function() {
     var createLight = new CreateLight();
 
     // Starting position for camera (x, y, z)
-    camera.position.set(0,0,1000);
+    camera.position.set(0,0,10000);
 
     // Create renderer, set antialias to true if possible
     var renderer = new THREE.WebGLRenderer({
@@ -33,7 +33,7 @@ var init = function() {
     scene.add(skyBox);
 
     // Create Ground
-    var ground = createObject.planeGeometry("resources/texture_grass.jpg", 3000, 3000, 1);
+    var ground = createObject.planeGeometry("resources/texture_grass.jpg", 3000, 3000, 1, 0, 0, 0, false, true);
     scene.add(ground);
     rotateObject(ground, [-1.3,0.0,0.0]);
 
@@ -41,41 +41,27 @@ var init = function() {
     var groundOrbit = new THREE.Object3D();
     ground.add(groundOrbit)
     // Create sun
-    var sun = createObject.sphereGeometry("resources/texture_sun.jpg", 100, 16, 16);
+    var sun = createObject.sphereGeometry("resources/texture_sun.jpg", 100, 16, 16, 1500, 3000, -2000, false, false);
     scene.add(sun);
-    sun.position.set(1500, 3000, -2000);
     // Create Light
     var lightPoint = createLight.directLight();
     sun.add(lightPoint);
 
     // Create Building 1
-    var building1 = createObject.boxGeometry("resources/texture_skyscraper.jpg", 200, 200, 500);
+    var building1 = createObject.boxGeometry("resources/texture_skyscraper.jpg", 200, 200, 500, 0, 400, 250, true, true);
     ground.add(building1);
-    building1.position.z = 250;
-    building1.position.y = 400;
 
     // Create Building 2
-    var building2 = createObject.boxGeometry("resources/texture_skyscraper.jpg", 200, 200, 500);
+    var building2 = createObject.boxGeometry("resources/texture_skyscraper.jpg", 200, 200, 500, 0, -400, 250, true, true);
     ground.add(building2);
-    building2.position.z = 250;
-    building2.position.y = -400;
 
     // Create Bridge
-    var bridge = createObject.boxGeometry("resources/texture_bridge.jpg", 20, 700, 20);
+    var bridge = createObject.boxGeometry("resources/texture_bridge.jpg", 20, 700, 20, 0, -400, 100, true, true);
     building1.add(bridge);
-    bridge.position.z = 100;
-    bridge.position.y = -400;
-
-    // Create Tardis
-    var tardis = createObject.boxGeometry("resources/texture_tardis.png", 100, 100, 250);
-    ground.add(tardis);
-    tardis.position.z = 125;
-    tardis.position.y = -600;
 
     // Create Street
-    var street = createObject.planeGeometry("resources/texture_street.jpg", 200, 2000, 0);
+    var street = createObject.planeGeometry("resources/texture_street.jpg", 200, 2000, 0, 0, 0, 5, true, true);
     ground.add(street);
-    street.position.z = 5;
     rotateObject(street, [0.0,0.0,1.6]);
 
     // Create atmospheric white light
