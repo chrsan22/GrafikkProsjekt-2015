@@ -46,40 +46,31 @@
     <script src="camera/FlyControls/RenderPass.js"></script>
     <script src="camera/FlyControls/FilmPass.js"></script>
 
-<!--    <script src="camera/FlyControls/Detector.js"></script> -->
-    <script src="camera/FlyControls/stats.min.js"></script>
-
 </head>
 
 <body>
 
-<div id="info"><a href="http://threejs.org" target="_blank">three.js</a> - earth [fly controls]<br/><br/>
+<div id="info"><br/>
     <b>WASD</b> move, <b>R|F</b> up | down, <b>Q|E</b> roll, <b>up|down</b> pitch, <b>left|right</b> yaw<br/>
 </div>
 
 <script>
-
-    //if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
-
 
     var radius = 6371;
     var tilt = 0.41;
     //Planet rotation
     var rotationSpeed = 0.1;
 
-    var cloudsScale = 1.005;
-    var moonScale = 0.23;
-
     var MARGIN = 0;
     var SCREEN_HEIGHT = window.innerHeight - MARGIN * 2;
     var SCREEN_WIDTH  = window.innerWidth;
 
-    var container, stats;
-    var camera, controls, scene, sceneCube, renderer;
-    var geometry, meshPlanet, meshClouds, meshMoon;
-    var dirLight, pointLight, ambientLight;
+    var container;
+    var camera, controls, scene, renderer;
+    var geometry, meshPlanet;
+    var dirLight;
 
-    var d, dPlanet, dMoon, dMoonVec = new THREE.Vector3();
+    var d, dPlanet = new THREE.Vector3();
 
     var clock = new THREE.Clock();
 
@@ -96,7 +87,6 @@
         camera.position.z = radius * 5;
 
         scene = new THREE.Scene();
-        //scene.fog = new THREE.FogExp2( 0x000000, 0.00000025 );
 
         controls = new THREE.FlyControls( camera );
         // WASD speed
@@ -104,7 +94,7 @@
         controls.domElement = container;
         // Rollspeed for Q og E rollen
         controls.rollSpeed = Math.PI / 24;
-//        controls.autoForward = false;
+
         // For å bevege mousemovement bare når tasten er nede
         controls.dragToLook = true;
 
@@ -133,102 +123,14 @@
         meshPlanet.rotation.z = tilt;
         scene.add( meshPlanet );
 
-        // clouds
-
-//        var materialClouds = new THREE.MeshLambertMaterial( {
-//            map: THREE.ImageUtils.loadTexture( "camera/FlyControls/earth_clouds_1024.png" ),
-//            transparent: true
-//
-//        } );
-//
-//        meshClouds = new THREE.Mesh( geometry, materialClouds );
-//        meshClouds.scale.set( cloudsScale, cloudsScale, cloudsScale );
-//        meshClouds.rotation.z = tilt;
-//        scene.add( meshClouds );
-
-        // moon
-
-//        var materialMoon = new THREE.MeshPhongMaterial( {
-//
-//            map: THREE.ImageUtils.loadTexture( "camera/FlyControls/moon_1024.jpg" )
-//
-//        } );
-//
-//        meshMoon = new THREE.Mesh( geometry, materialMoon );
-//        meshMoon.position.set( radius * 5, 0, 0 );
-//        meshMoon.scale.set( moonScale, moonScale, moonScale );
-//        scene.add( meshMoon );
-
-        // stars
-
-        var i, r = radius, starsGeometry = [ new THREE.Geometry(), new THREE.Geometry() ];
-
-        for ( i = 0; i < 250; i ++ ) {
-
-            var vertex = new THREE.Vector3();
-            vertex.x = Math.random() * 2 - 1;
-            vertex.y = Math.random() * 2 - 1;
-            vertex.z = Math.random() * 2 - 1;
-            vertex.multiplyScalar( r );
-
-            starsGeometry[ 0 ].vertices.push( vertex );
-
-        }
-
-        for ( i = 0; i < 1500; i ++ ) {
-
-            var vertex = new THREE.Vector3();
-            vertex.x = Math.random() * 2 - 1;
-            vertex.y = Math.random() * 2 - 1;
-            vertex.z = Math.random() * 2 - 1;
-            vertex.multiplyScalar( r );
-
-            starsGeometry[ 1 ].vertices.push( vertex );
-
-        }
-
-        var stars;
-        var starsMaterials = [
-            new THREE.PointsMaterial( { color: 0x555555, size: 2, sizeAttenuation: false } ),
-            new THREE.PointsMaterial( { color: 0x555555, size: 1, sizeAttenuation: false } ),
-            new THREE.PointsMaterial( { color: 0x333333, size: 2, sizeAttenuation: false } ),
-            new THREE.PointsMaterial( { color: 0x3a3a3a, size: 1, sizeAttenuation: false } ),
-            new THREE.PointsMaterial( { color: 0x1a1a1a, size: 2, sizeAttenuation: false } ),
-            new THREE.PointsMaterial( { color: 0x1a1a1a, size: 1, sizeAttenuation: false } )
-        ];
-
-        for ( i = 10; i < 30; i ++ ) {
-
-            stars = new THREE.Points( starsGeometry[ i % 2 ], starsMaterials[ i % 6 ] );
-
-            stars.rotation.x = Math.random() * 6;
-            stars.rotation.y = Math.random() * 6;
-            stars.rotation.z = Math.random() * 6;
-
-            s = i * 10;
-            stars.scale.set( s, s, s );
-
-            stars.matrixAutoUpdate = false;
-            stars.updateMatrix();
-
-            scene.add( stars );
-
-        }
-
         renderer = new THREE.WebGLRenderer();
         renderer.setPixelRatio( window.devicePixelRatio );
         renderer.setSize( SCREEN_WIDTH, SCREEN_HEIGHT );
-        renderer.sortObjects = false;
 
-        renderer.autoClear = false;
+//        renderer.sortObjects = false;
+//        renderer.autoClear = false;
 
         container.appendChild( renderer.domElement );
-
-        stats = new Stats();
-        stats.domElement.style.position = 'absolute';
-        stats.domElement.style.top = '0px';
-        stats.domElement.style.zIndex = 100;
-        container.appendChild( stats.domElement );
 
         window.addEventListener( 'resize', onWindowResize, false );
 
@@ -265,44 +167,23 @@
         requestAnimationFrame( animate );
 
         render();
-        stats.update();
-
     }
 
     function render() {
-
         // rotate the planet and clouds
-
         var delta = clock.getDelta();
 
-//        meshPlanet.rotation.y += rotationSpeed * delta;
-//        meshClouds.rotation.y += 5 * rotationSpeed * delta;
-
         // slow down as we approach the surface
-
         dPlanet = camera.position.length();
-//
-//        dMoonVec.subVectors( camera.position, meshMoon.position );
-//        dMoon = dMoonVec.length();
 
-//        if ( dMoon < dPlanet ) {
-//
-//            d = ( dMoon - radius * moonScale * 1.01 );
-//
-//        } else {
-
-            d = ( dPlanet/* - radius * 1.01*/ );
-
-//        }
+        d = ( dPlanet/* - radius * 1.01*/ );
 
         controls.movementSpeed = 0.33 * d;
         controls.update( delta );
 
         renderer.clear();
         composer.render( delta );
-
     }
-
 </script>
 </body>
 </html>
