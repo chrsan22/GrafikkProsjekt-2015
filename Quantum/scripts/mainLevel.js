@@ -13,7 +13,7 @@ var init = function() {
     var createLight = new CreateLight();
 
     // Starting position for camera (x, y, z)
-    camera.position.set(0,0,5000);
+    camera.position.set(0,0,1000);
 
     // Create renderer, set antialias to true if possible
     var renderer = new THREE.WebGLRenderer({
@@ -25,7 +25,7 @@ var init = function() {
     renderer.shadowMapEnabled = true;
     renderer.shadowMapSoft = true;
 
-    // Create Street
+    // Create Ground
     var ground = createObject.planeGeometry("resources/texture_grass.jpg", 3000, 3000, 0, 0, 0, 0, false, true);
     scene.add(ground);
     rotateObject(ground, [-1.3,0.0,0.0]);
@@ -39,7 +39,7 @@ var init = function() {
 
     // Set sun orbit around ground
     var groundOrbit = new THREE.Object3D();
-    ground.add(groundOrbit)
+    ground.add(groundOrbit);
     // Create sun
     var sun = createObject.sphereGeometry("resources/texture_sun.jpg", 100, 16, 16, 1500, 3000, -2000, false, false);
     scene.add(sun);

@@ -54,5 +54,4 @@ CreateObject.prototype.planeGeometry = function(tex, geoX, geoY, geoZ, posX, pos
 
 CreateObject.prototype.heightMap = function(geoX, geoY) {
 
-    return object;
 };
