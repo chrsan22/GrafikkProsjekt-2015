@@ -27,7 +27,7 @@ var init = function() {
 
     // Create Skybox
     var skyBoxGeometry = new THREE.CubeGeometry( 20000, 20000, 10000 );
-    texture = THREE.ImageUtils.loadTexture("resources/texture_skybox.jpg");
+    texture = THREE.ImageUtils.loadTexture("resources/Day_Skybox.png");
     var skyBoxMaterial = new THREE.MeshBasicMaterial( { map: texture, side: THREE.BackSide } );
     var skyBox = new THREE.Mesh( skyBoxGeometry, skyBoxMaterial );
     scene.add(skyBox);
