@@ -26,16 +26,36 @@ var init = function() {
     renderer.shadowMapSoft = true;
 
     // Create Ground
-    var ground = createObject.planeGeometry("resources/texture_grass.jpg", 3000, 3000, 0, 0, 0, 0, false, true);
+    var ground = createObject.planeGeometry("resources/texture_grass.jpg", 10000, 10000, 0, 0, 0, 0, false, true);
     scene.add(ground);
     rotateObject(ground, [-1.3,0.0,0.0]);
 
     // Create Skybox
-    var skyBoxGeometry = new THREE.CubeGeometry( 20000, 20000, 10000 );
-    texture = THREE.ImageUtils.loadTexture("resources/Day_Skybox.png");
-    var skyBoxMaterial = new THREE.MeshBasicMaterial( { map: texture, side: THREE.BackSide } );
-    var skyBox = new THREE.Mesh( skyBoxGeometry, skyBoxMaterial );
-    scene.add(skyBox);
+    var r = "resources/skybox/";
+    var urls = [ r + "posx.jpg", r + "negx.jpg",
+                 r + "posy.jpg", r + "negy.jpg",
+                 r + "posz.jpg", r + "negz.jpg" ];
+
+    var textureCube = THREE.ImageUtils.loadTextureCube( urls  );
+    textureCube.format = THREE.RGBFormat;
+
+    // Skybox
+
+    var shader = THREE.ShaderLib[ "cube" ];
+    shader.uniforms[ "tCube" ].value = textureCube;
+
+    var material = new THREE.ShaderMaterial( {
+
+        fragmentShader: shader.fragmentShader,
+        vertexShader: shader.vertexShader,
+        uniforms: shader.uniforms,
+        depthWrite: false,
+        side: THREE.BackSide
+
+    } );
+
+    mesh = new THREE.Mesh( new THREE.BoxGeometry( 1000, 1000, 1000 ), material );
+    scene.add( mesh );
 
     // Set sun orbit around ground
     var groundOrbit = new THREE.Object3D();
