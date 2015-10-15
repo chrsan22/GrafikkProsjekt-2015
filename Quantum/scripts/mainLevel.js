@@ -28,7 +28,7 @@ var init = function() {
     // Create Ground
     var ground = createObject.planeGeometry("resources/texture_grass.jpg", 10000, 10000, 0, 0, 0, 0, false, true);
     scene.add(ground);
-    rotateObject(ground, [-1.3,0.0,0.0]);
+    rotateObject(ground, [-1.3,0.0,1.0]);
 
     // Create Skybox
     var r = "resources/skybox/";
@@ -75,6 +75,13 @@ var init = function() {
     var building2 = createObject.boxGeometry("resources/texture_skyscraper.jpg", 200, 200, 500, 0, -400, 250, true, true);
     ground.add(building2);
 
+    // Create Christers Car
+    var car = createObject.boxGeometry("resources/texture_skyscraper.jpg", 50, 10, 15, 0, 0, 50, true, true);
+    ground.add(car);
+    var keyboard	= new THREEx.KeyboardState();
+    var clock = new THREE.Clock();
+    controls = new THREE.OrbitControls( camera, renderer.domElement );
+
     // Create Bridge
     var bridge = createObject.boxGeometry("resources/texture_bridge.jpg", 20, 700, 20, 0, -400, 100, true, true);
     building1.add(bridge);
@@ -103,7 +110,25 @@ var init = function() {
 
     // Render the scene
     function render() {
-        rotateObject(ground, [0.0,0.0,0.01]);
+        // move forwards/backwards/left/right
+        var delta = clock.getDelta(); // seconds.
+        var moveDistance = 200 * delta; // 200 pixels per second
+        var rotateAngle = Math.PI / 2 * delta;   // pi/2 radians (90 degrees) per second
+        if ( keyboard.pressed("up") )
+            car.translateX( moveDistance );
+        if ( keyboard.pressed("down") )
+            car.translateX(  -moveDistance );
+        if ( keyboard.pressed("o") )
+            car.translateZ( -moveDistance );
+        if ( keyboard.pressed("l") )
+            car.translateZ(  moveDistance );
+        var rotation_matrix = new THREE.Matrix4().identity();
+        if ( keyboard.pressed("left") )
+            car.rotateOnAxis( new THREE.Vector3(0,0,1), rotateAngle);
+        if ( keyboard.pressed("right") )
+            car.rotateOnAxis( new THREE.Vector3(0,0,1), -rotateAngle);
+        controls.update();
+        rotateObject(ground, [0.0,0.0,0.0]);
         //rotateObject(groundOrbit, [0.0,0.0,0.0]);
         rotateObject(sun, [0.0,0.01,0.0]);
         //rotateObject(skyBox, [0.01,0.01,0.01]);
