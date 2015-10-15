@@ -13,7 +13,7 @@ var init = function() {
     var createLight = new CreateLight();
 
     // Starting position for camera (x, y, z)
-    camera.position.set(0,0,10000);
+    camera.position.set(0,0,5000);
 
     // Create renderer, set antialias to true if possible
     var renderer = new THREE.WebGLRenderer({
@@ -25,17 +25,17 @@ var init = function() {
     renderer.shadowMapEnabled = true;
     renderer.shadowMapSoft = true;
 
+    // Create Street
+    var ground = createObject.planeGeometry("resources/texture_grass.jpg", 3000, 3000, 0, 0, 0, 0, false, true);
+    scene.add(ground);
+    rotateObject(ground, [-1.3,0.0,0.0]);
+
     // Create Skybox
     var skyBoxGeometry = new THREE.CubeGeometry( 20000, 20000, 10000 );
     texture = THREE.ImageUtils.loadTexture("resources/Day_Skybox.png");
     var skyBoxMaterial = new THREE.MeshBasicMaterial( { map: texture, side: THREE.BackSide } );
     var skyBox = new THREE.Mesh( skyBoxGeometry, skyBoxMaterial );
     scene.add(skyBox);
-
-    // Create Ground
-    var ground = createObject.planeGeometry("resources/texture_grass.jpg", 3000, 3000, 1, 0, 0, 0, false, true);
-    scene.add(ground);
-    rotateObject(ground, [-1.3,0.0,0.0]);
 
     // Set sun orbit around ground
     var groundOrbit = new THREE.Object3D();
@@ -84,7 +84,7 @@ var init = function() {
     // Render the scene
     function render() {
         rotateObject(ground, [0.0,0.0,0.01]);
-        rotateObject(groundOrbit, [0.0,0.0,0.0]);
+        //rotateObject(groundOrbit, [0.0,0.0,0.0]);
         rotateObject(sun, [0.0,0.01,0.0]);
         //rotateObject(skyBox, [0.01,0.01,0.01]);
         renderer.render(scene, camera);
