@@ -29,35 +29,6 @@ var init = function() {
     scene.add(ground);
     rotateObject(ground, [-1.3,0.0,1.0]);
 
-    /*
-    // Create Skybox
-    var r = "resources/skybox/";
-    var urls = [ r + "posx.jpg", r + "negx.jpg",
-                 r + "posy.jpg", r + "negy.jpg",
-                 r + "posz.jpg", r + "negz.jpg" ];
-
-    var textureCube = THREE.ImageUtils.loadTextureCube( urls  );
-    textureCube.format = THREE.RGBFormat;
-
-    // Skybox
-
-    var shader = THREE.ShaderLib[ "cube" ];
-    shader.uniforms[ "tCube" ].value = textureCube;
-
-    var material = new THREE.ShaderMaterial( {
-
-        fragmentShader: shader.fragmentShader,
-        vertexShader: shader.vertexShader,
-        uniforms: shader.uniforms,
-        depthWrite: false,
-        side: THREE.BackSide
-
-    } );
-
-    mesh = new THREE.Mesh( new THREE.BoxGeometry( 1000, 1000, 1000 ), material );
-    scene.add( mesh );
-    */
-
     // Set sun orbit around ground
     var groundOrbit = new THREE.Object3D();
     ground.add(groundOrbit);
