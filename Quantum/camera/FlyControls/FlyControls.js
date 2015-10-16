@@ -108,7 +108,7 @@ THREE.FlyControls = function ( object, domElement ) {
         this.updateRotationVector();
 
     };
-
+/*
     this.mousedown = function( event ) {
 
         if ( this.domElement !== document ) {
@@ -126,22 +126,15 @@ THREE.FlyControls = function ( object, domElement ) {
 
         } else {
 
-            switch ( event.button ) {
-
-                case 0: this.moveState.forward = 1; break;
-                case 2: this.moveState.back = 1; break;
-
-            }
-
             this.updateMovementVector();
 
         }
 
-    };
+    };*/
 
     this.mousemove = function( event ) {
 
-        if ( ! this.dragToLook || this.mouseStatus > 0 ) {
+        if ( this.dragToLook || this.mouseStatus > 0 ) {
 
             var container = this.getContainerDimensions();
             var halfWidth  = container.size[ 0 ] / 2;
@@ -151,11 +144,12 @@ THREE.FlyControls = function ( object, domElement ) {
             this.moveState.pitchDown =   ( ( event.pageY - container.offset[ 1 ] ) - halfHeight ) / halfHeight;
 
             this.updateRotationVector();
+            this.updateMovementVector();
         }
 
     };
 
-    this.mouseup = function( event ) {
+/*    this.mouseup = function( event ) {
 
         event.preventDefault();
         event.stopPropagation();
@@ -181,7 +175,7 @@ THREE.FlyControls = function ( object, domElement ) {
 
         this.updateRotationVector();
 
-    };
+    };*/
 
     this.update = function( delta ) {
 
@@ -262,9 +256,9 @@ THREE.FlyControls = function ( object, domElement ) {
     this.dispose = function() {
 
         this.domElement.removeEventListener( 'contextmenu', contextmenu, false );
-        this.domElement.removeEventListener( 'mousedown', _mousedown, false );
+        //this.domElement.removeEventListener( 'mousedown', _mousedown, false );
         this.domElement.removeEventListener( 'mousemove', _mousemove, false );
-        this.domElement.removeEventListener( 'mouseup', _mouseup, false );
+        //this.domElement.removeEventListener( 'mouseup', _mouseup, false );
 
         window.removeEventListener( 'keydown', _keydown, false );
         window.removeEventListener( 'keyup', _keyup, false );
@@ -272,16 +266,16 @@ THREE.FlyControls = function ( object, domElement ) {
     }
 
     var _mousemove = bind( this, this.mousemove );
-    var _mousedown = bind( this, this.mousedown );
-    var _mouseup = bind( this, this.mouseup );
+    //var _mousedown = bind( this, this.mousedown );
+    //var _mouseup = bind( this, this.mouseup );
     var _keydown = bind( this, this.keydown );
     var _keyup = bind( this, this.keyup );
 
     this.domElement.addEventListener( 'contextmenu', contextmenu, false );
 
     this.domElement.addEventListener( 'mousemove', _mousemove, false );
-    this.domElement.addEventListener( 'mousedown', _mousedown, false );
-    this.domElement.addEventListener( 'mouseup',   _mouseup, false );
+    //this.domElement.addEventListener( 'mousedown', _mousedown, false );
+    //this.domElement.addEventListener( 'mouseup',   _mouseup, false );
 
     window.addEventListener( 'keydown', _keydown, false );
     window.addEventListener( 'keyup',   _keyup, false );
