@@ -14,7 +14,7 @@ THREE.FlyControls = function ( object, domElement ) {
     this.movementSpeed = 1.0;
     this.rollSpeed = 0.005;
 
-    this.dragToLook = false;
+    this.dragToLook = true;
     this.autoForward = false;
 
     // disable default target object behavior
@@ -151,7 +151,6 @@ THREE.FlyControls = function ( object, domElement ) {
             this.moveState.pitchDown =   ( ( event.pageY - container.offset[ 1 ] ) - halfHeight ) / halfHeight;
 
             this.updateRotationVector();
-
         }
 
     };
