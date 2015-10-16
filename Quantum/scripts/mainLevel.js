@@ -54,7 +54,7 @@ var init = function() {
 
     } );
 
-    mesh = new THREE.Mesh( new THREE.BoxGeometry( 1000, 1000, 1000 ), material );
+    mesh = new THREE.Mesh( new THREE.BoxGeometry( 10000, 10000, 10000 ), material );
     scene.add( mesh );
     */
 
