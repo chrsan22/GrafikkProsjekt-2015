@@ -24,6 +24,13 @@ var init = function() {
     renderer.shadowMapEnabled = true;
     renderer.shadowMapSoft = true;
 
+    // Create Skybox
+    var skyBoxGeometry = new THREE.CubeGeometry( 20000, 20000, 20000 );
+    texture = THREE.ImageUtils.loadTexture("resources/Day_Skybox.png");
+    var skyBoxMaterial = new THREE.MeshBasicMaterial( { map: texture, side: THREE.BackSide } );
+    var skyBox = new THREE.Mesh( skyBoxGeometry, skyBoxMaterial );
+    scene.add(skyBox);
+
     // Create Ground
     var ground = createObject.planeGeometry("resources/texture_grass.jpg", 10000, 10000, 0, 0, 0, 0, false, true);
     scene.add(ground);
