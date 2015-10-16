@@ -56,7 +56,8 @@ var init = function() {
     // We scale the geometry to avoid scaling the node, since scales propagate.
     heightMapGeometry.scale(50*worldWidth, 1000, 50*worldDepth);
 
-    terrainMesh = new HeightMapMesh( heightMapGeometry, new THREE.MeshPhongMaterial( { map: terrainTexture } ) );
+    texture = THREE.ImageUtils.loadTexture("resources/heightmap_11.png");
+    terrainMesh = new HeightMapMesh( heightMapGeometry, new THREE.MeshPhongMaterial( { map: terrainTexture, map: texture } ) );
     terrainMesh.name = "terrain";
 
     // End of code relating to Height Map
