@@ -12,6 +12,7 @@ var init = function() {
     var createLight = new CreateLight(); // Contains functions to create light
     var heightMapFncs = new HeightMapFunctions(); // Contains functions used in the heightmap
     var keyboard = new THREEx.KeyboardState(); // Contains code relating to keyboard detection
+    var objectMaterialLoader = new THREE.OBJMTLLoader(); // Material Loader for Objects
     var clock = new THREE.Clock(); // ????
 
     camera.position.set(0,1000,0); // Sets the Camera start position
@@ -65,6 +66,8 @@ var init = function() {
     scene.add(ambientLight);
     scene.add( terrainMesh );
 
+
+
     // Resize function
     function onWindowResize() {
         width = window.innerWidth;
@@ -80,6 +83,7 @@ var init = function() {
         var delta = clock.getDelta(); // seconds.
         var moveDistance = 200 * delta; // 200 pixels per second
         var rotateAngle = Math.PI / 2 * delta;   // pi/2 radians (90 degrees) per second
+        
         // Camera Movement
         if ( keyboard.pressed("a") )
             camera.translateX( moveDistance );
