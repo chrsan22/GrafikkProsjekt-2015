@@ -34,7 +34,7 @@ HeightMapFunctions.prototype.getPixelValues = function(domImage, pixelComponents
     }
 
     var imageSize = imageData.height * imageData.width;
-    console.log(imageSize, imageData.data.length, imageData.data.length/4);
+    //console.log(imageSize, imageData.data.length, imageData.data.length/4);
     var numComponents = componentExtractor.length;
 
     var pixelData = new Uint8ClampedArray(imageSize * numComponents);
