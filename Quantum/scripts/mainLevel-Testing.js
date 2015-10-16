@@ -48,23 +48,38 @@ var init = function() {
     terrainTexture = new THREE.CanvasTexture( heightMapFncs.generateTexture( terrainData, worldWidth, worldDepth ) );
     terrainTexture.wrapS = THREE.ClampToEdgeWrapping;
     terrainTexture.wrapT = THREE.ClampToEdgeWrapping;
+    terrainTexture.castShadow = false;
+    terrainTexture.receiveShadow = true;
 
     // Generate terrain geometry and mesh
     var heightMapGeometry = new HeightMapBufferGeometry(terrainData, worldWidth, worldDepth);
     // We scale the geometry to avoid scaling the node, since scales propagate.
     heightMapGeometry.scale(50*worldWidth, 1000, 50*worldDepth);
 
-    terrainMesh = new HeightMapMesh( heightMapGeometry, new THREE.MeshBasicMaterial( { map: terrainTexture } ) );
+    terrainMesh = new HeightMapMesh( heightMapGeometry, new THREE.MeshPhongMaterial( { map: terrainTexture } ) );
     terrainMesh.name = "terrain";
 
     // End of code relating to Height Map
     // ----------------------------------------------------------------------------------------------------------------
+
+    var sun = createObject.sphereGeometry("resources/texture_sun.jpg", 1000, 16, 16, 1500, 30000, -10000, false, false); // Create sun
+    var lightPoint = createLight.directLight(); // Create Light
+
+
+    // Create Skybox
+    var skyBoxGeometry = new THREE.CubeGeometry( 100000, 100000, 100000 );
+    texture = THREE.ImageUtils.loadTexture("resources/texture_skybox.jpg");
+    var skyBoxMaterial = new THREE.MeshBasicMaterial( { map: texture, side: THREE.BackSide } );
+    var skyBox = new THREE.Mesh( skyBoxGeometry, skyBoxMaterial );
 
     var ambientLight = createLight.ambientLight(); // Create atmospheric white light
 
     //Add Items to the Scene
     scene.add(ambientLight);
     scene.add( terrainMesh );
+    scene.add(skyBox);
+    scene.add(sun);
+    sun.add(lightPoint);
 
 
 
