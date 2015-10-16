@@ -1,82 +1,69 @@
 
 var init = function() {
-    var width = window.innerWidth;
-    var height = window.innerHeight;
-    var aspect = width/height;
-    var fov = 45;
-    var near = 0.1;
-    var canvas = document.getElementById("canvas");
-    var scene = new THREE.Scene();
-    var camera = new THREE.PerspectiveCamera(fov, aspect, near, 1e7);
-    var createObject = new CreateObject();
-    var createLight = new CreateLight();
+    var width = window.innerWidth; // Variable used in Camera
+    var height = window.innerHeight; // Variable used in Camera
+    var aspect = width/height; // Variable used in Camera
+    var fov = 45; // Variable used in Camera
+    var near = 0.1; // Variable used in Camera
+    var canvas = document.getElementById("canvas"); // Finds the canvas element
+    var scene = new THREE.Scene(); // Creates the Scene
+    var camera = new THREE.PerspectiveCamera(fov, aspect, near, 1e7); // Sets the Camera's values
+    var createObject = new CreateObject(); // Contains functions to create objects
+    var createLight = new CreateLight(); // Contains functions to create light
+    var heightMapFncs = new HeightMapFunctions(); // Contains functions used in the heightmap
+    var keyboard = new THREEx.KeyboardState(); // Contains code relating to keyboard detection
+    var clock = new THREE.Clock(); // ????
 
-    // Starting position for camera (x, y, z)
-    camera.position.set(0,0,1000);
+    camera.position.set(0,1000,0); // Sets the Camera start position
 
     // Create renderer, set antialias to true if possible
     var renderer = new THREE.WebGLRenderer({
         canvas: canvas,
         antialias: true
     });
-
-    // Renderer Shadows
+    // Activates Shadows, Clears window to black and set size
     renderer.shadowMapEnabled = true;
     renderer.shadowMapSoft = true;
-
-    // Create Skybox
-    var skyBoxGeometry = new THREE.CubeGeometry( 20000, 20000, 20000 );
-    texture = THREE.ImageUtils.loadTexture("resources/Day_Skybox.png");
-    var skyBoxMaterial = new THREE.MeshBasicMaterial( { map: texture, side: THREE.BackSide } );
-    var skyBox = new THREE.Mesh( skyBoxGeometry, skyBoxMaterial );
-    scene.add(skyBox);
-
-    // Create Ground
-    var ground = createObject.planeGeometry("resources/texture_grass.jpg", 10000, 10000, 0, 0, 0, 0, false, true);
-    scene.add(ground);
-    rotateObject(ground, [-1.3,0.0,1.0]);
-
-    // Set sun orbit around ground
-    var groundOrbit = new THREE.Object3D();
-    ground.add(groundOrbit);
-    // Create sun
-    var sun = createObject.sphereGeometry("resources/texture_sun.jpg", 100, 16, 16, 1500, 3000, -2000, false, false);
-    scene.add(sun);
-    // Create Light
-    var lightPoint = createLight.directLight();
-    sun.add(lightPoint);
-
-    // Create Building 1
-    var building1 = createObject.boxGeometry("resources/texture_skyscraper.jpg", 200, 200, 500, 0, 400, 250, true, true);
-    ground.add(building1);
-
-    // Create Building 2
-    var building2 = createObject.boxGeometry("resources/texture_skyscraper.jpg", 200, 200, 500, 0, -400, 250, true, true);
-    ground.add(building2);
-
-    // Create Christers Car
-    var car = createObject.boxGeometry("resources/texture_skyscraper.jpg", 50, 10, 15, 0, 0, 50, true, true);
-    ground.add(car);
-    var keyboard	= new THREEx.KeyboardState();
-    var clock = new THREE.Clock();
-    controls = new THREE.OrbitControls( camera, renderer.domElement );
-
-    // Create Bridge
-    var bridge = createObject.boxGeometry("resources/texture_bridge.jpg", 20, 700, 20, 0, -400, 100, true, true);
-    building1.add(bridge);
-
-    // Create Street
-    var street = createObject.planeGeometry("resources/texture_street.jpg", 200, 2000, 0, 0, 0, 5, true, true);
-    ground.add(street);
-    rotateObject(street, [0.0,0.0,1.6]);
-
-    // Create atmospheric white light
-    var ambientLight = createLight.ambientLight();
-    scene.add(ambientLight);
-
-    // Clear window to black and set size
     renderer.setClearColor(0x000000);
     renderer.setSize(width, height);
+
+    controls = new THREE.OrbitControls( camera, renderer.domElement ); // Initiates mouse controller
+
+    // ----------------------------------------------------------------------------------------------------------------
+    // Code relating to Height Map
+    var useRandomHeightMap = false;
+    if (useRandomHeightMap) {
+        terrainData = generateHeight( worldWidth, worldDepth );
+    } else {
+        var heightMapImage = document.getElementById('heightmap');
+        terrainData = heightMapFncs.getPixelValues(heightMapImage, 'r');
+        worldWidth = heightMapImage.width;
+        worldDepth = heightMapImage.height;
+        worldHalfWidth = Math.floor(worldWidth / 2);
+        worldHalfDepth = Math.floor(worldDepth / 2);
+    }
+
+    // Not required to use the generated texture
+    terrainTexture = new THREE.CanvasTexture( heightMapFncs.generateTexture( terrainData, worldWidth, worldDepth ) );
+    terrainTexture.wrapS = THREE.ClampToEdgeWrapping;
+    terrainTexture.wrapT = THREE.ClampToEdgeWrapping;
+
+    // Generate terrain geometry and mesh
+    var heightMapGeometry = new HeightMapBufferGeometry(terrainData, worldWidth, worldDepth);
+    // We scale the geometry to avoid scaling the node, since scales propagate.
+    heightMapGeometry.scale(50*worldWidth, 1000, 50*worldDepth);
+
+    terrainMesh = new HeightMapMesh( heightMapGeometry, new THREE.MeshBasicMaterial( { map: terrainTexture } ) );
+    terrainMesh.name = "terrain";
+
+    // End of code relating to Height Map
+    // ----------------------------------------------------------------------------------------------------------------
+
+    var ambientLight = createLight.ambientLight(); // Create atmospheric white light
+
+    //Add Items to the Scene
+    scene.add(ambientLight);
+    scene.add( terrainMesh );
 
     // Resize function
     function onWindowResize() {
@@ -93,21 +80,6 @@ var init = function() {
         var delta = clock.getDelta(); // seconds.
         var moveDistance = 200 * delta; // 200 pixels per second
         var rotateAngle = Math.PI / 2 * delta;   // pi/2 radians (90 degrees) per second
-        //Car Movement
-        if ( keyboard.pressed("up") )
-            car.translateX( moveDistance );
-        if ( keyboard.pressed("down") )
-            car.translateX(  -moveDistance );
-        if ( keyboard.pressed("o") )
-            car.translateZ( -moveDistance );
-        if ( keyboard.pressed("l") )
-            car.translateZ(  moveDistance );
-        var rotation_matrix = new THREE.Matrix4().identity();
-        if ( keyboard.pressed("left") )
-            car.rotateOnAxis( new THREE.Vector3(0,0,1), rotateAngle);
-        if ( keyboard.pressed("right") )
-            car.rotateOnAxis( new THREE.Vector3(0,0,1), -rotateAngle);
-
         // Camera Movement
         if ( keyboard.pressed("a") )
             camera.translateX( moveDistance );
@@ -118,10 +90,6 @@ var init = function() {
         if ( keyboard.pressed("s") )
             camera.translateZ(  moveDistance );
         controls.update();
-        rotateObject(ground, [0.0,0.0,0.0]);
-        //rotateObject(groundOrbit, [0.0,0.0,0.0]);
-        rotateObject(sun, [0.0,0.01,0.0]);
-        //rotateObject(skyBox, [0.01,0.01,0.01]);
         renderer.render(scene, camera);
         window.requestAnimFrame(render);
     }
