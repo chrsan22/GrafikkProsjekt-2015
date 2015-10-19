@@ -12,10 +12,11 @@ THREE.FlyControls = function ( object, domElement ) {
     // API
 
     this.movementSpeed = 1.0;
-    this.rollSpeed = 10000;
+    this.rollSpeed = 0.01;
 
     this.tmpQuaternion = new THREE.Quaternion();
 
+    // Changing depending if mouse is active or not
     this.mouseStatus = 0;
 
     this.moveState = { up: 0, down: 0, left: 0, right: 0, forward: 0, back: 0, pitchUp: 0, pitchDown: 0, yawLeft: 0, yawRight: 0, rollLeft: 0, rollRight: 0 };
@@ -153,25 +154,19 @@ THREE.FlyControls = function ( object, domElement ) {
     };
 
     this.updateMovementVector = function() {
-
         var forward = ( this.moveState.forward ) ? 1 : 0;
-
         this.moveVector.x = ( - this.moveState.left    + this.moveState.right );
         this.moveVector.y = ( - this.moveState.down    + this.moveState.up );
         this.moveVector.z = ( - forward + this.moveState.back );
-
         //console.log( 'move:', [ this.moveVector.x, this.moveVector.y, this.moveVector.z ] );
-
     };
 
+    // *1.5 at the end to make the movement on mousemove faster
     this.updateRotationVector = function() {
-
-        this.rotationVector.x = ( - this.moveState.pitchDown + this.moveState.pitchUp );
-        this.rotationVector.y = ( - this.moveState.yawRight  + this.moveState.yawLeft );
-        this.rotationVector.z = ( - this.moveState.rollRight + this.moveState.rollLeft );
-
+        this.rotationVector.x = ( - this.moveState.pitchDown + this.moveState.pitchUp )*1.5;
+        this.rotationVector.y = ( - this.moveState.yawRight  + this.moveState.yawLeft )*1.5;
+        this.rotationVector.z = ( - this.moveState.rollRight + this.moveState.rollLeft )*1.5;
         //console.log( 'rotate:', [ this.rotationVector.x, this.rotationVector.y, this.rotationVector.z ] );
-
     };
 
     this.getContainerDimensions = function() {
