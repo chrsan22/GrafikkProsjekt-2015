@@ -10,7 +10,7 @@
     <script type="text/javascript" src="objects/light.js"></script>
     <script type="text/javascript" src="controls/THREEx.KeyboardState.js"></script>
     <script type="text/javascript" src="controls/OrbitControls.js"></script>
-    <script type="text/javascript" src="camera/FlyControls"></script>
+    <script type="text/javascript" src="camera/FlyControls/FlyControls.js"></script>
 
 
     <style>
@@ -18,10 +18,27 @@
             padding: 0;
             margin: 0;
             overflow: hidden;
+            background:#000;
+            color: #eee;
+            font-family:Monospace;
+            font-size:13px;
+            text-align:center;
         }
+        #info {
+            position: absolute;
+            top: 0px; width: 100%;
+            padding: 5px;
+            z-index:100;
+        }
+
+        a { color: #0080ff }
+        b { color:orange }
     </style>
 </head>
 <body>
+<div id="info"><br/>
+    <b>WASD</b> move, <b>SPACE|CTRL</b> up | down, <b>Q|E</b> roll, <b>up|down</b> pitch, <b>left|right</b> yaw, <b>P</b> pause<br/>
+</div>
 <canvas id="canvas">
 </canvas>
 

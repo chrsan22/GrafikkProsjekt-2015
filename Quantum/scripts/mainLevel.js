@@ -1,21 +1,34 @@
 
-var init = function() {
+
     var width = window.innerWidth;
     var height = window.innerHeight;
     var aspect = width/height;
-    var fov = 45;
-    var near = 0.1;
-    var canvas = document.getElementById("canvas");
-    var scene = new THREE.Scene();
-    var camera = new THREE.PerspectiveCamera(fov, aspect, near, 1e7);
+
+    var camera, controls, scene, renderer;
+    var clock = new THREE.Clock();
+
+var init = function() {
+
+    var fov = 45; // Field of View
+    var near = 0.1; // How near you can get
+    scene = new THREE.Scene(); // Scene
+    var canvas = document.getElementById("canvas"); // Canvas
+
+    // Camera
+    camera = new THREE.PerspectiveCamera(fov, aspect, near, 1e7);
+    camera.position.set(0,0,1000);
+
+    // Controls for FlyControls
+    controls = new THREE.FlyControls( camera );
+    controls.movementSpeed = 1000; // WASD speed
+    controls.rollSpeed = Math.PI / 24; // Rollspeed for Q and E roll
+
+    // Objects variable
     var createObject = new CreateObject();
     var createLight = new CreateLight();
 
-    // Starting position for camera (x, y, z)
-    camera.position.set(0,0,1000);
-
     // Create renderer, set antialias to true if possible
-    var renderer = new THREE.WebGLRenderer({
+    renderer = new THREE.WebGLRenderer({
         canvas: canvas,
         antialias: true
     });
@@ -23,6 +36,11 @@ var init = function() {
     // Renderer Shadows
     renderer.shadowMapEnabled = true;
     renderer.shadowMapSoft = true;
+    // Clear window to black and set size
+    renderer.setClearColor(0x000000);
+    renderer.setPixelRatio( window.devicePixelRatio );
+    renderer.setSize(width, height);
+    document.body.appendChild( renderer.domElement );
 
     // Create Ground
     var ground = createObject.planeGeometry("resources/texture_grass.jpg", 10000, 10000, 0, 0, 0, 0, false, true);
@@ -45,7 +63,6 @@ var init = function() {
     shader.uniforms[ "tCube" ].value = textureCube;
 
     var material = new THREE.ShaderMaterial( {
-
         fragmentShader: shader.fragmentShader,
         vertexShader: shader.vertexShader,
         uniforms: shader.uniforms,
@@ -65,9 +82,6 @@ var init = function() {
         envMap: textureCube,
         side: THREE.DoubleSide
     } );
-
-    
-
 
     // Set sun orbit around ground
     var groundOrbit = new THREE.Object3D();
@@ -92,7 +106,7 @@ var init = function() {
     ground.add(car);
     var keyboard	= new THREEx.KeyboardState();
     var clock = new THREE.Clock();
-    controls = new THREE.OrbitControls( camera, renderer.domElement );
+    //controls = new THREE.OrbitControls( camera, renderer.domElement );
 
     // Create Bridge
     var bridge = createObject.boxGeometry("resources/texture_bridge.jpg", 20, 700, 20, 0, -400, 100, true, true);
@@ -107,24 +121,36 @@ var init = function() {
     var ambientLight = createLight.ambientLight();
     scene.add(ambientLight);
 
-    // Clear window to black and set size
-    renderer.setClearColor(0x000000);
-    renderer.setSize(width, height);
-
     // Resize function
     function onWindowResize() {
         width = window.innerWidth;
         height = window.innerHeight;
-
         renderer.setSize(width, height);
+        camera.aspect = width / height;
+        camera.updateProjectionMatrix();
     }
-    window.addEventListener('resize', onWindowResize, false);
 
     // Render the scene
+
+    render();
+    window.addEventListener('resize', onWindowResize, false);
+};
+
+var rotateObject = function(object, rotation) {
+    object.rotation.x += rotation[0];
+    object.rotation.y += rotation[1];
+    object.rotation.z += rotation[2];
+};
+
+    function animate() {
+        requestAnimationFrame( animate );
+        render();
+    }
+
     function render() {
         //Controller Variables
         var delta = clock.getDelta(); // seconds.
-        var moveDistance = 200 * delta; // 200 pixels per second
+/*        var moveDistance = 200 * delta; // 200 pixels per second
         var rotateAngle = Math.PI / 2 * delta;   // pi/2 radians (90 degrees) per second
         //Car Movement
         if ( keyboard.pressed("up") )
@@ -149,23 +175,15 @@ var init = function() {
         if ( keyboard.pressed("w") )
             camera.translateZ( -moveDistance );
         if ( keyboard.pressed("s") )
-            camera.translateZ(  moveDistance );
-        controls.update();
-        rotateObject(ground, [0.0,0.0,0.0]);
+            camera.translateZ(  moveDistance );*/
+        controls.update( delta );
+        //rotateObject(ground, [0.0,0.0,0.0]);
         //rotateObject(groundOrbit, [0.0,0.0,0.0]);
-        rotateObject(sun, [0.0,0.01,0.0]);
+        //rotateObject(sun, [0.0,0.01,0.0]);
         //rotateObject(skyBox, [0.01,0.01,0.01]);
         renderer.render(scene, camera);
         window.requestAnimFrame(render);
     }
-    render();
-};
-
-var rotateObject = function(object, rotation) {
-    object.rotation.x += rotation[0];
-    object.rotation.y += rotation[1];
-    object.rotation.z += rotation[2];
-};
 
 window.addEventListener('load', init);
 
