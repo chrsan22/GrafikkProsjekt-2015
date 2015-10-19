@@ -63,7 +63,7 @@ var init = function() {
     // End of code relating to Height Map
     // ----------------------------------------------------------------------------------------------------------------
 
-    var sun = createObject.sphereGeometry("resources/texture_sun.jpg", 1000, 16, 16, 1500, 4000, -10000, false, false); // Create sun
+    var sun = createObject.sphereGeometry("resources/texture_sun.jpg", 1000, 16, 16, 1500, 2000, -10000, false, false); // Create sun
     var lightPoint = createLight.directLight(); // Create Light
 
 
