@@ -56,14 +56,14 @@ var init = function() {
     // We scale the geometry to avoid scaling the node, since scales propagate.
     heightMapGeometry.scale(50*worldWidth, 1000, 50*worldDepth);
 
-    texture = THREE.ImageUtils.loadTexture("resources/heightmap_11.png");
+    texture = THREE.ImageUtils.loadTexture("resources/heightmap_11.jpg");
     terrainMesh = new HeightMapMesh( heightMapGeometry, new THREE.MeshPhongMaterial( { map: terrainTexture, map: texture } ) );
     terrainMesh.name = "terrain";
 
     // End of code relating to Height Map
     // ----------------------------------------------------------------------------------------------------------------
 
-    var sun = createObject.sphereGeometry("resources/texture_sun.jpg", 1000, 16, 16, 1500, 30000, -10000, false, false); // Create sun
+    var sun = createObject.sphereGeometry("resources/texture_sun.jpg", 1000, 16, 16, 1500, 4000, -10000, false, false); // Create sun
     var lightPoint = createLight.directLight(); // Create Light
 
 
@@ -81,8 +81,6 @@ var init = function() {
     scene.add(skyBox);
     scene.add(sun);
     sun.add(lightPoint);
-
-
 
     // Resize function
     function onWindowResize() {
@@ -112,6 +110,7 @@ var init = function() {
         controls.update();
         renderer.render(scene, camera);
         window.requestAnimFrame(render);
+        rotateObject(terrainMesh, [0.0, 0.003, 0.0]);
     }
     render();
 };
