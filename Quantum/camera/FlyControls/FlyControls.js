@@ -14,16 +14,11 @@ THREE.FlyControls = function ( object, domElement ) {
     this.movementSpeed = 1.0;
     this.rollSpeed = 0.005;
 
-    this.dragToLook = true;
     this.autoForward = false;
-
-    // disable default target object behavior
-
-    // internals
 
     this.tmpQuaternion = new THREE.Quaternion();
 
-    this.mouseStatus = 0;
+    this.mouseStatus = 1;
 
     this.moveState = { up: 0, down: 0, left: 0, right: 0, forward: 0, back: 0, pitchUp: 0, pitchDown: 0, yawLeft: 0, yawRight: 0, rollLeft: 0, rollRight: 0 };
     this.moveVector = new THREE.Vector3( 0, 0, 0 );
@@ -71,6 +66,8 @@ THREE.FlyControls = function ( object, domElement ) {
             case 81: /*Q*/ this.moveState.rollLeft = 1; break;
             case 69: /*E*/ this.moveState.rollRight = 1; break;
 
+            case 80: /*P*/ this.mouseStatus = 0; this.moveState.yawLeft = this.moveState.pitchDown = 0; break;
+
         }
 
         this.updateMovementVector();
@@ -101,6 +98,8 @@ THREE.FlyControls = function ( object, domElement ) {
 
             case 81: /*Q*/ this.moveState.rollLeft = 0; break;
             case 69: /*E*/ this.moveState.rollRight = 0; break;
+
+            case 80: /*P*/ this.mouseStatus = 1; break;
 
         }
 
@@ -134,7 +133,7 @@ THREE.FlyControls = function ( object, domElement ) {
 
     this.mousemove = function( event ) {
 
-        if ( this.dragToLook || this.mouseStatus > 0 ) {
+        if (this.mouseStatus > 0 ) {
 
             var container = this.getContainerDimensions();
             var halfWidth  = container.size[ 0 ] / 2;
@@ -143,8 +142,10 @@ THREE.FlyControls = function ( object, domElement ) {
             this.moveState.yawLeft   = - ( ( event.pageX - container.offset[ 0 ] ) - halfWidth  ) / halfWidth;
             this.moveState.pitchDown =   ( ( event.pageY - container.offset[ 1 ] ) - halfHeight ) / halfHeight;
 
+            // Når det skjer en mousemove, oppdater lastTimeStamp
+
             this.updateRotationVector();
-            this.updateMovementVector();
+            //this.updateMovementVector();
         }
 
     };
@@ -181,6 +182,7 @@ THREE.FlyControls = function ( object, domElement ) {
 
         var moveMult = delta * this.movementSpeed;
         var rotMult = delta * this.rollSpeed;
+        var timeStampNow =
 
         this.object.translateX( this.moveVector.x * moveMult );
         this.object.translateY( this.moveVector.y * moveMult );
@@ -189,6 +191,10 @@ THREE.FlyControls = function ( object, domElement ) {
         this.tmpQuaternion.set( this.rotationVector.x * rotMult, this.rotationVector.y * rotMult, this.rotationVector.z * rotMult, 1 ).normalize();
         this.object.quaternion.multiply( this.tmpQuaternion );
 
+
+        //this.rotationVector.x = 0;
+        //this.rotationVector.y = 0;
+        //this.rotationVector.z = 0;
         // expose the rotation vector for convenience
         this.object.rotation.setFromQuaternion( this.object.quaternion, this.object.rotation.order );
 

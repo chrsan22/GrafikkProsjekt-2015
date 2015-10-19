@@ -121,6 +121,9 @@
         requestAnimationFrame( animate );
 
         render();
+        // Skjekk nåverende Timestamp mot flycontrol TimeStamp
+        //controls.mouseStatus = 0;
+        //controls.moveState.yawLeft = controls.moveState.pitchDown = 0; // controls
     }
 
     function render() {
