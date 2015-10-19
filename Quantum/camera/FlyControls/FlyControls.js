@@ -53,7 +53,12 @@ THREE.FlyControls = function ( object, domElement ) {
             case 81: /*Q*/ this.moveState.rollLeft = 1; break;
             case 69: /*E*/ this.moveState.rollRight = 1; break;
 
-            case 80: /*P*/ this.mouseStatus = 1; this.moveState.yawLeft = this.moveState.pitchDown = 0; break;
+            case 80: /*P*/
+                if(this.mouseStatus == 0) {
+                    this.mouseStatus = 1;
+                    this.moveState.yawLeft = this.moveState.pitchDown = 0;
+                    break;
+                }else { this.mouseStatus = 0; break;}
         }
         this.updateMovementVector();
         this.updateRotationVector();
@@ -81,7 +86,7 @@ THREE.FlyControls = function ( object, domElement ) {
             case 81: /*Q*/ this.moveState.rollLeft = 0; break;
             case 69: /*E*/ this.moveState.rollRight = 0; break;
 
-            case 80: /*P*/ this.mouseStatus = 0; break;
+            //case 80: /*P*/ this.mouseStatus = 0; break;
         }
         this.updateMovementVector();
         this.updateRotationVector();
