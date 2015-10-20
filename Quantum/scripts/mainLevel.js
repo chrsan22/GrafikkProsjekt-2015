@@ -70,12 +70,12 @@ var init = function() {
 
     // ----------------------------------------------------------------------------------------------------------------
     // Code relating to Height Map
-    var terrainData, worldWidth, worldDepth, worldHalfWidth, worldHalfDepth, terrainTexture, texture, ground;
+    var terrainData, worldWidth, worldDepth, terrainTexture, texture, ground;
     var useRandomHeightMap = false;
     if (useRandomHeightMap) {
-        terrainData = generateHeight( worldWidth, worldDepth );
+        terrainData = generateHeight();
     } else {
-        var heightMapImage = document.getElementById('heightmap');
+        var heightMapImage = document.getElementById('heightmap');  // Actual Heightmap
         terrainData = heightMapFncs.getPixelValues(heightMapImage, 'r');
         worldWidth = heightMapImage.width;
         worldDepth = heightMapImage.height;
@@ -93,7 +93,7 @@ var init = function() {
     // We scale the geometry to avoid scaling the node, since scales propagate.
     heightMapGeometry.scale(50*worldWidth, 1000, 50*worldDepth);
 
-    texture = THREE.ImageUtils.loadTexture("resources/heightmap_11.png");
+    texture = THREE.ImageUtils.loadTexture("resources/heightmap_11.png");   // Heightmap Texture
     ground = new HeightMapMesh( heightMapGeometry, new THREE.MeshPhongMaterial( { map: terrainTexture, map: texture } ) );
     ground.name = "terrain";
 
