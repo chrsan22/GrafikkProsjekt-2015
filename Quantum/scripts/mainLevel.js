@@ -19,11 +19,11 @@ var init = function() {
 
     // Camera
     camera = new THREE.PerspectiveCamera(fov, aspect, near, 1e7);
-    camera.position.set(0,0,1000);
+    camera.position.set(0,5000,10000);
 
     // Controls for FlyControls
     controls = new THREE.FlyControls( camera ); // Creates Controls
-    controls.movementSpeed = 1000; // WASD speed
+    controls.movementSpeed = 5000; // WASD speed
     controls.rollSpeed = Math.PI / 24; // Rollspeed for Q and E roll
 
     // ----------------------------------------------------------------------------------------------------------------
