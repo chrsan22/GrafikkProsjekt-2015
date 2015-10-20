@@ -72,7 +72,7 @@ var init = function() {
 
     } );
 
-    mesh = new THREE.Mesh( new THREE.BoxGeometry( 10000, 10000, 10000 ), material );
+    mesh = new THREE.Mesh( new THREE.BoxGeometry( 5000, 5000, 5000 ), material );
     scene.add( mesh );
 
     // Set sun orbit around ground
