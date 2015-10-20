@@ -78,7 +78,7 @@ var init = function() {
     var heightMapGeometry = new HeightMapBufferGeometry(terrainData, worldWidth, worldDepth);   // Generate terrain geometry and mesh
     heightMapGeometry.scale(50*worldWidth, 1000, 50*worldDepth);    // Scale Geometry
 
-    texture = THREE.ImageUtils.loadTexture("resources/heightmap_11.png");   // Heightmap Texture
+    texture = THREE.ImageUtils.loadTexture("resources/texture_molten.jpg");   // Heightmap Texture
     ground = new HeightMapMesh( heightMapGeometry, new THREE.MeshPhongMaterial( { map: terrainTexture, map: texture } ) );
     ground.name = "terrain";
 
