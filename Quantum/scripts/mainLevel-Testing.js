@@ -90,91 +90,8 @@ var init = function() {
     scene.add(clouds);
     sun.add(lightPoint);
 
-    // CHARACTER
-    var characters = [];
-    var nCharacters = 0;
-    var configOgro = {
 
-        baseUrl: "models/md2/ogro/",
-
-        body: "ogro.md2",
-        skins: [ "grok.jpg", "ogrobase.png", "arboshak.png", "ctf_r.png", "ctf_b.png", "darkam.png", "freedom.png",
-            "gib.png", "gordogh.png", "igdosh.png", "khorne.png", "nabogro.png",
-            "sharokh.png" ],
-        weapons:  [ [ "weapon.md2", "weapon.jpg" ] ],
-        animations: {
-            move: "run",
-            idle: "stand",
-            jump: "jump",
-            attack: "attack",
-            crouchMove: "cwalk",
-            crouchIdle: "cstand",
-            crouchAttach: "crattack"
-        },
-
-        walkSpeed: 350,
-        crouchSpeed: 175
-
-    };
-
-    var nRows = 1;
-    var nSkins = configOgro.skins.length;
-
-    nCharacters = nSkins * nRows;
-
-    for ( var i = 0; i < nCharacters; i ++ ) {
-
-        var character = new THREE.MD2CharacterComplex();
-        character.scale = 3;
-        character.controls = controls;
-        characters.push( character );
-
-    }
-
-    var baseCharacter = new THREE.MD2CharacterComplex();
-    baseCharacter.scale = 3;
-
-    baseCharacter.onLoadComplete = function () {
-
-        var k = 0;
-
-        for ( var j = 0; j < nRows; j ++ ) {
-
-            for ( var i = 0; i < nSkins; i ++ ) {
-
-                var cloneCharacter = characters[ k ];
-
-                cloneCharacter.shareParts( baseCharacter );
-
-                // cast and receive shadows
-                cloneCharacter.enableShadows( true );
-
-                cloneCharacter.setWeapon( 0 );
-                cloneCharacter.setSkin( i );
-
-                cloneCharacter.root.position.x = ( i - nSkins/2 ) * 150;
-                cloneCharacter.root.position.z = j * 250;
-
-                scene.add( cloneCharacter.root );
-
-                k ++;
-
-            }
-
-        }
-
-        var gyro = new THREE.Gyroscope();
-        gyro.add( camera );
-        gyro.add( light, light.target );
-
-        characters[ Math.floor( nSkins / 2 ) ].root.add( gyro );
-
-    };
-
-    baseCharacter.loadParts( configOgro );
-
-
-// Resize function
+    // Resize function
     function onWindowResize() {
         width = window.innerWidth;
         height = window.innerHeight;
@@ -185,11 +102,6 @@ var init = function() {
 
     // Render the scene
     function render() {
-        for ( var i = 0; i < nCharacters; i ++ ) {
-
-            characters[ i ].update( delta );
-
-        }
         //Controller Variables
         var delta = clock.getDelta(); // seconds.
         var moveDistance = 200 * delta; // 200 pixels per second
