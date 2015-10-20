@@ -1,5 +1,3 @@
-
-
     var width = window.innerWidth;  // Sets Width
     var height = window.innerHeight;    // Sets Height
     var aspect = width/height;  // Sets Aspect Ratio
@@ -41,13 +39,11 @@ var init = function() {
     // Create Skybox
     var r = "resources/skybox/";
     var urls = [ r + "posx.jpg", r + "negx.jpg",
-        r + "posy.jpg", r + "negy.jpg",
-        r + "posz.jpg", r + "negz.jpg" ];
+                 r + "posy.jpg", r + "negy.jpg",
+                 r + "posz.jpg", r + "negz.jpg" ];
 
     var textureCube = THREE.ImageUtils.loadTextureCube( urls  );
-    console.log( urls );
     textureCube.format = THREE.RGBFormat;
-    console.log(textureCube);
 
     // Skybox
     var shader = THREE.ShaderLib["cube"];
