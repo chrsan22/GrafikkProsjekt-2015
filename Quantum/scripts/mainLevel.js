@@ -39,9 +39,12 @@ var init = function() {
     renderer.setPixelRatio( window.devicePixelRatio );  // Sets Size
     renderer.setSize(width, height);    // Sets Size
     document.body.appendChild( renderer.domElement );   // Sets Size
+    // Renderer End
+    // ----------------------------------------------------------------------------------------------------------------
 
     // ----------------------------------------------------------------------------------------------------------------
     // Skybox Start
+
     var r = "resources/skybox/";
     var urls = [ r + "posx.jpg", r + "negx.jpg",
                  r + "posy.jpg", r + "negy.jpg",
@@ -64,12 +67,14 @@ var init = function() {
 
     } );
     var skybox = new THREE.Mesh( new THREE.BoxGeometry( 5000, 5000, 5000 ), material );
+
     // Skybox End
     // ----------------------------------------------------------------------------------------------------------------
 
 
     // ----------------------------------------------------------------------------------------------------------------
     // Code relating to Height Map
+
     var terrainData, worldWidth, worldDepth, terrainTexture, texture, ground;
     var useRandomHeightMap = false;
     if (useRandomHeightMap) {
@@ -88,10 +93,8 @@ var init = function() {
     terrainTexture.castShadow = true;
     terrainTexture.receiveShadow = true;
 
-    // Generate terrain geometry and mesh
-    var heightMapGeometry = new HeightMapBufferGeometry(terrainData, worldWidth, worldDepth);
-    // We scale the geometry to avoid scaling the node, since scales propagate.
-    heightMapGeometry.scale(50*worldWidth, 1000, 50*worldDepth);
+    var heightMapGeometry = new HeightMapBufferGeometry(terrainData, worldWidth, worldDepth);   // Generate terrain geometry and mesh
+    heightMapGeometry.scale(50*worldWidth, 1000, 50*worldDepth);    // Scale Geometry
 
     texture = THREE.ImageUtils.loadTexture("resources/heightmap_11.png");   // Heightmap Texture
     ground = new HeightMapMesh( heightMapGeometry, new THREE.MeshPhongMaterial( { map: terrainTexture, map: texture } ) );
