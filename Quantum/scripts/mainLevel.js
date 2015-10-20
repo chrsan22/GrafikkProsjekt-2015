@@ -1,10 +1,10 @@
 
 
-    var width = window.innerWidth;
-    var height = window.innerHeight;
-    var aspect = width/height;
-    var camera, controls, scene, renderer;
-    var clock = new THREE.Clock();
+    var width = window.innerWidth;  // Sets Width
+    var height = window.innerHeight;    // Sets Height
+    var aspect = width/height;  // Sets Aspect Ratio
+    var camera, controls, scene, renderer;  // Creates Camera, Controls, Scene and Renderer
+    var clock = new THREE.Clock();  //Creates Clock
 
 
 var init = function() {
@@ -17,9 +17,8 @@ var init = function() {
     var createLight = new CreateLight(); // Contains functions to create light
     var heightMapFncs = new HeightMapFunctions(); // Contains functions used in the heightmap
 
-    // Camera
-    camera = new THREE.PerspectiveCamera(fov, aspect, near, 1e7);
-    camera.position.set(0,5000,10000);
+    camera = new THREE.PerspectiveCamera(fov, aspect, near, 1e7);   // Set Camera Perspective
+    camera.position.set(0,5000,10000);  // Set Camera Position
 
     // Controls for FlyControls
     controls = new THREE.FlyControls( camera ); // Creates Controls
