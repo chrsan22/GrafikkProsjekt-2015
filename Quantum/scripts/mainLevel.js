@@ -37,7 +37,7 @@ var init = function() {
     // Skybox Start
 
     // Create Skybox
-    var r = "resources/skybox2/";
+    var r = "resources/skybox3/";
     var urls = [ r + "posx.jpg", r + "negx.jpg",
                  r + "posy.jpg", r + "negy.jpg",
                  r + "posz.jpg", r + "negz.jpg" ];
