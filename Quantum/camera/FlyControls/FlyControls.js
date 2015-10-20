@@ -44,8 +44,8 @@ THREE.FlyControls = function ( object, domElement ) {
             case 32: /*SPACE*/ this.moveState.up = 1; break;
             case 17: /*CTRL*/ this.moveState.down = 1; break;
 
-            case 38: /*up*/ this.moveState.pitchUp = 1; break;
-            case 40: /*down*/ this.moveState.pitchDown = 1; break;
+            case 40: /*up*/ this.moveState.pitchUp = 1; break;
+            case 38: /*down*/ this.moveState.pitchDown = 1; break;
 
             case 37: /*left*/ this.moveState.yawLeft = 1; break;
             case 39: /*right*/ this.moveState.yawRight = 1; break;
@@ -77,8 +77,8 @@ THREE.FlyControls = function ( object, domElement ) {
             case 32: /*SPACE*/ this.moveState.up = 0; break;
             case 17: /*CTRL*/ this.moveState.down = 0; break;
 
-            case 38: /*up*/ this.moveState.pitchUp = 0; break;
-            case 40: /*down*/ this.moveState.pitchDown = 0; break;
+            case 40: /*up*/ this.moveState.pitchUp = 0; break;
+            case 38: /*down*/ this.moveState.pitchDown = 0; break;
 
             case 37: /*left*/ this.moveState.yawLeft = 0; break;
             case 39: /*right*/ this.moveState.yawRight = 0; break;
