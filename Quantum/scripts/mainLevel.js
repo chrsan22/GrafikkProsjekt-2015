@@ -9,15 +9,13 @@
 
 var init = function() {
 
-    var fov = 45; // Field of View
-    var near = 0.1; // How near you can get
     scene = new THREE.Scene(); // Scene
     var canvas = document.getElementById("canvas"); // Canvas
     var createObject = new CreateObject(); // Contains functions to create objects
     var createLight = new CreateLight(); // Contains functions to create light
     var heightMapFncs = new HeightMapFunctions(); // Contains functions used in the heightmap
 
-    camera = new THREE.PerspectiveCamera(fov, aspect, near, 1e7);   // Set Camera Perspective
+    camera = new THREE.PerspectiveCamera(45, aspect, 0.1, 1e7);   // Set Camera Perspective
     camera.position.set(0,5000,10000);  // Set Camera Position
 
     // Controls for FlyControls
@@ -33,14 +31,10 @@ var init = function() {
     });
     renderer.shadowMapEnabled = true;   // Enables Shadow Map
     renderer.shadowMapSoft = true;      // Shadow Map Settings
-    // Clear window to black and set size
     renderer.setClearColor(0x000000);   // Clears Window to Black
-    renderer.setPixelRatio( window.devicePixelRatio );  // Sets Size
     renderer.setSize(width, height);    // Sets Size
     document.body.appendChild( renderer.domElement );   // Sets Size
     // Renderer End
-    // ----------------------------------------------------------------------------------------------------------------
-
     // ----------------------------------------------------------------------------------------------------------------
     // Skybox Start
 
@@ -51,8 +45,6 @@ var init = function() {
 
     var textureCube = THREE.ImageUtils.loadTextureCube( urls  );
     textureCube.format = THREE.RGBFormat;
-
-    // Skybox
 
     var shader = THREE.ShaderLib[ "cube" ];
     shader.uniforms[ "tCube" ].value = textureCube;
@@ -68,9 +60,6 @@ var init = function() {
     var skybox = new THREE.Mesh( new THREE.BoxGeometry( 5000, 5000, 5000 ), material );
 
     // Skybox End
-    // ----------------------------------------------------------------------------------------------------------------
-
-
     // ----------------------------------------------------------------------------------------------------------------
     // Code relating to Height Map
 
@@ -102,24 +91,17 @@ var init = function() {
     // End of code relating to Height Map
     // ----------------------------------------------------------------------------------------------------------------
 
-
     var groundOrbit = new THREE.Object3D(); // Set sun orbit around ground
     var sun = createObject.sphereGeometry("resources/texture_sun.jpg", 500, 16, 16, 1500, 3000, -2000, false, false);   // Create sun
     var lightPoint = createLight.directLight(); // Create Light
+    var ambientLight = createLight.ambientLight();  // Create atmospheric white light
 
     scene.add(skybox);
     scene.add(ground);
     scene.add(sun);
+    scene.add(ambientLight);
     sun.add(lightPoint);
     ground.add(groundOrbit);
-
-
-
-
-
-    // Create atmospheric white light
-    var ambientLight = createLight.ambientLight();
-    scene.add(ambientLight);
 
     // Resize function
     function onWindowResize() {
@@ -130,63 +112,25 @@ var init = function() {
         camera.updateProjectionMatrix();
     }
 
-    // Render the scene
-
-    render();
+    render();   // Render the scene
     window.addEventListener('resize', onWindowResize, false);
 };
 
+// Currently unused rotate function
 var rotateObject = function(object, rotation) {
     object.rotation.x += rotation[0];
     object.rotation.y += rotation[1];
     object.rotation.z += rotation[2];
 };
 
-    function animate() {
-        requestAnimationFrame( animate );
-        render();
-    }
-
     function render() {
-        //Controller Variables
         var delta = clock.getDelta(); // seconds.
-/*        var moveDistance = 200 * delta; // 200 pixels per second
-        var rotateAngle = Math.PI / 2 * delta;   // pi/2 radians (90 degrees) per second
-        //Car Movement
-        if ( keyboard.pressed("up") )
-            car.translateX( moveDistance );
-        if ( keyboard.pressed("down") )
-            car.translateX(  -moveDistance );
-        if ( keyboard.pressed("o") )
-            car.translateZ( -moveDistance );
-        if ( keyboard.pressed("l") )
-            car.translateZ(  moveDistance );
-        var rotation_matrix = new THREE.Matrix4().identity();
-        if ( keyboard.pressed("left") )
-            car.rotateOnAxis( new THREE.Vector3(0,0,1), rotateAngle);
-        if ( keyboard.pressed("right") )
-            car.rotateOnAxis( new THREE.Vector3(0,0,1), -rotateAngle);
-
-        // Camera Movement
-        if ( keyboard.pressed("a") )
-            camera.translateX( moveDistance );
-        if ( keyboard.pressed("d") )
-            camera.translateX(  -moveDistance );
-        if ( keyboard.pressed("w") )
-            camera.translateZ( -moveDistance );
-        if ( keyboard.pressed("s") )
-            camera.translateZ(  moveDistance );*/
-        controls.update( delta );
-        //rotateObject(ground, [0.0,0.0,0.0]);
-        //rotateObject(groundOrbit, [0.0,0.0,0.0]);
-        //rotateObject(sun, [0.0,0.01,0.0]);
-        //rotateObject(skyBox, [0.01,0.01,0.01]);
-        renderer.render(scene, camera);
-        window.requestAnimFrame(render);
+        controls.update( delta );   // Update Controls
+        renderer.render(scene, camera); // Repeat Renderer
+        window.requestAnimFrame(render);    // Banana
     }
 
 window.addEventListener('load', init);
-
 
 // shim layer with setTimeout fallback
 window.requestAnimFrame = (function(){
