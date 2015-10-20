@@ -38,26 +38,29 @@ var init = function() {
     // ----------------------------------------------------------------------------------------------------------------
     // Skybox Start
 
+    // Create Skybox
     var r = "resources/skybox/";
     var urls = [ r + "posx.jpg", r + "negx.jpg",
-                 r + "posy.jpg", r + "negy.jpg",
-                 r + "posz.jpg", r + "negz.jpg" ];
+        r + "posy.jpg", r + "negy.jpg",
+        r + "posz.jpg", r + "negz.jpg" ];
 
     var textureCube = THREE.ImageUtils.loadTextureCube( urls  );
+    console.log( urls );
     textureCube.format = THREE.RGBFormat;
+    console.log(textureCube);
 
-    var shader = THREE.ShaderLib[ "cube" ];
-    shader.uniforms[ "tCube" ].value = textureCube;
+    // Skybox
+    var shader = THREE.ShaderLib["cube"];
+    shader.uniforms["tCube"].value = textureCube;
+    var skyMat = new THREE.ShaderMaterial({
+        fragmentShader : shader.fragmentShader,
+        vertexShader   : shader.vertexShader,
+        uniforms       : shader.uniforms,
+        depthWrite     : false,
+        side           : THREE.BackSide
+    });
 
-    var material = new THREE.ShaderMaterial( {
-        fragmentShader: shader.fragmentShader,
-        vertexShader: shader.vertexShader,
-        uniforms: shader.uniforms,
-        depthWrite: false,
-        side: THREE.DoubleSide
-
-    } );
-    var skybox = new THREE.Mesh( new THREE.BoxGeometry( 5000, 5000, 5000 ), material );
+    var skybox = new THREE.Mesh( new THREE.BoxGeometry( 50000, 50000, 50000 ), skyMat );
 
     // Skybox End
     // ----------------------------------------------------------------------------------------------------------------
