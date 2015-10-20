@@ -75,15 +75,6 @@ var init = function() {
     mesh = new THREE.Mesh( new THREE.BoxGeometry( 10000, 10000, 10000 ), material );
     scene.add( mesh );
 
-
-    var planeMat = new THREE.MeshPhongMaterial( {
-        color: 0xffffff * 0.4,
-        shininess: 0.5,
-        specular: 0xffffff,
-        envMap: textureCube,
-        side: THREE.DoubleSide
-    } );
-
     // Set sun orbit around ground
     var groundOrbit = new THREE.Object3D();
     ground.add(groundOrbit);
