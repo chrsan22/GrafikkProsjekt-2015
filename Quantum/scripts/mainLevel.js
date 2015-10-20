@@ -64,15 +64,10 @@ var init = function() {
     // Code relating to Height Map
 
     var terrainData, worldWidth, worldDepth, terrainTexture, texture, ground;
-    var useRandomHeightMap = false;
-    if (useRandomHeightMap) {
-        terrainData = generateHeight();
-    } else {
-        var heightMapImage = document.getElementById('heightmap');  // Actual Heightmap
-        terrainData = heightMapFncs.getPixelValues(heightMapImage, 'r');
-        worldWidth = heightMapImage.width;
-        worldDepth = heightMapImage.height;
-    }
+    var heightMapImage = document.getElementById('heightmap');  // Actual Heightmap
+    terrainData = heightMapFncs.getPixelValues(heightMapImage, 'r');
+    worldWidth = heightMapImage.width;
+    worldDepth = heightMapImage.height;
 
     // Not required to use the generated texture
     terrainTexture = new THREE.CanvasTexture( heightMapFncs.generateTexture( terrainData, worldWidth, worldDepth ) );
