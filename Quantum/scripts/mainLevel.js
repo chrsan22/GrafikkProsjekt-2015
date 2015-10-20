@@ -3,9 +3,9 @@
     var width = window.innerWidth;
     var height = window.innerHeight;
     var aspect = width/height;
-
     var camera, controls, scene, renderer;
     var clock = new THREE.Clock();
+
 
 var init = function() {
 
@@ -13,6 +13,9 @@ var init = function() {
     var near = 0.1; // How near you can get
     scene = new THREE.Scene(); // Scene
     var canvas = document.getElementById("canvas"); // Canvas
+    var createObject = new CreateObject(); // Contains functions to create objects
+    var createLight = new CreateLight(); // Contains functions to create light
+    var heightMapFncs = new HeightMapFunctions(); // Contains functions used in the heightmap
 
     // Camera
     camera = new THREE.PerspectiveCamera(fov, aspect, near, 1e7);
@@ -22,10 +25,6 @@ var init = function() {
     controls = new THREE.FlyControls( camera );
     controls.movementSpeed = 1000; // WASD speed
     controls.rollSpeed = Math.PI / 24; // Rollspeed for Q and E roll
-
-    // Objects variable
-    var createObject = new CreateObject();
-    var createLight = new CreateLight();
 
     // Create renderer, set antialias to true if possible
     renderer = new THREE.WebGLRenderer({
@@ -42,13 +41,8 @@ var init = function() {
     renderer.setSize(width, height);
     document.body.appendChild( renderer.domElement );
 
-    // Create Ground
-    var ground = createObject.planeGeometry("resources/texture_grass.jpg", 10000, 10000, 0, 0, 0, 0, false, true);
-    scene.add(ground);
-    rotateObject(ground, [-1.3,0.0,1.0]);
-
-
-    // Create Skybox
+    // ----------------------------------------------------------------------------------------------------------------
+    // Skybox Start
     var r = "resources/skybox/";
     var urls = [ r + "posx.jpg", r + "negx.jpg",
                  r + "posy.jpg", r + "negy.jpg",
@@ -70,43 +64,59 @@ var init = function() {
         side: THREE.DoubleSide
 
     } );
+    var skybox = new THREE.Mesh( new THREE.BoxGeometry( 5000, 5000, 5000 ), material );
+    // Skybox End
+    // ----------------------------------------------------------------------------------------------------------------
 
-    mesh = new THREE.Mesh( new THREE.BoxGeometry( 5000, 5000, 5000 ), material );
-    scene.add( mesh );
 
-    // Set sun orbit around ground
-    var groundOrbit = new THREE.Object3D();
-    ground.add(groundOrbit);
-    // Create sun
-    var sun = createObject.sphereGeometry("resources/texture_sun.jpg", 100, 16, 16, 1500, 3000, -2000, false, false);
+    // ----------------------------------------------------------------------------------------------------------------
+    // Code relating to Height Map
+    var terrainData, worldWidth, worldDepth, worldHalfWidth, worldHalfDepth, terrainTexture, texture;
+    var useRandomHeightMap = false;
+    if (useRandomHeightMap) {
+        terrainData = generateHeight( worldWidth, worldDepth );
+    } else {
+        var heightMapImage = document.getElementById('heightmap');
+        terrainData = heightMapFncs.getPixelValues(heightMapImage, 'r');
+        worldWidth = heightMapImage.width;
+        worldDepth = heightMapImage.height;
+        //worldHalfWidth = Math.floor(worldWidth / 2);
+        //worldHalfDepth = Math.floor(worldDepth / 2);
+    }
+
+    // Not required to use the generated texture
+    terrainTexture = new THREE.CanvasTexture( heightMapFncs.generateTexture( terrainData, worldWidth, worldDepth ) );
+    terrainTexture.wrapS = THREE.ClampToEdgeWrapping;
+    terrainTexture.wrapT = THREE.ClampToEdgeWrapping;
+    terrainTexture.castShadow = true;
+    terrainTexture.receiveShadow = true;
+
+    // Generate terrain geometry and mesh
+    var heightMapGeometry = new HeightMapBufferGeometry(terrainData, worldWidth, worldDepth);
+    // We scale the geometry to avoid scaling the node, since scales propagate.
+    heightMapGeometry.scale(50*worldWidth, 1000, 50*worldDepth);
+
+    texture = THREE.ImageUtils.loadTexture("resources/heightmap_11.png");
+    ground = new HeightMapMesh( heightMapGeometry, new THREE.MeshPhongMaterial( { map: terrainTexture, map: texture } ) );
+    ground.name = "terrain";
+
+    // End of code relating to Height Map
+    // ----------------------------------------------------------------------------------------------------------------
+
+
+    var groundOrbit = new THREE.Object3D(); // Set sun orbit around ground
+    var sun = createObject.sphereGeometry("resources/texture_sun.jpg", 500, 16, 16, 1500, 3000, -2000, false, false);   // Create sun
+    var lightPoint = createLight.directLight(); // Create Light
+
+    scene.add(skybox);
+    scene.add(ground);
     scene.add(sun);
-    // Create Light
-    var lightPoint = createLight.directLight();
     sun.add(lightPoint);
+    ground.add(groundOrbit);
 
-    // Create Building 1
-    var building1 = createObject.boxGeometry("resources/texture_skyscraper.jpg", 200, 200, 500, 0, 400, 250, true, true);
-    ground.add(building1);
 
-    // Create Building 2
-    var building2 = createObject.boxGeometry("resources/texture_skyscraper.jpg", 200, 200, 500, 0, -400, 250, true, true);
-    ground.add(building2);
 
-    // Create Christers Car
-    var car = createObject.boxGeometry("resources/texture_skyscraper.jpg", 50, 10, 15, 0, 0, 50, true, true);
-    ground.add(car);
-    var keyboard	= new THREEx.KeyboardState();
-    var clock = new THREE.Clock();
-    //controls = new THREE.OrbitControls( camera, renderer.domElement );
 
-    // Create Bridge
-    var bridge = createObject.boxGeometry("resources/texture_bridge.jpg", 20, 700, 20, 0, -400, 100, true, true);
-    building1.add(bridge);
-
-    // Create Street
-    var street = createObject.planeGeometry("resources/texture_street.jpg", 200, 2000, 0, 0, 0, 5, true, true);
-    ground.add(street);
-    rotateObject(street, [0.0,0.0,1.6]);
 
     // Create atmospheric white light
     var ambientLight = createLight.ambientLight();
