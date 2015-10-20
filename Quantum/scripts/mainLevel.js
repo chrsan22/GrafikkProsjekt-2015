@@ -22,24 +22,23 @@ var init = function() {
     camera.position.set(0,0,1000);
 
     // Controls for FlyControls
-    controls = new THREE.FlyControls( camera );
+    controls = new THREE.FlyControls( camera ); // Creates Controls
     controls.movementSpeed = 1000; // WASD speed
     controls.rollSpeed = Math.PI / 24; // Rollspeed for Q and E roll
 
-    // Create renderer, set antialias to true if possible
+    // ----------------------------------------------------------------------------------------------------------------
+    // Renderer Creation and Settings
     renderer = new THREE.WebGLRenderer({
-        canvas: canvas,
-        antialias: true
+        canvas: canvas, // Sets Canvas
+        antialias: true // Sets Anti Aliasing
     });
-
-    // Renderer Shadows
-    renderer.shadowMapEnabled = true;
-    renderer.shadowMapSoft = true;
+    renderer.shadowMapEnabled = true;   // Enables Shadow Map
+    renderer.shadowMapSoft = true;      // Shadow Map Settings
     // Clear window to black and set size
-    renderer.setClearColor(0x000000);
-    renderer.setPixelRatio( window.devicePixelRatio );
-    renderer.setSize(width, height);
-    document.body.appendChild( renderer.domElement );
+    renderer.setClearColor(0x000000);   // Clears Window to Black
+    renderer.setPixelRatio( window.devicePixelRatio );  // Sets Size
+    renderer.setSize(width, height);    // Sets Size
+    document.body.appendChild( renderer.domElement );   // Sets Size
 
     // ----------------------------------------------------------------------------------------------------------------
     // Skybox Start
@@ -71,7 +70,7 @@ var init = function() {
 
     // ----------------------------------------------------------------------------------------------------------------
     // Code relating to Height Map
-    var terrainData, worldWidth, worldDepth, worldHalfWidth, worldHalfDepth, terrainTexture, texture;
+    var terrainData, worldWidth, worldDepth, worldHalfWidth, worldHalfDepth, terrainTexture, texture, ground;
     var useRandomHeightMap = false;
     if (useRandomHeightMap) {
         terrainData = generateHeight( worldWidth, worldDepth );
@@ -80,8 +79,6 @@ var init = function() {
         terrainData = heightMapFncs.getPixelValues(heightMapImage, 'r');
         worldWidth = heightMapImage.width;
         worldDepth = heightMapImage.height;
-        //worldHalfWidth = Math.floor(worldWidth / 2);
-        //worldHalfDepth = Math.floor(worldDepth / 2);
     }
 
     // Not required to use the generated texture
