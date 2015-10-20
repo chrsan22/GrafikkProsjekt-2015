@@ -166,11 +166,11 @@ THREE.FlyControls = function ( object, domElement ) {
         //console.log( 'move:', [ this.moveVector.x, this.moveVector.y, this.moveVector.z ] );
     };
 
-    // *1.5 at the end to make the movement on mousemove faster
+    // *3 at the end to make the movement on mousemove faster
     this.updateRotationVector = function() {
-        this.rotationVector.x = ( - this.moveState.pitchDown + this.moveState.pitchUp )*1.5;
-        this.rotationVector.y = ( - this.moveState.yawRight  + this.moveState.yawLeft )*1.5;
-        this.rotationVector.z = ( - this.moveState.rollRight + this.moveState.rollLeft )*1.5;
+        this.rotationVector.x = ( - this.moveState.pitchDown + this.moveState.pitchUp )*3;
+        this.rotationVector.y = ( - this.moveState.yawRight  + this.moveState.yawLeft )*3;
+        this.rotationVector.z = ( - this.moveState.rollRight + this.moveState.rollLeft )*3;
         //console.log( 'rotate:', [ this.rotationVector.x, this.rotationVector.y, this.rotationVector.z ] );
     };
 
