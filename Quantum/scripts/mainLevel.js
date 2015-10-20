@@ -6,6 +6,7 @@
 
     var camera, controls, scene, renderer;
     var clock = new THREE.Clock();
+    var hello = "Hello!";
 
 var init = function() {
 
