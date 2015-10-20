@@ -90,15 +90,14 @@ var init = function() {
     // ----------------------------------------------------------------------------------------------------------------
 
     var groundOrbit = new THREE.Object3D(); // Set sun orbit around ground
-    var sun = createObject.sphereGeometry("resources/texture_sun.jpg", 500, 16, 16, 1500, 3000, -2000, false, false);   // Create sun
     var lightPoint = createLight.directLight(); // Create Light
     var ambientLight = createLight.ambientLight();  // Create atmospheric white light
+    ambientLight.position.set(1500, 3000, -2000);
 
     scene.add(skybox);
     scene.add(ground);
-    scene.add(sun);
     scene.add(ambientLight);
-    sun.add(lightPoint);
+    scene.add(lightPoint);
     ground.add(groundOrbit);
 
     // Resize function
