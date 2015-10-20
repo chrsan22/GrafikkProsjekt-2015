@@ -63,12 +63,12 @@ var init = function() {
     var shader = THREE.ShaderLib[ "cube" ];
     shader.uniforms[ "tCube" ].value = textureCube;
 
-    var material = new THREE.ShaderMaterial( {
+    var material = new THREE.Material( {
         fragmentShader: shader.fragmentShader,
         vertexShader: shader.vertexShader,
         uniforms: shader.uniforms,
         depthWrite: false,
-        side: THREE.BackSide
+        side: THREE.DoubleSide
 
     } );
 
