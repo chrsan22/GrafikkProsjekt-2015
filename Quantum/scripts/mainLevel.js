@@ -45,6 +45,7 @@ var init = function() {
     var textureCube = THREE.ImageUtils.loadTextureCube( urls  );
     textureCube.format = THREE.RGBFormat;
 
+
     // Skybox
     var shader = THREE.ShaderLib["cube"];
     shader.uniforms["tCube"].value = textureCube;
@@ -55,6 +56,8 @@ var init = function() {
         depthWrite     : false,
         side           : THREE.BackSide
     });
+
+
 
     var skybox = new THREE.Mesh( new THREE.BoxGeometry( 50000, 50000, 50000 ), skyMat );
 
