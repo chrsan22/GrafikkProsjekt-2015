@@ -151,6 +151,7 @@ var init = function() {
     // Grid to see where thing is placed, remove at end of project
     var grid = new THREE.GridHelper(20000,100);
     scene.add(grid);
+    grid.position.set(0,100,0);
 
     scene.add(skybox);
     scene.add(ground);

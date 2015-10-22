@@ -1,7 +1,3 @@
-/**
- * Created by Thomas on 19.10.2015.
- */
-
 var width = window.innerWidth;  // Sets Width
 var height = window.innerHeight;    // Sets Height
 var aspect = width/height;  // Sets Aspect Ratio
@@ -12,17 +8,19 @@ var clock = new THREE.Clock();  //Creates Clock
 var init = function() {
 
     scene = new THREE.Scene(); // Scene
+
     var canvas = document.getElementById("canvas"); // Canvas
     var createObject = new CreateObject(); // Contains functions to create objects
     var createLight = new CreateLight(); // Contains functions to create light
     var heightMapFncs = new HeightMapFunctions(); // Contains functions used in the heightmap
 
+    // Camera is positioned towards -z axis
     camera = new THREE.PerspectiveCamera(45, aspect, 0.1, 1e7);   // Set Camera Perspective
-    camera.position.set(0,5000,10000);  // Set Camera Position
+    camera.position.set(0,10000,20000);  // Set Camera Position towards -z axis
 
     // Controls for FlyControls
     controls = new THREE.FlyControls( camera ); // Creates Controls
-    controls.movementSpeed = 5000; // WASD speed
+    controls.movementSpeed = 10000; // WASD speed
     controls.rollSpeed = Math.PI / 24; // Rollspeed for Q and E roll
 
     // ----------------------------------------------------------------------------------------------------------------
@@ -49,7 +47,6 @@ var init = function() {
     var textureCube = THREE.ImageUtils.loadTextureCube( urls  );
     textureCube.format = THREE.RGBFormat;
 
-
     // Skybox
     var shader = THREE.ShaderLib["cube"];
     shader.uniforms["tCube"].value = textureCube;
@@ -60,8 +57,6 @@ var init = function() {
         depthWrite     : false,
         side           : THREE.BackSide
     });
-
-
 
     var skybox = new THREE.Mesh( new THREE.BoxGeometry( 50000, 50000, 50000 ), skyMat );
 
@@ -83,7 +78,7 @@ var init = function() {
     terrainTexture.receiveShadow = true;
 
     var heightMapGeometry = new HeightMapBufferGeometry(terrainData, worldWidth, worldDepth);   // Generate terrain geometry and mesh
-    heightMapGeometry.scale(50*worldWidth, 1000, 50*worldDepth);    // Scale Geometry
+    heightMapGeometry.scale(20000, 2000, 20000);    // Scale Geometry
 
     texture = THREE.ImageUtils.loadTexture("resources/texture_snow.jpg");   // Heightmap Texture
     ground = new HeightMapMesh( heightMapGeometry, new THREE.MeshPhongMaterial( { map: terrainTexture, map: texture } ) );
@@ -91,11 +86,72 @@ var init = function() {
 
     // End of code relating to Height Map
     // ----------------------------------------------------------------------------------------------------------------
+    // Start of Grass testing
+    /*
+
+     var geometry = new THREE.PlaneBufferGeometry( 100, 100 );
+
+     var texture2 = new THREE.CanvasTexture( generateTexture() );
+
+     for ( var i = 0; i < 15; i ++ ) {
+
+     var material = new THREE.MeshBasicMaterial( {
+     color: new THREE.Color().setHSL( 0.3, 0.75, ( i / 15 ) * 0.4 + 0.1 ),
+     map: texture2,
+     depthTest: false,
+     depthWrite: false,
+     transparent: true
+     } );
+
+     var mesh = new THREE.Mesh( geometry, material );
+
+     mesh.position.y = - i * 0.25;
+     mesh.rotation.x = - Math.PI / 2;
+
+     scene.add( mesh );
+     mesh.position.x = -1000;
+     }
+
+
+     scene.children.reverse();
+
+     function generateTexture() {
+
+     var canvas = document.createElement( 'canvas' );
+     canvas.width = 512;
+     canvas.height = 512;
+
+     var context = canvas.getContext( '2d' );
+
+     for ( var i = 0; i < 20000; i ++ ) {
+
+     context.fillStyle = 'hsl(0,0%,' + ( Math.random() * 50 + 50 ) + '%)';
+     context.beginPath();
+     context.arc( Math.random() * canvas.width, Math.random() * canvas.height, Math.random() + 0.15, 0, Math.PI * 2, true );
+     context.fill();
+
+     }
+
+     context.globalAlpha = 0.075;
+     context.globalCompositeOperation = 'lighter';
+
+     return canvas;
+
+     }
+
+     */
+    // End of Grass testing
+    //-----------------------------------------------------------------------------------------------------------------
 
     var groundOrbit = new THREE.Object3D(); // Set sun orbit around ground
     var lightPoint = createLight.directLight(); // Create Light
     var ambientLight = createLight.ambientLight();  // Create atmospheric white light
     ambientLight.position.set(1500, 3000, -2000);
+
+    // Grid to see where thing is placed, remove at end of project
+    var grid = new THREE.GridHelper(20000,100);
+    scene.add(grid);
+    grid.position.set(0,100,0);
 
     scene.add(skybox);
     scene.add(ground);
@@ -128,6 +184,15 @@ function render() {
     controls.update( delta );   // Update Controls
     renderer.render(scene, camera); // Repeat Renderer
     window.requestAnimFrame(render);    // Banana
+
+    var time = Date.now() / 6000;
+
+    for ( var i = 0, l = scene.children.length; i < l; i ++ ) {
+
+        var mesh = scene.children[ i ];
+        mesh.position.x = Math.sin( time * 4 ) * i * i * 0.005;
+        mesh.position.z = Math.cos( time * 6 ) * i * i * 0.005;
+    }
 }
 
 window.addEventListener('load', init);
