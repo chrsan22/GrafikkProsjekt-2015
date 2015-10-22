@@ -3,6 +3,7 @@
     var aspect = width/height;  // Sets Aspect Ratio
     var camera, controls, scene, renderer;  // Creates Camera, Controls, Scene and Renderer
     var clock = new THREE.Clock();  //Creates Clock
+    var grassGroup = new THREE.Object3D();
 
 
 var init = function() {
@@ -20,7 +21,7 @@ var init = function() {
 
     // Controls for FlyControls
     controls = new THREE.FlyControls( camera ); // Creates Controls
-    controls.movementSpeed = 100; // WASD speed
+    controls.movementSpeed = 50; // WASD speed
     controls.rollSpeed = Math.PI / 24; // Rollspeed for Q and E roll
 
     // ----------------------------------------------------------------------------------------------------------------
@@ -64,7 +65,7 @@ var init = function() {
     // ----------------------------------------------------------------------------------------------------------------
     // Code relating to Height Map
 
-   /* var terrainData, worldWidth, worldDepth, terrainTexture, texture, ground;
+    var terrainData, worldWidth, worldDepth, terrainTexture, texture, ground;
     var heightMapImage = document.getElementById('heightmap');  // Actual Heightmap
     terrainData = heightMapFncs.getPixelValues(heightMapImage, 'r');
     worldWidth = heightMapImage.width;
@@ -78,12 +79,12 @@ var init = function() {
     terrainTexture.receiveShadow = true;
 
     var heightMapGeometry = new HeightMapBufferGeometry(terrainData, worldWidth, worldDepth);   // Generate terrain geometry and mesh
-    heightMapGeometry.scale(20000, 2000, 20000);    // Scale Geometry
+    heightMapGeometry.scale(100, 10, 100);    // Scale Geometry
 
     texture = THREE.ImageUtils.loadTexture("resources/texture_snow.jpg");   // Heightmap Texture
     ground = new HeightMapMesh( heightMapGeometry, new THREE.MeshPhongMaterial( { map: terrainTexture, map: texture } ) );
     ground.name = "terrain";
-    ground.position.set(-10000,0,-10000);*/
+    ground.position.set(-50,0,-50);
 
     // End of code relating to Height Map
     // ----------------------------------------------------------------------------------------------------------------
@@ -94,7 +95,8 @@ var init = function() {
 
     var texture2 = new THREE.CanvasTexture( generateTexture() );
 
-    for ( var i = 0; i < 15; i ++ ) {
+
+    for ( var i = 0; i < 10; i ++ ) {
 
         var material = new THREE.MeshBasicMaterial( {
             color: new THREE.Color().setHSL( 0.3, 0.75, ( i / 15 ) * 0.4 + 0.1 ),
@@ -104,16 +106,14 @@ var init = function() {
             transparent: true
         } );
 
-        var mesh = new THREE.Mesh( geometry, material );
+        var grassMesh = new THREE.Mesh( geometry, material );
 
-        mesh.position.y = - i * 0.25;
-        mesh.rotation.x = - Math.PI / 2;
+        grassMesh.position.y = i * 0.1;
+        grassMesh.rotation.x = - Math.PI / 2;
 
-        scene.add( mesh );
-        mesh.position.x = -1000;
+        grassGroup.add( grassMesh );
     }
-
-
+    scene.add(grassGroup);
     scene.children.reverse();
 
     function generateTexture() {
@@ -124,7 +124,7 @@ var init = function() {
 
         var context = canvas.getContext( '2d' );
 
-        for ( var i = 0; i < 20000; i ++ ) {
+        for ( var i = 0; i < 50000; i ++ ) {
 
             context.fillStyle = 'hsl(0,0%,' + ( Math.random() * 50 + 50 ) + '%)';
             context.beginPath();
@@ -154,10 +154,10 @@ var init = function() {
     scene.add(grid);
 
     scene.add(skybox);
-    //scene.add(ground);
+    scene.add(ground);
     scene.add(ambientLight);
     scene.add(lightPoint);
-    //ground.add(groundOrbit);
+    ground.add(groundOrbit);
 
     // Resize function
     function onWindowResize() {
@@ -187,12 +187,10 @@ var rotateObject = function(object, rotation) {
 
         var time = Date.now() / 6000;
 
-        for ( var i = 0, l = scene.children.length; i < l; i ++ ) {
-
-            var mesh = scene.children[ i ];
-            mesh.position.x = Math.sin( time * 4 ) * i * i * 0.005;
-            mesh.position.z = Math.cos( time * 6 ) * i * i * 0.005;
-
+        for ( var i = 0, l = grassGroup.children.length; i < l; i ++ ) {
+            var Posmesh = grassGroup.children[ i ];
+            Posmesh.position.x = 50 + Math.sin( time * 4 ) * i * i * 0.005;
+            Posmesh.position.z = 50 + Math.cos( time * 6 ) * i * i * 0.005;
         }
     }
 
