@@ -3,6 +3,7 @@
     var aspect = width/height;  // Sets Aspect Ratio
     var camera, controls, scene, renderer;  // Creates Camera, Controls, Scene and Renderer
     var clock = new THREE.Clock();  //Creates Clock
+    var mirrorSphere, mirrorSphereCamera; // for mirror material
 
 
 var init = function() {
@@ -20,7 +21,7 @@ var init = function() {
 
     // Controls for FlyControls
     controls = new THREE.FlyControls( camera ); // Creates Controls
-    controls.movementSpeed = 10000; // WASD speed
+    controls.movementSpeed = 7000; // WASD speed
     controls.rollSpeed = Math.PI / 24; // Rollspeed for Q and E roll
 
     // ----------------------------------------------------------------------------------------------------------------
@@ -153,6 +154,24 @@ var init = function() {
     scene.add(grid);
     grid.position.set(0,100,0);
 
+    // Reflection sphere
+
+    var sphereGeom =  new THREE.SphereGeometry( 500, 32, 32 ); // radius, segmentsWidth, segmentsHeight
+    mirrorSphereCamera = new THREE.CubeCamera( 0.2, 25000, 512 );
+    mirrorSphereCamera.renderTarget.minFilter = THREE.LinearMipMapLinearFilter;
+    scene.add( mirrorSphereCamera );
+    var mirrorSphereMaterial = new THREE.MeshBasicMaterial( { envMap: mirrorSphereCamera.renderTarget } );
+    mirrorSphere = new THREE.Mesh( sphereGeom, mirrorSphereMaterial );
+    mirrorSphere.position.set(75,5000,0);
+    mirrorSphereCamera.position = mirrorSphere.position;
+
+    // LIGHT
+    var sphereLight = new THREE.PointLight(0xffffff);
+    sphereLight.position.set(0,4800,0);
+    scene.add(sphereLight);
+
+
+    scene.add(mirrorSphere);
     scene.add(skybox);
     scene.add(ground);
     scene.add(ambientLight);
@@ -194,6 +213,9 @@ var rotateObject = function(object, rotation) {
             mesh.position.z = Math.cos( time * 6 ) * i * i * 0.005;
 
         }
+        mirrorSphere.visible = false;
+        mirrorSphereCamera.updateCubeMap( renderer, scene );
+        mirrorSphere.visible = true;
     }
 
 window.addEventListener('load', init);
