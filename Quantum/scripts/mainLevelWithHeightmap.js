@@ -168,6 +168,7 @@ var init = function() {
     // LIGHT
     var sphereLight = new THREE.PointLight(0xffffff);
     sphereLight.position.set(0,4800,0);
+
     scene.add(sphereLight);
 
 
