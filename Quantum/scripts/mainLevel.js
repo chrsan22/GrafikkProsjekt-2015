@@ -26,8 +26,6 @@ var init = function() {
     document.body.appendChild( renderer.domElement );   // Sets Size
 
     // Start of Grass testing
-
-
     var geometry = new THREE.PlaneBufferGeometry( 300, 300 );
     var texture2 = new THREE.CanvasTexture( generateTexture() );
     for ( var i = 0; i < 10; i ++ ) {
@@ -47,7 +45,6 @@ var init = function() {
     }
 
     function generateTexture() {
-
         var canvas = document.createElement( 'canvas' );
         canvas.width = 2048;
         canvas.height = 2048;
@@ -55,12 +52,10 @@ var init = function() {
         var context = canvas.getContext( '2d' );
 
         for ( var i = 0; i < 100000; i ++ ) {
-
             context.fillStyle = 'hsl(0,0%,' + ( Math.random() * 50 + 50 ) + '%)';
             context.beginPath();
             context.arc( Math.random() * canvas.width, Math.random() * canvas.height, Math.random() + 0.15, 0, Math.PI * 2, true );
             context.fill();
-
         }
 
         context.globalAlpha = 0.075;
@@ -68,16 +63,12 @@ var init = function() {
 
         return canvas;
     }
-
-
     // End of Grass testing
     //-----------------------------------------------------------------------------------------------------------------
 
     var lightPoint = createLight.directLight(); // Create Light
-    var ambientLight = createLight.ambientLight();  // Create atmospheric white light
-    ambientLight.position.set(1500, 3000, -2000); // Sets Amibent Light Position
-
-
+    var ambientLight = createLight.ambientLight(1500, 3000, -2000);  // Create atmospheric white light
+    
     var grid = new THREE.GridHelper(20000,100); // Create Grid
     var skybox = createObject.skyBox("resources/skybox3/", "cube", "tCube", 50000, 50000, 50000)    // Create Skybox
     var ground = createObject.heightMap("resources/texture_snow.jpg", "heightmap", "terrain", 300, 20, 300, 50, 0, -150)    // Create Heightmap Ground
@@ -89,7 +80,7 @@ var init = function() {
     scene.add(ground);  // Adds Heightmap Ground to Scene
     scene.add(ambientLight);    // Adds Ambiebt Light to Scene
     scene.add(lightPoint);  // Adds Light Point to Scene
-    
+
     function onWindowResize() {
         renderer.setSize(window.innerWidth, window.innerHeight); // Re-Sets Renderer size
         camera.aspect = window.innerWidth / window.innerHeight; // Re-Sets Camera Aspect
