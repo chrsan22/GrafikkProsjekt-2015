@@ -9,7 +9,7 @@
 var init = function() {
 
     scene = new THREE.Scene(); // Scene
-    scene.fog = new THREE.FogExp2( 0xefd1b5, 0.0005 );
+    scene.fog = new THREE.FogExp2( 0x38C4F2, 0.0003 );
 
     var canvas = document.getElementById("canvas"); // Canvas
     var createLight = new CreateLight(); // Contains functions to create light
@@ -81,7 +81,7 @@ var init = function() {
     var heightMapGeometry = new HeightMapBufferGeometry(terrainData, worldWidth, worldDepth);   // Generate terrain geometry and mesh
     heightMapGeometry.scale(20000, 2000, 20000);    // Scale Geometry
 
-    texture = THREE.ImageUtils.loadTexture("resources/texture_snow.jpg");   // Heightmap Texture
+    texture = THREE.ImageUtils.loadTexture("resources/textures/texture_snow.jpg");   // Heightmap Texture
     ground = new HeightMapMesh( heightMapGeometry, new THREE.MeshPhongMaterial( { map: terrainTexture, map: texture } ) );
     ground.name = "terrain";
 
