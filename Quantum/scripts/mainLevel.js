@@ -1,6 +1,3 @@
-    var width = window.innerWidth;  // Sets Width
-    var height = window.innerHeight;    // Sets Height
-    var aspect = width/height;  // Sets Aspect Ratio
     var camera, controls, scene, renderer;  // Creates Camera, Controls, Scene and Renderer
     var clock = new THREE.Clock();  //Creates Clock
     var grassGroup = new THREE.Object3D();
@@ -14,7 +11,7 @@ var init = function() {
 
     // Camera is positioned towards -z axis
     scene = new THREE.Scene(); // Scene
-    camera = new THREE.PerspectiveCamera(45, aspect, 0.1, 1e7);   // Set Camera Perspective
+    camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1e7);   // Set Camera Perspective
     camera.position.set(0,100,200);  // Set Camera Position towards -z axis
 
     // Controls for FlyControls
@@ -68,7 +65,7 @@ var init = function() {
 
     var lightPoint = createLight.directLight(); // Create Light
     var ambientLight = createLight.ambientLight(1500, 3000, -2000);  // Create atmospheric white light
-    
+
     var grid = new THREE.GridHelper(20000,100); // Create Grid
     var skybox = createObject.skyBox("resources/skybox3/", "cube", "tCube", 50000, 50000, 50000)    // Create Skybox
     var ground = createObject.heightMap("resources/texture_snow.jpg", "heightmap", "terrain", 300, 20, 300, 50, 0, -150)    // Create Heightmap Ground
