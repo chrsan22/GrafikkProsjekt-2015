@@ -22,8 +22,9 @@ CreateLight.prototype.directLight = function() {
     return light;
 };
 
-CreateLight.prototype.ambientLight = function() {
+CreateLight.prototype.ambientLight = function(posX, posY, posZ) {
     light = new THREE.AmbientLight(0x303030);
+    ambientLight.position.set(posX, posY, posZ); // Sets Amibent Light Position
     light.castShadow = false;
     return light;
 };
