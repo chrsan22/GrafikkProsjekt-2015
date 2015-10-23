@@ -1,3 +1,7 @@
+/**
+ * Created by Christer on 23/10/15.
+ */
+
 function CreateObject() {
 }
 

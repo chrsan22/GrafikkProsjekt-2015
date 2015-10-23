@@ -7,14 +7,13 @@
 
 
 var init = function() {
-
-    scene = new THREE.Scene(); // Scene
-
     var canvas = document.getElementById("canvas"); // Canvas
-    var createObject = new CreateObject(); // Contains functions to create objects
+    var createObject = new CreateObject(); // Contains functions to create usefulFunctions
     var createLight = new CreateLight(); // Contains functions to create light
+    var cleanerMain = new CleanMain(); // Contains functions to clean up the main
 
     // Camera is positioned towards -z axis
+    scene = new THREE.Scene(); // Scene
     camera = new THREE.PerspectiveCamera(45, aspect, 0.1, 1e7);   // Set Camera Perspective
     camera.position.set(0,100,200);  // Set Camera Position towards -z axis
 
@@ -23,19 +22,9 @@ var init = function() {
     controls.movementSpeed = 50; // WASD speed
     controls.rollSpeed = Math.PI / 24; // Rollspeed for Q and E roll
 
-    // ----------------------------------------------------------------------------------------------------------------
-    // Renderer Creation and Settings
-    renderer = new THREE.WebGLRenderer({
-        canvas: canvas, // Sets Canvas
-        antialias: true // Sets Anti Aliasing
-    });
-    renderer.shadowMapEnabled = true;   // Enables Shadow Map
-    renderer.shadowMapSoft = true;      // Shadow Map Settings
-    renderer.setClearColor(0x000000);   // Clears Window to Black
-    renderer.setSize(width, height);    // Sets Size
+    renderer = cleanerMain.renderSettings(renderer);
     document.body.appendChild( renderer.domElement );   // Sets Size
-    // Renderer End
-    // ----------------------------------------------------------------------------------------------------------------
+
     // Start of Grass testing
 
 
@@ -56,8 +45,6 @@ var init = function() {
 
         grassGroup.add( grassMesh );
     }
-    scene.add(grassGroup);
-    scene.children.reverse();
 
     function generateTexture() {
 
@@ -88,18 +75,20 @@ var init = function() {
 
     var lightPoint = createLight.directLight(); // Create Light
     var ambientLight = createLight.ambientLight();  // Create atmospheric white light
-    ambientLight.position.set(1500, 3000, -2000);
+    ambientLight.position.set(1500, 3000, -2000); // Sets Amibent Light Position
 
 
     var grid = new THREE.GridHelper(20000,100); // Create Grid
     var skybox = createObject.skyBox("resources/skybox3/", "cube", "tCube", 50000, 50000, 50000)    // Create Skybox
     var ground = createObject.heightMap("resources/texture_snow.jpg", "heightmap", "terrain", 300, 20, 300, 50, 0, -150)    // Create Heightmap Ground
 
-    scene.add(grid);
-    scene.add(skybox);
-    scene.add(ground);
-    scene.add(ambientLight);
-    scene.add(lightPoint);
+    scene.add(grassGroup); // Adds Dynamic Grass to Scene
+    scene.children.reverse();   // TODO MATS
+    scene.add(grid);    // Adds Helping Grid for easy view
+    scene.add(skybox);  // Adds SkyBox to Scene
+    scene.add(ground);  // Adds Heightmap Ground to Scene
+    scene.add(ambientLight);    // Adds Ambiebt Light to Scene
+    scene.add(lightPoint);  // Adds Light Point to Scene
 
     // Resize function
     function onWindowResize() {
@@ -112,13 +101,6 @@ var init = function() {
 
     render();   // Render the scene
     window.addEventListener('resize', onWindowResize, false);
-};
-
-// Currently unused rotate function
-var rotateObject = function(object, rotation) {
-    object.rotation.x += rotation[0];
-    object.rotation.y += rotation[1];
-    object.rotation.z += rotation[2];
 };
 
     function render() {
