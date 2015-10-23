@@ -93,7 +93,7 @@ var init = function() {
 
     var grid = new THREE.GridHelper(20000,100); // Create Grid
     var skybox = createObject.skyBox("resources/skybox3/", "cube", "tCube", 50000, 50000, 50000)    // Create Skybox
-    var ground = createObject.heightMap("resources/texture_snow.jpg", "heightmap", 300, 20, 300, 50, 0, -150)    // Create Heightmap Ground
+    var ground = createObject.heightMap("resources/texture_snow.jpg", "heightmap", "terrain", 300, 20, 300, 50, 0, -150)    // Create Heightmap Ground
 
     scene.add(grid);
     scene.add(skybox);

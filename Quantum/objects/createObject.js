@@ -70,7 +70,7 @@ CreateObject.prototype.skyBox = function (path, shadeLib, shadeUniform, geoX, ge
     return object;
 };
 
-CreateObject.prototype.heightMap = function (texture, heightMap, scaleX, scaleY, scaleZ, posX, posY, posZ) {
+CreateObject.prototype.heightMap = function (texture, heightMap, name, scaleX, scaleY, scaleZ, posX, posY, posZ) {
     var heightMapFncs = new HeightMapFunctions(); // Contains functions used in the heightmap
     var terrainData, worldWidth, worldDepth, terrainTexture, texture, ground;
     var heightMapImage = document.getElementById(heightMap);  // Actual Heightmap
@@ -89,8 +89,12 @@ CreateObject.prototype.heightMap = function (texture, heightMap, scaleX, scaleY,
     heightMapGeometry.scale(scaleX, scaleY, scaleZ);    // Scale Geometry
 
     texture = THREE.ImageUtils.loadTexture(texture);   // Heightmap Texture
-    ground = new HeightMapMesh( heightMapGeometry, new THREE.MeshPhongMaterial( { map: terrainTexture, map: texture } ) );
-    ground.name = "terrain";
-    ground.position.set(posX, posY, posZ);
-    return ground;
-}
+    object = new HeightMapMesh( heightMapGeometry, new THREE.MeshPhongMaterial( { map: terrainTexture, map: texture } ) );
+    object.name = name;
+    object.position.set(posX, posY, posZ);
+    return object;
+};
+
+CreateObject.prototype.grass = function () {
+
+};
