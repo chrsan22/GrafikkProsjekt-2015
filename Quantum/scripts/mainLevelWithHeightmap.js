@@ -5,6 +5,13 @@
     var clock = new THREE.Clock();  //Creates Clock
     var mirrorSphere, mirrorSphereCamera; // for mirror material
     var particleSystemHeight = 100.0;
+    var numSnowFlakes = 5000,
+        vertex,
+        width = 20000,
+        height = 5000,
+        depth = 20000,
+        snowGeometry = new THREE.Geometry(),
+        snowMaterial = new THREE.PointsMaterial({ color: 0xFFFFFF });
 
 
 var init = function() {
@@ -66,22 +73,15 @@ var init = function() {
 
     // Snowstorm Start
 
-    var numSnowFlakes = 70000,
-        width = 20000,
-        height = 5000,
-        depth = 20000,
-        snowGeometry = new THREE.Geometry(),
-        snowMaterial = new THREE.PointsMaterial({ color: 0xFFFFFF });
-
     for( var i = 0; i < numSnowFlakes; i++ ) {
-        var vertex = new THREE.Vector3(
+        vertex = new THREE.Vector3(
             rand( width ),
             Math.random()*height ,
             rand( depth )
         );
-
         snowGeometry.vertices.push( vertex );
     }
+    console.log(snowGeometry.vertices.length);
 
 
 
@@ -110,65 +110,6 @@ var init = function() {
     texture = THREE.ImageUtils.loadTexture("resources/textures/texture_snow.jpg");   // Heightmap Texture
     ground = new HeightMapMesh( heightMapGeometry, new THREE.MeshPhongMaterial( { map: terrainTexture, map: texture } ) );
     ground.name = "terrain";
-
-    // End of code relating to Height Map
-    // ----------------------------------------------------------------------------------------------------------------
-    // Start of Grass testing
-/*
-
-    var geometry = new THREE.PlaneBufferGeometry( 100, 100 );
-
-    var texture2 = new THREE.CanvasTexture( generateTexture() );
-
-    for ( var i = 0; i < 15; i ++ ) {
-
-        var material = new THREE.MeshBasicMaterial( {
-            color: new THREE.Color().setHSL( 0.3, 0.75, ( i / 15 ) * 0.4 + 0.1 ),
-            map: texture2,
-            depthTest: false,
-            depthWrite: false,
-            transparent: true
-        } );
-
-        var mesh = new THREE.Mesh( geometry, material );
-
-        mesh.position.y = - i * 0.25;
-        mesh.rotation.x = - Math.PI / 2;
-
-        scene.add( mesh );
-        mesh.position.x = -1000;
-    }
-
-
-    scene.children.reverse();
-
-    function generateTexture() {
-
-        var canvas = document.createElement( 'canvas' );
-        canvas.width = 512;
-        canvas.height = 512;
-
-        var context = canvas.getContext( '2d' );
-
-        for ( var i = 0; i < 20000; i ++ ) {
-
-            context.fillStyle = 'hsl(0,0%,' + ( Math.random() * 50 + 50 ) + '%)';
-            context.beginPath();
-            context.arc( Math.random() * canvas.width, Math.random() * canvas.height, Math.random() + 0.15, 0, Math.PI * 2, true );
-            context.fill();
-
-        }
-
-        context.globalAlpha = 0.075;
-        context.globalCompositeOperation = 'lighter';
-
-        return canvas;
-
-    }
-
-*/
-    // End of Grass testing
-    //-----------------------------------------------------------------------------------------------------------------
 
     var groundOrbit = new THREE.Object3D(); // Set sun orbit around ground
     var lightPoint = createLight.directLight(); // Create Light
@@ -223,26 +164,6 @@ var init = function() {
         return (v * (Math.random() - 0.5));
     }
 
-    function updateParticleSystem( elapsed ) {
-
-        var geometry = particleSystem.geometry,
-            vertices = geometry.vertices,
-            numVertices = vertices.length,
-            speedY = 10 * elapsed;
-
-        for(var i = 0; i < numVertices; i++) {
-            var v = vertices[i];
-
-            if( v.y > 0 ) {
-                v.y -= speedY * Math.random();
-            } else {
-                v.y = particleSystemHeight;
-            }
-        }
-        geometry.verticesNeedUpdate = true;
-
-    }
-
 
     // Currently unused rotate function
 var rotateObject = function(object, rotation) {
@@ -259,12 +180,15 @@ var rotateObject = function(object, rotation) {
 
         var time = Date.now() / 6000;
 
-        for ( var i = 0, l = scene.children.length; i < l; i ++ ) {
+        for ( var i = 0, l = snowGeometry.vertices.length; i < l; i ++ ) {
+            var snowStorm = snowGeometry.vertices[i];
+            position.set(snowStorm.x = Math.random() +1000);
+        }
 
+        for ( var i = 0, l = scene.children.length; i < l; i ++ ) {
             var mesh = scene.children[ i ];
             mesh.position.x = Math.sin( time * 4 ) * i * i * 0.005;
             mesh.position.z = Math.cos( time * 6 ) * i * i * 0.005;
-
         }
         mirrorSphere.visible = false;
         mirrorSphereCamera.updateCubeMap( renderer, scene );
