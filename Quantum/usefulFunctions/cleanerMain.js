@@ -16,7 +16,7 @@ CleanMain.prototype.renderSettings = function (renderIn) {
     renderIn.shadowMapEnabled = true;   // Enables Shadow Map
     renderIn.shadowMapSoft = true;      // Shadow Map Settings
     renderIn.setClearColor(0x000000);   // Clears Window to Black
-    renderIn.setSize(width, height);    // Sets Size
+    renderIn.setSize(window.innerWidth, window.innerHeight);    // Sets Size
 
     return renderIn;
 };
