@@ -13,7 +13,6 @@ var init = function() {
     var canvas = document.getElementById("canvas"); // Canvas
     var createObject = new CreateObject(); // Contains functions to create objects
     var createLight = new CreateLight(); // Contains functions to create light
-    var heightMapFncs = new HeightMapFunctions(); // Contains functions used in the heightmap
 
     // Camera is positioned towards -z axis
     camera = new THREE.PerspectiveCamera(45, aspect, 0.1, 1e7);   // Set Camera Perspective
@@ -36,57 +35,6 @@ var init = function() {
     renderer.setSize(width, height);    // Sets Size
     document.body.appendChild( renderer.domElement );   // Sets Size
     // Renderer End
-    // ----------------------------------------------------------------------------------------------------------------
-    // Skybox Start
-
-    // Create Skybox
-    var r = "resources/skybox3/";
-    var urls = [ r + "posx.jpg", r + "negx.jpg",
-                 r + "posy.jpg", r + "negy.jpg",
-                 r + "posz.jpg", r + "negz.jpg" ];
-
-    var textureCube = THREE.ImageUtils.loadTextureCube( urls  );
-    textureCube.format = THREE.RGBFormat;
-
-    // Skybox
-    var shader = THREE.ShaderLib["cube"];
-    shader.uniforms["tCube"].value = textureCube;
-    var skyMat = new THREE.ShaderMaterial({
-        fragmentShader : shader.fragmentShader,
-        vertexShader   : shader.vertexShader,
-        uniforms       : shader.uniforms,
-        depthWrite     : false,
-        side           : THREE.BackSide
-    });
-
-    var skybox = new THREE.Mesh( new THREE.BoxGeometry( 50000, 50000, 50000 ), skyMat );
-
-    // Skybox End
-    // ----------------------------------------------------------------------------------------------------------------
-    // Code relating to Height Map
-
-    var terrainData, worldWidth, worldDepth, terrainTexture, texture, ground;
-    var heightMapImage = document.getElementById('heightmap');  // Actual Heightmap
-    terrainData = heightMapFncs.getPixelValues(heightMapImage, 'r');
-    worldWidth = heightMapImage.width;
-    worldDepth = heightMapImage.height;
-
-    // Not required to use the generated texture
-    terrainTexture = new THREE.CanvasTexture( heightMapFncs.generateTexture( terrainData, worldWidth, worldDepth ) );
-    terrainTexture.wrapS = THREE.ClampToEdgeWrapping;
-    terrainTexture.wrapT = THREE.ClampToEdgeWrapping;
-    terrainTexture.castShadow = true;
-    terrainTexture.receiveShadow = true;
-
-    var heightMapGeometry = new HeightMapBufferGeometry(terrainData, worldWidth, worldDepth);   // Generate terrain geometry and mesh
-    heightMapGeometry.scale(300, 20, 300);    // Scale Geometry
-
-    texture = THREE.ImageUtils.loadTexture("resources/texture_snow.jpg");   // Heightmap Texture
-    ground = new HeightMapMesh( heightMapGeometry, new THREE.MeshPhongMaterial( { map: terrainTexture, map: texture } ) );
-    ground.name = "terrain";
-    ground.position.set(50,0,-150);
-
-    // End of code relating to Height Map
     // ----------------------------------------------------------------------------------------------------------------
     // Start of Grass testing
 
@@ -138,20 +86,20 @@ var init = function() {
     // End of Grass testing
     //-----------------------------------------------------------------------------------------------------------------
 
-    var groundOrbit = new THREE.Object3D(); // Set sun orbit around ground
     var lightPoint = createLight.directLight(); // Create Light
     var ambientLight = createLight.ambientLight();  // Create atmospheric white light
     ambientLight.position.set(1500, 3000, -2000);
 
-    // Grid to see where thing is placed, remove at end of project
-    var grid = new THREE.GridHelper(20000,100);
-    scene.add(grid);
 
+    var grid = new THREE.GridHelper(20000,100); // Create Grid
+    var skybox = createObject.skyBox("resources/skybox3/", "cube", "tCube", 50000, 50000, 50000)    // Create Skybox
+    var ground = createObject.heightMap("resources/texture_snow.jpg", "heightmap", 300, 20, 300, 50, 0, -150)    // Create Heightmap Ground
+
+    scene.add(grid);
     scene.add(skybox);
     scene.add(ground);
     scene.add(ambientLight);
     scene.add(lightPoint);
-    ground.add(groundOrbit);
 
     // Resize function
     function onWindowResize() {

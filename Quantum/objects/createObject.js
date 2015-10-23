@@ -1,8 +1,4 @@
 function CreateObject() {
-    var texture;
-    var geometry;
-    var material;
-    var object;
 }
 
 /*
@@ -52,6 +48,49 @@ CreateObject.prototype.planeGeometry = function(tex, geoX, geoY, geoZ, posX, pos
     return object;
 };
 
-CreateObject.prototype.heightMap = function(geoX, geoY) {
+CreateObject.prototype.skyBox = function (path, shadeLib, shadeUniform, geoX, geoY, geoZ) {
+    var r = path;
+    var urls = [ r + "posx.jpg", r + "negx.jpg",
+        r + "posy.jpg", r + "negy.jpg",
+        r + "posz.jpg", r + "negz.jpg" ];
 
+    var textureCube = THREE.ImageUtils.loadTextureCube( urls  );
+    textureCube.format = THREE.RGBFormat;
+
+    var shader = THREE.ShaderLib[shadeLib];
+    shader.uniforms[shadeUniform].value = textureCube;
+    material = new THREE.ShaderMaterial({
+        fragmentShader : shader.fragmentShader,
+        vertexShader   : shader.vertexShader,
+        uniforms       : shader.uniforms,
+        depthWrite     : false,
+        side           : THREE.BackSide
+    });
+    var object = new THREE.Mesh( new THREE.BoxGeometry( geoX, geoY, geoZ ), material );
+    return object;
 };
+
+CreateObject.prototype.heightMap = function (texture, heightMap, scaleX, scaleY, scaleZ, posX, posY, posZ) {
+    var heightMapFncs = new HeightMapFunctions(); // Contains functions used in the heightmap
+    var terrainData, worldWidth, worldDepth, terrainTexture, texture, ground;
+    var heightMapImage = document.getElementById(heightMap);  // Actual Heightmap
+    terrainData = heightMapFncs.getPixelValues(heightMapImage, 'r');
+    worldWidth = heightMapImage.width;
+    worldDepth = heightMapImage.height;
+
+    // Not required to use the generated texture
+    terrainTexture = new THREE.CanvasTexture( heightMapFncs.generateTexture( terrainData, worldWidth, worldDepth ) );
+    terrainTexture.wrapS = THREE.ClampToEdgeWrapping;
+    terrainTexture.wrapT = THREE.ClampToEdgeWrapping;
+    terrainTexture.castShadow = true;
+    terrainTexture.receiveShadow = true;
+
+    var heightMapGeometry = new HeightMapBufferGeometry(terrainData, worldWidth, worldDepth);   // Generate terrain geometry and mesh
+    heightMapGeometry.scale(scaleX, scaleY, scaleZ);    // Scale Geometry
+
+    texture = THREE.ImageUtils.loadTexture(texture);   // Heightmap Texture
+    ground = new HeightMapMesh( heightMapGeometry, new THREE.MeshPhongMaterial( { map: terrainTexture, map: texture } ) );
+    ground.name = "terrain";
+    ground.position.set(posX, posY, posZ);
+    return ground;
+}
