@@ -4,12 +4,13 @@
     var camera, controls, scene, renderer;  // Creates Camera, Controls, Scene and Renderer
     var clock = new THREE.Clock();  //Creates Clock
     var mirrorSphere, mirrorSphereCamera; // for mirror material
+    var particleSystemHeight = 100.0;
 
 
 var init = function() {
 
     scene = new THREE.Scene(); // Scene
-    scene.fog = new THREE.FogExp2( 0x38C4F2, 0.0003 );
+    //scene.fog = new THREE.FogExp2( 0x121212, 0.0006 );
 
     var canvas = document.getElementById("canvas"); // Canvas
     var createLight = new CreateLight(); // Contains functions to create light
@@ -17,7 +18,7 @@ var init = function() {
 
     // Camera is positioned towards -z axis
     camera = new THREE.PerspectiveCamera(45, aspect, 0.1, 1e7);   // Set Camera Perspective
-    camera.position.set(0,10000,20000);  // Set Camera Position towards -z axis
+    camera.position.set(0,2000,2000);  // Set Camera Position towards -z axis
 
     // Controls for FlyControls
     controls = new THREE.FlyControls( camera ); // Creates Controls
@@ -62,6 +63,31 @@ var init = function() {
     var skybox = new THREE.Mesh( new THREE.BoxGeometry( 50000, 50000, 50000 ), skyMat );
 
     // Skybox End
+
+    // Snowstorm Start
+
+    var numSnowFlakes = 70000,
+        width = 20000,
+        height = 5000,
+        depth = 20000,
+        snowGeometry = new THREE.Geometry(),
+        snowMaterial = new THREE.PointsMaterial({ color: 0xFFFFFF });
+
+    for( var i = 0; i < numSnowFlakes; i++ ) {
+        var vertex = new THREE.Vector3(
+            rand( width ),
+            Math.random()*height ,
+            rand( depth )
+        );
+
+        snowGeometry.vertices.push( vertex );
+    }
+
+
+
+    particleSystem = new THREE.Points( snowGeometry, snowMaterial );
+
+    // Snowstorm End
     // ----------------------------------------------------------------------------------------------------------------
     // Code relating to Height Map
 
@@ -152,7 +178,7 @@ var init = function() {
     // Grid to see where thing is placed, remove at end of project
     var grid = new THREE.GridHelper(20000,100);
     scene.add(grid);
-    grid.position.set(0,100,0);
+    grid.position.set(0,0,0);
 
     // Reflection sphere
 
@@ -170,14 +196,13 @@ var init = function() {
     sphereLight.position.set(0,4800,0);
 
     scene.add(sphereLight);
-
-
     scene.add(mirrorSphere);
     scene.add(skybox);
     scene.add(ground);
     scene.add(ambientLight);
     scene.add(lightPoint);
     ground.add(groundOrbit);
+    scene.add( particleSystem );
 
     // Resize function
     function onWindowResize() {
@@ -192,7 +217,34 @@ var init = function() {
     window.addEventListener('resize', onWindowResize, false);
 };
 
-// Currently unused rotate function
+
+    // Random function used in snow particles
+    function rand( v ) {
+        return (v * (Math.random() - 0.5));
+    }
+
+    function updateParticleSystem( elapsed ) {
+
+        var geometry = particleSystem.geometry,
+            vertices = geometry.vertices,
+            numVertices = vertices.length,
+            speedY = 10 * elapsed;
+
+        for(var i = 0; i < numVertices; i++) {
+            var v = vertices[i];
+
+            if( v.y > 0 ) {
+                v.y -= speedY * Math.random();
+            } else {
+                v.y = particleSystemHeight;
+            }
+        }
+        geometry.verticesNeedUpdate = true;
+
+    }
+
+
+    // Currently unused rotate function
 var rotateObject = function(object, rotation) {
     object.rotation.x += rotation[0];
     object.rotation.y += rotation[1];
