@@ -12,7 +12,7 @@ var init = function() {
     // Camera is positioned towards -z axis
     scene = new THREE.Scene(); // Scene
     camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1e7);   // Set Camera Perspective
-    camera.position.set(0,100,200);  // Set Camera Position towards -z axis
+    camera.position.set(0,50,100);  // Set Camera Position towards -z axis
 
     // Controls for FlyControls
     controls = new THREE.FlyControls( camera ); // Creates Controls
@@ -24,10 +24,19 @@ var init = function() {
 
     // Start of Grass testing
     var geometry = new THREE.PlaneBufferGeometry( 100, 100 );
+    var groundUnderGrass = new THREE.CubeGeometry(100,0,100);
+    var color = new THREE.MeshBasicMaterial({
+        color: new THREE.Color(0xFFFFFF),
+        //map: THREE.ImageUtils.loadTexture( 'resources/textures/texture_snow.jpg' ), overdraw: false,
+    });
+    var meshing = new THREE.Mesh(groundUnderGrass,color);
+    scene.add(meshing);
+    meshing.position.set(50,0,50);
+
     var texture2 = new THREE.CanvasTexture( generateTexture() );
-    for ( var i = 0; i < 10; i ++ ) {
+    for ( var i = 0; i < 5; i ++ ) {
         var material = new THREE.MeshBasicMaterial( {
-            color: new THREE.Color().setHSL( 0.3, 0.75, ( i / 15 ) * 0.4 + 0.1 ),
+            color: new THREE.Color(0xFFFFFF),
             map: texture2,
             depthTest: false,
             depthWrite: false,
@@ -35,7 +44,7 @@ var init = function() {
         } );
 
         var grassMesh = new THREE.Mesh( geometry, material );
-        grassMesh.position.y = i * 0.1;
+        grassMesh.position.y = i * 0.25;
         grassMesh.rotation.x = - Math.PI / 2;
 
         grassGroup.add( grassMesh );
@@ -43,15 +52,15 @@ var init = function() {
 
     function generateTexture() {
         var canvas = document.createElement( 'canvas' );
-        canvas.width = 2048;
-        canvas.height = 2048;
+        canvas.width = 1024;
+        canvas.height = 1024;
 
         var context = canvas.getContext( '2d' );
 
         for ( var i = 0; i < 100000; i ++ ) {
             context.fillStyle = 'hsl(0,0%,' + ( Math.random() * 50 + 50 ) + '%)';
             context.beginPath();
-            context.arc( Math.random() * canvas.width, Math.random() * canvas.height, Math.random() + 0.15, 0, Math.PI * 2, true );
+            context.arc( Math.random() * canvas.width, Math.random() * canvas.height, Math.random() + 0.1, 0, Math.PI * 2, true );
             context.fill();
         }
 
