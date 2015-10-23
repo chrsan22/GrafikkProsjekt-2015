@@ -89,14 +89,11 @@ var init = function() {
     scene.add(ground);  // Adds Heightmap Ground to Scene
     scene.add(ambientLight);    // Adds Ambiebt Light to Scene
     scene.add(lightPoint);  // Adds Light Point to Scene
-
-    // Resize function
+    
     function onWindowResize() {
-        width = window.innerWidth;
-        height = window.innerHeight;
-        renderer.setSize(width, height);
-        camera.aspect = width / height;
-        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight); // Re-Sets Renderer size
+        camera.aspect = window.innerWidth / window.innerHeight; // Re-Sets Camera Aspect
+        camera.updateProjectionMatrix();    // Updates Projection Matrix
     }
 
     render();   // Render the scene
