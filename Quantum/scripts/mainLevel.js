@@ -16,14 +16,14 @@ var init = function() {
 
     // Controls for FlyControls
     controls = new THREE.FlyControls( camera ); // Creates Controls
-    controls.movementSpeed = 50; // WASD speed
+    controls.movementSpeed = 30; // WASD speed
     controls.rollSpeed = Math.PI / 24; // Rollspeed for Q and E roll
 
     renderer = cleanerMain.renderSettings(renderer);
     document.body.appendChild( renderer.domElement );   // Sets Size
 
     // Start of Grass testing
-    var geometry = new THREE.PlaneBufferGeometry( 300, 300 );
+    var geometry = new THREE.PlaneBufferGeometry( 100, 100 );
     var texture2 = new THREE.CanvasTexture( generateTexture() );
     for ( var i = 0; i < 10; i ++ ) {
         var material = new THREE.MeshBasicMaterial( {
@@ -67,11 +67,11 @@ var init = function() {
     var ambientLight = createLight.ambientLight(1500, 3000, -2000);  // Create atmospheric white light
 
     var grid = new THREE.GridHelper(20000,100); // Create Grid
-    var skybox = createObject.skyBox("resources/skybox3/", "cube", "tCube", 50000, 50000, 50000)    // Create Skybox
-    var ground = createObject.heightMap("resources/texture_snow.jpg", "heightmap", "terrain", 300, 20, 300, 50, 0, -150)    // Create Heightmap Ground
+    var skybox = createObject.skyBox("resources/skybox3/", "cube", "tCube", 20000, 30000, 20000)    // Create Skybox
+    var ground = createObject.heightMap("resources/textures/texture_snow.jpg", "heightmap", "terrain", 300, 20, 300, 50, 0, -150)    // Create Heightmap Ground
 
     scene.add(grassGroup); // Adds Dynamic Grass to Scene
-    scene.children.reverse();   // TODO MATS
+    scene.children.reverse();   // Reverses the children in the opposite direction.
     scene.add(grid);    // Adds Helping Grid for easy view
     scene.add(skybox);  // Adds SkyBox to Scene
     scene.add(ground);  // Adds Heightmap Ground to Scene
@@ -99,7 +99,7 @@ var init = function() {
         for ( var i = 0, l = grassGroup.children.length; i < l; i ++ ) {
             var Posmesh = grassGroup.children[ i ];
             Posmesh.position.x = 50 + Math.sin( time * 4 ) * i * i * 0.005;
-            Posmesh.position.z = 150 + Math.cos( time * 6 ) * i * i * 0.005;
+            Posmesh.position.z = 50 + Math.cos( time * 6 ) * i * i * 0.005;
         }
     }
 
