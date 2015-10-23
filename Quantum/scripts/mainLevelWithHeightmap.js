@@ -11,7 +11,7 @@ var init = function() {
     scene = new THREE.Scene(); // Scene
 
     var canvas = document.getElementById("canvas"); // Canvas
-    var createObject = new CreateObject(); // Contains functions to create objects
+    var createObject = new CreateObject(); // Contains functions to create usefulFunctions
     var createLight = new CreateLight(); // Contains functions to create light
     var heightMapFncs = new HeightMapFunctions(); // Contains functions used in the heightmap
 
