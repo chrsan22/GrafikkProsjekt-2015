@@ -12,7 +12,7 @@ var init = function() {
     scene.fog = new THREE.FogExp2( 0xefd1b5, 0.0025 );
 
     var canvas = document.getElementById("canvas"); // Canvas
-    var createObject = new CreateObject(); // Contains functions to create objects
+    var createObject = new CreateObject(); // Contains functions to create usefulFunctions
     var createLight = new CreateLight(); // Contains functions to create light
     var heightMapFncs = new HeightMapFunctions(); // Contains functions used in the heightmap
 
