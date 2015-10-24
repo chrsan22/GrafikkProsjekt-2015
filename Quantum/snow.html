@@ -5,6 +5,11 @@
     <meta charset="utf-8" />
     <title>Sample Three.js</title>
     <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
         #container {
             background: #000;
             width: 100%;
@@ -61,7 +66,7 @@
     var scene = new THREE.Scene();
 
     // the camera starts at 0,0,0 so pull it back
-    camera.position.z = 300;
+    camera.position.z = 900;
 
     // start the renderer - set the clear colour
     // to a full black
@@ -72,7 +77,7 @@
     $container.append(renderer.domElement);
 
     // create the particle variables
-    var particleCount = 4000,
+    var particleCount = 8000,
             particles = new THREE.Geometry(),
             pMaterial = new THREE.ParticleBasicMaterial({
                 color: 0xFFFFFF,
@@ -119,7 +124,7 @@
     function update() {
 
         // add some rotation to the system
-        particleSystem.rotation.y += 0.01;
+        //particleSystem.rotation.y += 0.01;
 
         var pCount = particleCount;
         while(pCount--) {
@@ -127,13 +132,13 @@
             var particle = particles.vertices[pCount];
 
             // check if we need to reset
-            if(particle.position.y < -200) {
+            if(particle.position.y < -300) {
                 particle.position.y = 200;
                 particle.velocity.y = 0;
             }
 
             // update the velocity
-            particle.velocity.y -= Math.random() * .1;
+            particle.velocity.y =-1;
 
             // and the position
             particle.position.addSelf(
@@ -143,7 +148,7 @@
         // flag to the particle system that we've
         // changed its vertices. This is the
         // dirty little secret.
-        particleSystem.geometry.__dirtyVertices = true;
+        particleSystem.geometry.__dirtyVertices = false;
 
         renderer.render(scene, camera);
 
