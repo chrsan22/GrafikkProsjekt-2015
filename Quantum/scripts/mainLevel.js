@@ -2,7 +2,6 @@
     var clock = new THREE.Clock();  //Creates Clock
     var grassGroup = new THREE.Object3D();
 
-
 var init = function() {
     var canvas = document.getElementById("canvas"); // Canvas
     var createObject = new CreateObject(); // Contains functions to create usefulFunctions
@@ -21,7 +20,7 @@ var init = function() {
 
     renderer = cleanerMain.renderSettings(renderer);
     document.body.appendChild( renderer.domElement );   // Sets Size
-
+//-------------------------------------------------------------------------------------------------------------------
     // Start of Grass testing
     var geometry = new THREE.PlaneBufferGeometry( 100, 100 );
     var groundUnderGrass = new THREE.CubeGeometry(100,0,100);
@@ -71,7 +70,6 @@ var init = function() {
     }
     // End of Grass testing
     //-----------------------------------------------------------------------------------------------------------------
-
     var lightPoint = createLight.directLight(); // Create Light
     var ambientLight = createLight.ambientLight(1500, 3000, -2000);  // Create atmospheric white light
 
@@ -81,7 +79,7 @@ var init = function() {
 
     scene.add(grassGroup); // Adds Dynamic Grass to Scene
     scene.children.reverse();   // Reverses the children in the opposite direction.
-    scene.add(grid);    // Adds Helping Grid for easy view
+    //scene.add(grid);    // Adds Helping Grid for easy view
     scene.add(skybox);  // Adds SkyBox to Scene
     scene.add(ground);  // Adds Heightmap Ground to Scene
     scene.add(ambientLight);    // Adds Ambiebt Light to Scene
@@ -103,12 +101,12 @@ var init = function() {
         renderer.render(scene, camera); // Repeat Renderer
         window.requestAnimFrame(render);    // Banana
 
-        var time = Date.now() / 6000;
+       var time = Date.now() / 6000;
 
         for ( var i = 0, l = grassGroup.children.length; i < l; i ++ ) {
             var Posmesh = grassGroup.children[ i ];
             Posmesh.position.x = 50 + Math.sin( time * 4 ) * i * i * 0.005;
-            Posmesh.position.z = 50 + Math.cos( time * 6 ) * i * i * 0.005;
+            Posmesh.position.z = 49.9 + Math.cos( time * 6 ) * i * i * 0.005;
         }
     }
 
