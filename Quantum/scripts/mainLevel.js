@@ -22,15 +22,15 @@ var init = function() {
     document.body.appendChild( renderer.domElement );   // Sets Size
 //-------------------------------------------------------------------------------------------------------------------
     // Start of Grass testing
-    var geometry = new THREE.PlaneBufferGeometry( 100, 100 );
-    var groundUnderGrass = new THREE.CubeGeometry(100,0,100);
+    var geometry = new THREE.PlaneBufferGeometry( 100, 20 );
+    var groundUnderGrass = new THREE.CubeGeometry(100,0,20);
     var color = new THREE.MeshBasicMaterial({
         color: new THREE.Color(0xFFFFFF),
         //map: THREE.ImageUtils.loadTexture( 'resources/textures/texture_snow.jpg' ), overdraw: false,
     });
     var meshing = new THREE.Mesh(groundUnderGrass,color);
     scene.add(meshing);
-    meshing.position.set(50,0,50);
+    meshing.position.set(50,0,10);
 
     var texture2 = new THREE.CanvasTexture( generateTexture() );
     for ( var i = 0; i < 5; i ++ ) {
@@ -56,7 +56,7 @@ var init = function() {
 
         var context = canvas.getContext( '2d' );
 
-        for ( var i = 0; i < 100000; i ++ ) {
+        for ( var i = 0; i < 50000; i ++ ) {
             context.fillStyle = 'hsl(0,0%,' + ( Math.random() * 50 + 50 ) + '%)';
             context.beginPath();
             context.arc( Math.random() * canvas.width, Math.random() * canvas.height, Math.random() + 0.1, 0, Math.PI * 2, true );
@@ -73,13 +73,13 @@ var init = function() {
     var lightPoint = createLight.directLight(); // Create Light
     var ambientLight = createLight.ambientLight(1500, 3000, -2000);  // Create atmospheric white light
 
-    var grid = new THREE.GridHelper(20000,100); // Create Grid
-    var skybox = createObject.skyBox("resources/skybox3/", "cube", "tCube", 20000, 30000, 20000)    // Create Skybox
-    var ground = createObject.heightMap("resources/textures/texture_snow.jpg", "heightmap", "terrain", 300, 20, 300, 50, 0, -150)    // Create Heightmap Ground
+    var grid = new THREE.GridHelper(5000,10); // Create Grid
+    var skybox = createObject.skyBox("resources/skybox3/", "cube", "tCube", 1000, 4000, 1000)    // Create Skybox
+    var ground = createObject.heightMap("resources/textures/texture_snow.jpg", "heightmap", "terrain", 100, 7, 100, 50, 0, -50)    // Create Heightmap Ground
 
     scene.add(grassGroup); // Adds Dynamic Grass to Scene
     scene.children.reverse();   // Reverses the children in the opposite direction.
-    //scene.add(grid);    // Adds Helping Grid for easy view
+    scene.add(grid);    // Adds Helping Grid for easy view
     scene.add(skybox);  // Adds SkyBox to Scene
     scene.add(ground);  // Adds Heightmap Ground to Scene
     scene.add(ambientLight);    // Adds Ambiebt Light to Scene
@@ -106,7 +106,7 @@ var init = function() {
         for ( var i = 0, l = grassGroup.children.length; i < l; i ++ ) {
             var Posmesh = grassGroup.children[ i ];
             Posmesh.position.x = 50 + Math.sin( time * 4 ) * i * i * 0.005;
-            Posmesh.position.z = 49.9 + Math.cos( time * 6 ) * i * i * 0.005;
+            Posmesh.position.z = 9.9 + Math.cos( time * 6 ) * i * i * 0.005;
         }
     }
 
