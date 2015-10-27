@@ -85,6 +85,11 @@ var init = function() {
     scene.add(ambientLight);    // Adds Ambiebt Light to Scene
     scene.add(lightPoint);  // Adds Light Point to Scene
 
+    //  Useful for later
+    //  var temp = createObject.boxGeometry("resources/textures/texture_snow.jpg", 1, 1, 1, 0, 0, 0, true, true);
+    //  ground.add(temp);
+    //  temp.position.y = ground.getHeightAtPoint(temp.position) + 0.5;
+
     function onWindowResize() {
         renderer.setSize(window.innerWidth, window.innerHeight); // Re-Sets Renderer size
         camera.aspect = window.innerWidth / window.innerHeight; // Re-Sets Camera Aspect
