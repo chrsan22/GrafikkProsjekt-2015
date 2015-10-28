@@ -1,6 +1,9 @@
     var camera, controls, scene, renderer;  // Creates Camera, Controls, Scene and Renderer
     var clock = new THREE.Clock();  //Creates Clock
     var grassGroup = new THREE.Object3D();
+    var particleCount;
+    var particles;
+    var particleSystem;
 
 var init = function() {
     var canvas = document.getElementById("canvas"); // Canvas
@@ -76,6 +79,60 @@ var init = function() {
     }*/
     // End of Grass testing
     //-----------------------------------------------------------------------------------------------------------------
+    // Start of snow implementation
+
+/*
+    var $container = $('#container');
+    $container.append(renderer.domElement);
+*/
+
+    // create the particle variables
+     particleCount = 200;
+     particles = new THREE.Geometry();
+     pMaterial = new THREE.ParticleBasicMaterial({
+            color: 0xFFFFFF,
+            size: 10,
+            map: THREE.ImageUtils.loadTexture(
+                "resources/particle.png"
+            ),
+            blending: THREE.AdditiveBlending,
+            transparent: true
+        });
+
+
+    // now create the individual particles
+    for(var p = 0; p < particleCount; p++) {
+
+        // create a particle with random
+        // position values, -250 -> 250
+        var pX = Math.random() * 500 - 250,
+            pY = Math.random() * 500,
+            pZ = Math.random() * 250 - 250,
+            particle = new THREE.Vector3(pX, pY, pZ);
+        // create a velocity vector
+        particle.velocity = new THREE.Vector3(
+            0,				// x
+            -Math.random(),	// y
+            0);				// z
+
+        // add it to the geometry
+        particles.vertices.push(particle);
+    }
+
+    // create the particle system
+    particleSystem = new THREE.ParticleSystem(
+        particles,
+        pMaterial);
+
+    particleSystem.sortParticles = true;
+
+    // add it to the scene
+    scene.add(particleSystem);
+
+
+
+    // End of snow implementation
+    //-----------------------------------------------------------------------------------------------------------------
     var lightPoint = createLight.directLight(); // Create Light
     var ambientLight = createLight.ambientLight(1500, 3000, -2000);  // Create atmospheric white light
 
@@ -118,6 +175,29 @@ var init = function() {
             Posmesh.position.x = Math.sin( time * 4 ) * i * i * 0.005;
             Posmesh.position.z = 9.9 + Math.cos( time * 6 ) * i * i * 0.005;
         }*/
+
+
+        while(particleCount--) {
+            // get the particle
+            var particle = particles.vertices[particleCount];
+            console.log(particles.vertices[particleCount].y);
+            // check if we need to reset
+            if(particle.y < -300) {
+                particle.y = 200;
+                particle.velocity.y = 0;
+            }
+            // update the velocity
+            particle.velocity.y =-1;
+            console.log(particle.velocity);
+            // and the position
+            particle.position.addSelf(
+                particle.velocity);
+        }
+
+        // flag to the particle system that we've
+        // changed its vertices. This is the
+        // dirty little secret.
+        particleSystem.geometry.__dirtyVertices = false;
     }
 
 window.addEventListener('load', init);
