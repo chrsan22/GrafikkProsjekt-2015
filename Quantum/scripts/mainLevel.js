@@ -11,26 +11,32 @@ var init = function() {
     // Camera is positioned towards -z axis
     scene = new THREE.Scene(); // Scene
     camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1e7);   // Set Camera Perspective
-    camera.position.set(0,50,100);  // Set Camera Position towards -z axis
+    camera.position.set(0,150,200);  // Set Camera Position towards -z axis
+    camera.rotation.x = 340*(Math.PI/180) // Set a rotate to watch down on the landscape
 
     // Controls for FlyControls
     controls = new THREE.FlyControls( camera ); // Creates Controls
     controls.movementSpeed = 30; // WASD speed
     controls.rollSpeed = Math.PI / 24; // Rollspeed for Q and E roll
 
-    renderer = cleanerMain.renderSettings(renderer);
+    renderer = cleanerMain.renderSettings(renderer);    // Sets Renderer in a different file
     document.body.appendChild( renderer.domElement );   // Sets Size
 //-------------------------------------------------------------------------------------------------------------------
     // Start of Grass testing
-    var geometry = new THREE.PlaneBufferGeometry( 100, 20 );
-    var groundUnderGrass = new THREE.CubeGeometry(100,0,20);
+/*    var greenGrass = createObject.boxGeometryColor(0x009900, 500, 1, 100, 0, 0, -200, false, true);
+    scene.add(greenGrass);
+    var greenGrass2 = createObject.boxGeometryColor(0x009900, 100, 1, 400, -200, 0, 50,false, true);
+    scene.add(greenGrass2);*/
+
+/*    var geometry = new THREE.PlaneBufferGeometry( 20, 20 );
+    var groundUnderGrass = new THREE.CubeGeometry(20, 0, 20);
     var color = new THREE.MeshBasicMaterial({
         color: new THREE.Color(0xFFFFFF),
         //map: THREE.ImageUtils.loadTexture( 'resources/textures/texture_snow.jpg' ), overdraw: false,
     });
     var meshing = new THREE.Mesh(groundUnderGrass,color);
     scene.add(meshing);
-    meshing.position.set(50,0,10);
+    meshing.position.set(0,0,10);
 
     var texture2 = new THREE.CanvasTexture( generateTexture() );
     for ( var i = 0; i < 5; i ++ ) {
@@ -56,7 +62,7 @@ var init = function() {
 
         var context = canvas.getContext( '2d' );
 
-        for ( var i = 0; i < 50000; i ++ ) {
+        for ( var i = 0; i < 10000; i ++ ) {
             context.fillStyle = 'hsl(0,0%,' + ( Math.random() * 50 + 50 ) + '%)';
             context.beginPath();
             context.arc( Math.random() * canvas.width, Math.random() * canvas.height, Math.random() + 0.1, 0, Math.PI * 2, true );
@@ -67,25 +73,25 @@ var init = function() {
         context.globalCompositeOperation = 'lighter';
 
         return canvas;
-    }
+    }*/
     // End of Grass testing
     //-----------------------------------------------------------------------------------------------------------------
     var lightPoint = createLight.directLight(); // Create Light
     var ambientLight = createLight.ambientLight(1500, 3000, -2000);  // Create atmospheric white light
 
-    var grid = new THREE.GridHelper(5000,10); // Create Grid
-    var skybox = createObject.skyBox("resources/skybox3/", "cube", "tCube", 1000, 4000, 1000)    // Create Skybox
-    var ground = createObject.heightMap("resources/textures/texture_snow.jpg", "heightmap", "terrain", 100, 7, 100, 50, 0, -50)    // Create Heightmap Ground
+    var grid = new THREE.GridHelper(250,10); // Create Grid
+    var skyBox = createObject.skyBox("resources/skybox3/", "cube", "tCube", 500, 1000, 500)    // Create Skybox
+    var ground = createObject.heightMap("resources/textures/texture_snow.jpg", "heightmap", "terrain", 500, 50, 250, 0, 0, -125)    // Create Heightmap Ground
 
     scene.add(grassGroup); // Adds Dynamic Grass to Scene
     scene.children.reverse();   // Reverses the children in the opposite direction.
     scene.add(grid);    // Adds Helping Grid for easy view
-    scene.add(skybox);  // Adds SkyBox to Scene
+    scene.add(skyBox);  // Adds SkyBox to Scene
     scene.add(ground);  // Adds Heightmap Ground to Scene
     scene.add(ambientLight);    // Adds Ambiebt Light to Scene
     scene.add(lightPoint);  // Adds Light Point to Scene
 
-    //  Useful for later
+    //  Useful for later, position on the heightmap!
     //  var temp = createObject.boxGeometry("resources/textures/texture_snow.jpg", 1, 1, 1, 0, 0, 0, true, true);
     //  ground.add(temp);
     //  temp.position.y = ground.getHeightAtPoint(temp.position) + 0.5;
@@ -106,13 +112,12 @@ var init = function() {
         renderer.render(scene, camera); // Repeat Renderer
         window.requestAnimFrame(render);    // Banana
 
-       var time = Date.now() / 6000;
-
+        /*      var time = Date.now() / 6000;
         for ( var i = 0, l = grassGroup.children.length; i < l; i ++ ) {
             var Posmesh = grassGroup.children[ i ];
-            Posmesh.position.x = 50 + Math.sin( time * 4 ) * i * i * 0.005;
+            Posmesh.position.x = Math.sin( time * 4 ) * i * i * 0.005;
             Posmesh.position.z = 9.9 + Math.cos( time * 6 ) * i * i * 0.005;
-        }
+        }*/
     }
 
 window.addEventListener('load', init);

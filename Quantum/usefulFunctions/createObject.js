@@ -6,6 +6,20 @@ function CreateObject() {
 }
 
 /*
+ Prototype function that creates a Three.JS box
+ Returns BoxGeometry Mesh
+ */
+CreateObject.prototype.boxGeometryColor = function(col, geoX, geoY, geoZ, posX, posY, posZ, giveShadow, getShadow) {
+    geometry = new THREE.BoxGeometry(geoX, geoY, geoZ);
+    material = new THREE.MeshPhongMaterial({ color: col });
+    object = new THREE.Mesh(geometry, material);
+    object.castShadow = giveShadow;
+    object.receiveShadow = getShadow;
+    object.position.set(posX, posY, posZ);
+    return object;
+};
+
+/*
     Prototype function that creates a Three.JS box
     Returns BoxGeometry Mesh
  */
