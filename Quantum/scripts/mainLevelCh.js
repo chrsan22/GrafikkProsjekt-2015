@@ -43,9 +43,9 @@ var init = function() {
         tieLoaderMTL.load("scripts/tree-toon.obj", "scripts/tree-toon.mtl", function (object) {
             var tempMesh;
             tempMesh = object;
-            tempMesh.rotation.y = 180*(Math.PI/180);
+            //tempMesh.rotation.y = 180*(Math.PI/180);
             tempMesh.name = "tree" + i;
-            tempMesh.position.set(Math.random() * (250 - (-250) + 1) + (-250), 100, Math.random() * (125 - (-125) + 1) + (-125));
+            tempMesh.position.set(Math.random() * (250 - (-250) + 1) + (-250), -100, Math.random() * (125 - (-125) + 1) + (-125));
             ground.add(tempMesh);
             tempMesh.position.y = ground.getHeightAtPoint(tempMesh.position);
         });
