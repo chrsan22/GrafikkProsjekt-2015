@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link type="text/css" href="resources/stylesheet/style.css" />
+    <title>Winter Wonder Land</title>
+    <script src="scripts/three.min.js"></script>
+    <script type="text/javascript" src="scripts/MTLLoader.js"></script>
+    <script type="text/javascript" src="scripts/OBJLoader.js"></script>
+    <script type="text/javascript" src="scripts/OBJMTLLoader.js"></script>
+    <script type="text/javascript" src="scripts/mainLevelCh.js"></script>
+    <script type="text/javascript" src="usefulFunctions/createObject.js"></script>
+    <script type="text/javascript" src="usefulFunctions/light.js"></script>
+    <script type="text/javascript" src="usefulFunctions/cleanerMain.js"></script>
+    <script type="text/javascript" src="controls/THREEx.KeyboardState.js"></script>
+    <script type="text/javascript" src="controls/OrbitControls.js"></script>
+    <script type="text/javascript" src="controls/FlyControls/FlyControls.js"></script>
+    <script src="heightmap/HeightMapGeometry.js"></script>
+    <script src="heightmap/HeightMapMesh.js"></script>
+    <script src="heightmap/HeightmapFunctions.js"></script>
+    <img src="resources/heightmaps/heightmap_test.jpg" id="heightmap" hidden/>
+
+
+    <style>
+        body {
+            padding: 0;
+            margin: 0;
+            overflow: hidden;
+            background:#000;
+            color: #eee;
+            font-family:Monospace;
+            font-size:13px;
+            text-align:center;
+        }
+        #info {
+            position: absolute;
+            top: 0px; width: 100%;
+            padding: 5px;
+            z-index:100;
+        }
+
+        a { color: #0080ff }
+        b { color:orange }
+    </style>
+</head>
+<body>
+<div id="info"><br/>
+    <b>WASD</b> move, <b>SPACE|C</b> up | down, <b>Q|E</b> roll, <b>up|down</b> pitch, <b>left|right</b> yaw, <b>P</b> pause<br/>
+</div>
+<canvas id="canvas">
+</canvas>
+
+</body>
+</html>
