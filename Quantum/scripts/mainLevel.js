@@ -1,9 +1,9 @@
     var camera, controls, scene, renderer;  // Creates Camera, Controls, Scene and Renderer
     var clock = new THREE.Clock();  //Creates Clock
-    var grassGroup = new THREE.Object3D();
-    var particleCount;
-    var particles;
-    var particleSystem;
+    //var grassGroup = new THREE.Object3D();
+    var snowGroup = new THREE.Object3D();
+    var particleCount, particles, snowMesh;
+
 
 var init = function() {
     var canvas = document.getElementById("canvas"); // Canvas
@@ -19,7 +19,7 @@ var init = function() {
 
     // Controls for FlyControls
     controls = new THREE.FlyControls( camera ); // Creates Controls
-    controls.movementSpeed = 30; // WASD speed
+    controls.movementSpeed = 100; // WASD speed
     controls.rollSpeed = Math.PI / 24; // Rollspeed for Q and E roll
 
     renderer = cleanerMain.renderSettings(renderer);    // Sets Renderer in a different file
@@ -80,18 +80,12 @@ var init = function() {
     // End of Grass testing
     //-----------------------------------------------------------------------------------------------------------------
     // Start of snow implementation
-
-/*
-    var $container = $('#container');
-    $container.append(renderer.domElement);
-*/
-
     // create the particle variables
-     particleCount = 200;
+     particleCount = 300;
      particles = new THREE.Geometry();
-     pMaterial = new THREE.ParticleBasicMaterial({
+     pMaterial = new THREE.PointsMaterial({
             color: 0xFFFFFF,
-            size: 10,
+            size: 2,
             map: THREE.ImageUtils.loadTexture(
                 "resources/particle.png"
             ),
@@ -99,37 +93,17 @@ var init = function() {
             transparent: true
         });
 
-
     // now create the individual particles
-    for(var p = 0; p < particleCount; p++) {
-
-        // create a particle with random
-        // position values, -250 -> 250
-        var pX = Math.random() * 500 - 250,
-            pY = Math.random() * 500,
-            pZ = Math.random() * 250 - 250,
-            particle = new THREE.Vector3(pX, pY, pZ);
-        // create a velocity vector
-        particle.velocity = new THREE.Vector3(
-            0,				// x
-            -Math.random(),	// y
-            0);				// z
-
-        // add it to the geometry
-        particles.vertices.push(particle);
+    for(var p = 0; p <= particleCount; p++) {
+        snowMesh = new THREE.Points(particles, pMaterial);
+        snowMesh.position.x = Math.random() * 250 - 125;
+        snowMesh.position.y = Math.random() * 200;
+        snowMesh.position.z = Math.random() * -125;
+        snowMesh.velocity = -Math.random();
+        particles.vertices.push(new THREE.Vector3(snowMesh.position.x, snowMesh.position.y, snowMesh.position.z))
+        snowMesh.sortParticles = true;
+        snowGroup.add(snowMesh);
     }
-
-    // create the particle system
-    particleSystem = new THREE.ParticleSystem(
-        particles,
-        pMaterial);
-
-    particleSystem.sortParticles = true;
-
-    // add it to the scene
-    scene.add(particleSystem);
-
-
 
     // End of snow implementation
     //-----------------------------------------------------------------------------------------------------------------
@@ -140,7 +114,8 @@ var init = function() {
     var skyBox = createObject.skyBox("resources/skybox3/", "cube", "tCube", 500, 1000, 500)    // Create Skybox
     var ground = createObject.heightMap("resources/textures/texture_snow.jpg", "heightmap", "terrain", 500, 50, 250, 0, 0, -125)    // Create Heightmap Ground
 
-    scene.add(grassGroup); // Adds Dynamic Grass to Scene
+    //scene.add(grassGroup); // Adds Dynamic Grass to Scene
+    scene.add(snowGroup)    // Adds Snowmeshes 
     scene.children.reverse();   // Reverses the children in the opposite direction.
     scene.add(grid);    // Adds Helping Grid for easy view
     scene.add(skyBox);  // Adds SkyBox to Scene
@@ -169,35 +144,22 @@ var init = function() {
         renderer.render(scene, camera); // Repeat Renderer
         window.requestAnimFrame(render);    // Banana
 
-        /*      var time = Date.now() / 6000;
+/*        var time = Date.now() / 6000;
         for ( var i = 0, l = grassGroup.children.length; i < l; i ++ ) {
             var Posmesh = grassGroup.children[ i ];
             Posmesh.position.x = Math.sin( time * 4 ) * i * i * 0.005;
             Posmesh.position.z = 9.9 + Math.cos( time * 6 ) * i * i * 0.005;
         }*/
-
-
-        while(particleCount--) {
-            // get the particle
-            var particle = particles.vertices[particleCount];
-            console.log(particles.vertices[particleCount].y);
-            // check if we need to reset
-            if(particle.y < -300) {
-                particle.y = 200;
-                particle.velocity.y = 0;
+        // Snow movement
+        for(var i = 0; i < snowGroup.children.length; i++) {
+            var particle = snowGroup.children[i];
+            if(particle.position.y < 1) {
+                particle.position.y = 200
+                particle.velocity = -Math.random() // Sets new random velocity rate
+            }else {
+                particle.position.y = particle.position.y + particle.velocity; // Continues down with the same velocity rate
             }
-            // update the velocity
-            particle.velocity.y =-1;
-            console.log(particle.velocity);
-            // and the position
-            particle.position.addSelf(
-                particle.velocity);
         }
-
-        // flag to the particle system that we've
-        // changed its vertices. This is the
-        // dirty little secret.
-        particleSystem.geometry.__dirtyVertices = false;
     }
 
 window.addEventListener('load', init);
