@@ -99,7 +99,7 @@ var init = function() {
         snowMesh.position.x = Math.random() * 250 - 125;
         snowMesh.position.y = Math.random() * 200;
         snowMesh.position.z = Math.random() * -125;
-        snowMesh.velocity = -Math.random();
+        snowMesh.velocity = -(Math.random() * 0.5) - 0.1;
         particles.vertices.push(new THREE.Vector3(snowMesh.position.x, snowMesh.position.y, snowMesh.position.z))
         snowMesh.sortParticles = true;
         snowGroup.add(snowMesh);
@@ -155,7 +155,7 @@ var init = function() {
             var particle = snowGroup.children[i];
             if(particle.position.y < 1) {
                 particle.position.y = 200
-                particle.velocity = -Math.random() // Sets new random velocity rate
+                particle.velocity = -(Math.random() * 0.6) - 0.1; // Sets new random velocity rate
             }else {
                 particle.position.y = particle.position.y + particle.velocity; // Continues down with the same velocity rate
             }
