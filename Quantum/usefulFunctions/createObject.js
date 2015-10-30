@@ -116,3 +116,7 @@ CreateObject.prototype.heightMap = function (texture, heightMap, name, scaleX, s
 CreateObject.prototype.grass = function () {
 
 };
+
+CreateObject.prototype.fallingSnow = function () {
+
+};

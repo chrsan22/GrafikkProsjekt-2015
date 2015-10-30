@@ -115,7 +115,7 @@ var init = function() {
     var ground = createObject.heightMap("resources/textures/texture_snow.jpg", "heightmap", "terrain", 500, 50, 250, 0, 0, -125)    // Create Heightmap Ground
 
     //scene.add(grassGroup); // Adds Dynamic Grass to Scene
-    scene.add(snowGroup)    // Adds Snowmeshes 
+    scene.add(snowGroup);    // Adds Snowmeshes
     scene.children.reverse();   // Reverses the children in the opposite direction.
     scene.add(grid);    // Adds Helping Grid for easy view
     scene.add(skyBox);  // Adds SkyBox to Scene
@@ -153,8 +153,8 @@ var init = function() {
         // Snow movement
         for(var i = 0; i < snowGroup.children.length; i++) {
             var particle = snowGroup.children[i];
-            if(particle.position.y < 1) {
-                particle.position.y = 200
+            if(particle.position.y <= 1) {
+                particle.position.y = 200;
                 particle.velocity = -(Math.random() * 0.6) - 0.1; // Sets new random velocity rate
             }else {
                 particle.position.y = particle.position.y + particle.velocity; // Continues down with the same velocity rate
@@ -166,7 +166,7 @@ window.addEventListener('load', init);
 
 // shim layer with setTimeout fallback
 window.requestAnimFrame = (function(){
-    return  window.requestAnimationFrame       ||
+    return  window.requestAnimationFrame   ||
         window.webkitRequestAnimationFrame ||
         window.mozRequestAnimationFrame    ||
         function( callback ){
