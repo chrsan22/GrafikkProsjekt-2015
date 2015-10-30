@@ -13,6 +13,9 @@ var init = function() {
 
     // Camera is positioned towards -z axis
     scene = new THREE.Scene(); // Scene
+    // Adding fog
+    scene.fog = new THREE.Fog( 0xFFFFFF, 0.0100, 200 );
+    // Adding camera
     camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1e7);   // Set Camera Perspective
     camera.position.set(0,150,200);  // Set Camera Position towards -z axis
     camera.rotation.x = 340*(Math.PI/180) // Set a rotate to watch down on the landscape

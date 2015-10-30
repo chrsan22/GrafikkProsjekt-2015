@@ -13,6 +13,10 @@ var init = function() {
 
     // Camera is positioned towards -z axis
     scene = new THREE.Scene(); // Scene
+    // Add fog
+    scene.fog = new THREE.Fog( 0xFFFFFF, 0.0100, 200 );
+
+
     camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1e7);   // Set Camera Perspective
     camera.position.set(0,150,200);  // Set Camera Position towards -z axis
     camera.rotation.x = 340*(Math.PI/180) // Set a rotate to watch down on the landscape
@@ -81,11 +85,11 @@ var init = function() {
     //-----------------------------------------------------------------------------------------------------------------
     // Start of snow implementation
     // create the particle variables
-    particleCount = 300;
+    particleCount = 250;
     particles = new THREE.Geometry();
     pMaterial = new THREE.PointsMaterial({
         color: 0xFFFFFF,
-        size: 2,
+        size: 1,
         map: THREE.ImageUtils.loadTexture(
             "resources/particle.png"
         ),
@@ -97,7 +101,7 @@ var init = function() {
     for(var p = 0; p <= particleCount; p++) {
         snowMesh = new THREE.Points(particles, pMaterial);
         snowMesh.position.x = Math.random() * 250 - 125;
-        snowMesh.position.y = Math.random() * 200;
+        snowMesh.position.y = Math.random() * 100;
         snowMesh.position.z = Math.random() * -125;
         snowMesh.velocity = -(Math.random() * 0.5) - 0.1;
         particles.vertices.push(new THREE.Vector3(snowMesh.position.x, snowMesh.position.y, snowMesh.position.z))
@@ -111,8 +115,8 @@ var init = function() {
     var ambientLight = createLight.ambientLight(1500, 3000, -2000);  // Create atmospheric white light
 
     var grid = new THREE.GridHelper(250,10); // Create Grid
-    var skyBox = createObject.skyBox("resources/skybox3/", "cube", "tCube", 500, 1000, 500)    // Create Skybox
-    var ground = createObject.heightMap("resources/textures/texture_snow.jpg", "heightmap", "terrain", 500, 50, 250, 0, 0, -125)    // Create Heightmap Ground
+    var skyBox = createObject.skyBox("resources/skybox3/", "cube", "tCube", 5000, 2000, 5000)    // Create Skybox
+    var ground = createObject.heightMap("resources/textures/texture_snow.jpg", "heightmap", "terrain", 500, 30, 250, 0, 0, -125)    // Create Heightmap Ground
 
     //scene.add(grassGroup); // Adds Dynamic Grass to Scene
     scene.add(snowGroup);    // Adds Snowmeshes
@@ -153,8 +157,8 @@ function render() {
     // Snow movement
     for(var i = 0; i < snowGroup.children.length; i++) {
         var particle = snowGroup.children[i];
-        if(particle.position.y <= 1) {
-            particle.position.y = 200;
+        if(particle.position.y <= -50) {
+            particle.position.y = 100;
             particle.velocity = -(Math.random() * 0.6) - 0.1; // Sets new random velocity rate
         }else {
             particle.position.y = particle.position.y + particle.velocity; // Continues down with the same velocity rate
