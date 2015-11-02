@@ -14,7 +14,7 @@ var init = function() {
     // Camera is positioned towards -z axis
     scene = new THREE.Scene(); // Scene
     // Adding fog
-    scene.fog = new THREE.Fog( 0xFFFFFF, 0.0100, 200 );
+    scene.fog = new THREE.Fog( 0xCCCCCC, 0.0100, 600 );
     // Adding camera
     camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1e7);   // Set Camera Perspective
     camera.position.set(0,150,200);  // Set Camera Position towards -z axis
@@ -100,7 +100,7 @@ var init = function() {
     for(var p = 0; p <= particleCount; p++) {
         snowMesh = new THREE.Points(particles, pMaterial);
         snowMesh.position.x = Math.random() * 250 - 125;
-        snowMesh.position.y = Math.random() * 200;
+        snowMesh.position.y = Math.random() * 250;
         snowMesh.position.z = Math.random() * -125;
         snowMesh.velocity = -(Math.random() * 0.5) - 0.1;
         particles.vertices.push(new THREE.Vector3(snowMesh.position.x, snowMesh.position.y, snowMesh.position.z))
@@ -157,7 +157,7 @@ var init = function() {
         for(var i = 0; i < snowGroup.children.length; i++) {
             var particle = snowGroup.children[i];
             if(particle.position.y <= 1) {
-                particle.position.y = 200;
+                particle.position.y = 250;
                 particle.velocity = -(Math.random() * 0.6) - 0.1; // Sets new random velocity rate
             }else {
                 particle.position.y = particle.position.y + particle.velocity; // Continues down with the same velocity rate
