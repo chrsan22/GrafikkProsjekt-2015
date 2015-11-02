@@ -101,7 +101,7 @@ var init = function() {
         snowMesh = new THREE.Points(particles, pMaterial);
         snowMesh.position.x = Math.random() * 250 - 125;
         snowMesh.position.y = Math.random() * 250;
-        snowMesh.position.z = Math.random() * -125;
+        snowMesh.position.z = Math.random() * 125 - 62.5;
         snowMesh.velocity = -(Math.random() * 0.5) - 0.1;
         particles.vertices.push(new THREE.Vector3(snowMesh.position.x, snowMesh.position.y, snowMesh.position.z))
         snowMesh.sortParticles = true;
@@ -118,7 +118,7 @@ var init = function() {
     var ground = createObject.heightMap("resources/textures/texture_snow.jpg", "heightmap", "terrain", 500, 50, 250, 0, 0, -125)    // Create Heightmap Ground
 
     //scene.add(grassGroup); // Adds Dynamic Grass to Scene
-    scene.add(snowGroup);    // Adds Snowmeshes
+    ground.add(snowGroup);    // Adds Snowmeshes
     scene.children.reverse();   // Reverses the children in the opposite direction.
     scene.add(grid);    // Adds Helping Grid for easy view
     scene.add(skyBox);  // Adds SkyBox to Scene
