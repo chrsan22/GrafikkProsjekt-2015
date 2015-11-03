@@ -2,11 +2,16 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link type="text/css" href="resources/stylesheet/style.css" />
     <title>Winter Wonder Land</title>
     <script src="scripts/three.min.js"></script>
-    <script type="text/javascript" src="scripts/mainLevelWithHeightmap.js"></script>
+    <script type="text/javascript" src="scripts/MTLLoader.js"></script>
+    <script type="text/javascript" src="scripts/OBJLoader.js"></script>
+    <script type="text/javascript" src="scripts/OBJMTLLoader.js"></script>
+    <script type="text/javascript" src="scripts/mainLevelCh.js"></script>
     <script type="text/javascript" src="usefulFunctions/createObject.js"></script>
     <script type="text/javascript" src="usefulFunctions/light.js"></script>
+    <script type="text/javascript" src="usefulFunctions/cleanerMain.js"></script>
     <script type="text/javascript" src="controls/THREEx.KeyboardState.js"></script>
     <script type="text/javascript" src="controls/OrbitControls.js"></script>
     <script type="text/javascript" src="controls/FlyControls/FlyControls.js"></script>
@@ -40,7 +45,7 @@
 </head>
 <body>
 <div id="info"><br/>
-    <b>WASD</b> move, <b>SPACE|CTRL</b> up | down, <b>Q|E</b> roll, <b>up|down</b> pitch, <b>left|right</b> yaw, <b>P</b> pause<br/>
+    <b>WASD</b> move, <b>SPACE|C</b> up | down, <b>Q|E</b> roll, <b>up|down</b> pitch, <b>left|right</b> yaw, <b>P</b> pause<br/>
 </div>
 <canvas id="canvas">
 </canvas>
