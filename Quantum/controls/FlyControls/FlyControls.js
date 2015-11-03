@@ -17,7 +17,7 @@ THREE.FlyControls = function ( object, domElement ) {
     this.tmpQuaternion = new THREE.Quaternion();
 
     // Changing depending if mouse is active or not
-    this.mouseStatus = 0;
+    this.mouseStatus = 1;
 
     this.moveState = { up: 0, down: 0, left: 0, right: 0, forward: 0, back: 0, pitchUp: 0, pitchDown: 0, yawLeft: 0, yawRight: 0, rollLeft: 0, rollRight: 0 };
     this.moveVector = new THREE.Vector3( 0, 0, 0 );

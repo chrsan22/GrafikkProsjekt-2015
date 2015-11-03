@@ -14,11 +14,11 @@ var init = function() {
     // Camera is positioned towards -z axis
     scene = new THREE.Scene(); // Scene
     // Adding fog
-   // scene.fog = new THREE.Fog( 0xCCCCCC, 0.0100, 600 );
+    scene.fog = new THREE.Fog( 0xCCCCCC, 0.0060, 600 );
     // Adding camera
     camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1e7);   // Set Camera Perspective
-    camera.position.set(0,150,200);  // Set Camera Position towards -z axis
-    camera.rotation.x = 340*(Math.PI/180) // Set a rotate to watch down on the landscape
+    camera.position.set(0,70,160);  // Set Camera Position towards -z axis
+    camera.rotation.x = 350*(Math.PI/180) // Set a rotate to watch down on the landscape
 
     // Controls for FlyControls
     controls = new THREE.FlyControls( camera ); // Creates Controls
@@ -94,11 +94,11 @@ var init = function() {
     //-----------------------------------------------------------------------------------------------------------------
     // Start of snow implementation
     // create the particle variables
-     particleCount = 300;
+     particleCount = 350;
      particles = new THREE.Geometry();
      pMaterial = new THREE.PointsMaterial({
             color: 0xFFFFFF,
-            size: 2,
+            size: 1,
             map: THREE.ImageUtils.loadTexture(
                 "resources/particle.png"
             ),
