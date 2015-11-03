@@ -118,8 +118,8 @@ var init = function () {
 
     // Create the water effect
     water = new THREE.Water(renderer, camera, scene, {
-        textureWidth: 2000,
-        textureHeight: 2000,
+        textureWidth: 4000,
+        textureHeight: 4000,
         waterNormals: waterNormals,
         alpha: 	1.0,
         sunDirection: lightPoint.position.normalize(),
@@ -128,7 +128,7 @@ var init = function () {
         side: THREE.DoubleSide
     });
     var aMeshMirror = new THREE.Mesh(
-        new THREE.PlaneBufferGeometry(2000, 2000, 10, 10),
+        new THREE.PlaneBufferGeometry(4000, 4000, 10, 10),
         water.material
     );
 
