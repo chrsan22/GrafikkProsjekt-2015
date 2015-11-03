@@ -14,7 +14,7 @@ var init = function() {
     // Camera is positioned towards -z axis
     scene = new THREE.Scene(); // Scene
     // Adding fog
-    scene.fog = new THREE.Fog( 0xCCCCCC, 0.0100, 600 );
+   // scene.fog = new THREE.Fog( 0xCCCCCC, 0.0100, 600 );
     // Adding camera
     camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1e7);   // Set Camera Perspective
     camera.position.set(0,150,200);  // Set Camera Position towards -z axis
@@ -27,6 +27,16 @@ var init = function() {
 
     renderer = cleanerMain.renderSettings(renderer);    // Sets Renderer in a different file
     document.body.appendChild( renderer.domElement );   // Sets Size
+
+    //initiating vital objects
+    var lightPoint = createLight.directLight(); // Create Light
+    var ambientLight = createLight.ambientLight(1500, 3000, -2000);  // Create atmospheric white light
+
+    var grid = new THREE.GridHelper(250,10); // Create Grid
+    var skyBox = createObject.skyBox("resources/skybox3/", "cube", "tCube", 2100, 4000, 2100)    // Create Skybox
+    var ground = createObject.heightMap("resources/textures/texture_snow.jpg", "heightmap", "terrain", 500, 50, 250, 0, -2, -125)    // Create Heightmap Ground
+
+
 //-------------------------------------------------------------------------------------------------------------------
     // Start of Grass testing
 /*    var greenGrass = createObject.boxGeometryColor(0x009900, 500, 1, 100, 0, 0, -200, false, true);
@@ -110,17 +120,40 @@ var init = function() {
 
     // End of snow implementation
     //-----------------------------------------------------------------------------------------------------------------
-    var lightPoint = createLight.directLight(); // Create Light
-    var ambientLight = createLight.ambientLight(1500, 3000, -2000);  // Create atmospheric white light
+    // Start of water implementation
 
-    var grid = new THREE.GridHelper(250,10); // Create Grid
-    var skyBox = createObject.skyBox("resources/skybox3/", "cube", "tCube", 500, 1000, 500)    // Create Skybox
-    var ground = createObject.heightMap("resources/textures/texture_snow.jpg", "heightmap", "terrain", 500, 50, 250, 0, 0, -125)    // Create Heightmap Ground
+    // Load textures
+    var waterNormals = new THREE.ImageUtils.loadTexture('resources/heightmaps/waternormals.jpg');
+    waterNormals.wrapS = waterNormals.wrapT = THREE.RepeatWrapping;
+
+    // Create the water effect
+    water = new THREE.Water(renderer, camera, scene, {
+        textureWidth: 2000,
+        textureHeight: 2000,
+        waterNormals: waterNormals,
+        alpha: 	1.0,
+        sunDirection: lightPoint.position.normalize(),
+        waterColor: 0x001e0f,
+        betaVersion: 0,
+        side: THREE.DoubleSide
+    });
+    var aMeshMirror = new THREE.Mesh(
+        new THREE.PlaneBufferGeometry(2000, 2000, 10, 10),
+        water.material
+    );
+
+    aMeshMirror.add(water);
+    aMeshMirror.rotation.x = - Math.PI * 0.5;
+    scene.add(aMeshMirror);
+
+    // End of water implementation
+    //-----------------------------------------------------------------------------------------------------------------
+
 
     //scene.add(grassGroup); // Adds Dynamic Grass to Scene
     ground.add(snowGroup);    // Adds Snowmeshes
     scene.children.reverse();   // Reverses the children in the opposite direction.
-    scene.add(grid);    // Adds Helping Grid for easy view
+    //scene.add(grid);    // Adds Helping Grid for easy view
     scene.add(skyBox);  // Adds SkyBox to Scene
     scene.add(ground);  // Adds Heightmap Ground to Scene
     scene.add(ambientLight);    // Adds Ambiebt Light to Scene
@@ -146,7 +179,9 @@ var init = function() {
         controls.update( delta );   // Update Controls
         renderer.render(scene, camera); // Repeat Renderer
         window.requestAnimFrame(render);    // Banana
-
+        //Water rendering
+        water.material.uniforms.time.value += 1.0 / 60.0;
+        water.render();
 /*        var time = Date.now() / 6000;
         for ( var i = 0, l = grassGroup.children.length; i < l; i ++ ) {
             var Posmesh = grassGroup.children[ i ];
