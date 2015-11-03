@@ -117,6 +117,42 @@ CreateObject.prototype.grass = function () {
 
 };
 
-CreateObject.prototype.fallingSnow = function () {
+CreateObject.prototype.fallingSnow = function (particleNr) {
+    // create the particle variables
+    var particleCount = particleNr;
+    var particles = new THREE.Geometry();
+    var pMaterial = new THREE.PointsMaterial({
+        color: 0xFFFFFF,
+        size: 2,
+        map: THREE.ImageUtils.loadTexture(
+            "resources/particle.png"
+        ),
+        blending: THREE.AdditiveBlending,
+        transparent: true
+    });
 
+    // now create the individual particles
+    for(var p = 0; p <= particleCount; p++) {
+        object = new THREE.Points(particles, pMaterial);
+        object.position.x = Math.random() * 250 - 125;
+        object.position.y = Math.random() * 250;
+        object.position.z = Math.random() * 125 - 62.5;
+        object.velocity = -(Math.random() * 0.5) - 0.1;
+        particles.vertices.push(new THREE.Vector3(object.position.x, object.position.y, object.position.z))
+        object.sortParticles = true;
+        snow.add(object);
+    }
+    return snow;
 };
+
+CreateObject.prototype.fallingSnowRender = function (snowGroup) {
+    for(var i = 0; i < snowGroup.children.length; i++) {
+        var particle = snowGroup.children[i];
+        if(particle.position.y <= 1) {
+            particle.position.y = 250;
+            particle.velocity = -(Math.random() * 0.6) - 0.1; // Sets new random velocity rate
+        }else {
+            particle.position.y = particle.position.y + particle.velocity; // Continues down with the same velocity rate
+        }
+    }
+}

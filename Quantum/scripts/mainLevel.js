@@ -1,13 +1,13 @@
     var camera, controls, scene, renderer;  // Creates Camera, Controls, Scene and Renderer
     var clock = new THREE.Clock();  //Creates Clock
     //var grassGroup = new THREE.Object3D();
-    var snowGroup = new THREE.Object3D();
-    var particleCount, particles, snowMesh;
+    var snow = new THREE.Object3D();
+    var createObject;
 
 
 var init = function() {
     var canvas = document.getElementById("canvas"); // Canvas
-    var createObject = new CreateObject(); // Contains functions to create usefulFunctions
+    createObject = new CreateObject(); // Contains functions to create usefulFunctions
     var createLight = new CreateLight(); // Contains functions to create light
     var cleanerMain = new CleanMain(); // Contains functions to clean up the main
 
@@ -35,14 +35,11 @@ var init = function() {
     var grid = new THREE.GridHelper(250,10); // Create Grid
     var skyBox = createObject.skyBox("resources/skybox3/", "cube", "tCube", 2100, 4000, 2100)    // Create Skybox
     var ground = createObject.heightMap("resources/textures/texture_snow.jpg", "heightmap", "terrain", 500, 50, 250, 0, -2, -125)    // Create Heightmap Ground
+    snow = createObject.fallingSnow(300);
 
 
-//-------------------------------------------------------------------------------------------------------------------
+    //-----------------------------------------------------------------------------------------------------------------
     // Start of Grass testing
-/*    var greenGrass = createObject.boxGeometryColor(0x009900, 500, 1, 100, 0, 0, -200, false, true);
-    scene.add(greenGrass);
-    var greenGrass2 = createObject.boxGeometryColor(0x009900, 100, 1, 400, -200, 0, 50,false, true);
-    scene.add(greenGrass2);*/
 
 /*    var geometry = new THREE.PlaneBufferGeometry( 20, 20 );
     var groundUnderGrass = new THREE.CubeGeometry(20, 0, 20);
@@ -92,34 +89,6 @@ var init = function() {
     }*/
     // End of Grass testing
     //-----------------------------------------------------------------------------------------------------------------
-    // Start of snow implementation
-    // create the particle variables
-     particleCount = 300;
-     particles = new THREE.Geometry();
-     pMaterial = new THREE.PointsMaterial({
-            color: 0xFFFFFF,
-            size: 2,
-            map: THREE.ImageUtils.loadTexture(
-                "resources/particle.png"
-            ),
-            blending: THREE.AdditiveBlending,
-            transparent: true
-        });
-
-    // now create the individual particles
-    for(var p = 0; p <= particleCount; p++) {
-        snowMesh = new THREE.Points(particles, pMaterial);
-        snowMesh.position.x = Math.random() * 250 - 125;
-        snowMesh.position.y = Math.random() * 250;
-        snowMesh.position.z = Math.random() * 125 - 62.5;
-        snowMesh.velocity = -(Math.random() * 0.5) - 0.1;
-        particles.vertices.push(new THREE.Vector3(snowMesh.position.x, snowMesh.position.y, snowMesh.position.z))
-        snowMesh.sortParticles = true;
-        snowGroup.add(snowMesh);
-    }
-
-    // End of snow implementation
-    //-----------------------------------------------------------------------------------------------------------------
     // Start of water implementation
 
     // Load textures
@@ -145,15 +114,13 @@ var init = function() {
     aMeshMirror.add(water);
     aMeshMirror.rotation.x = - Math.PI * 0.5;
     scene.add(aMeshMirror);
-
     // End of water implementation
     //-----------------------------------------------------------------------------------------------------------------
 
-
     //scene.add(grassGroup); // Adds Dynamic Grass to Scene
-    ground.add(snowGroup);    // Adds Snowmeshes
+    ground.add(snow);    // Adds Snowmeshes
     scene.children.reverse();   // Reverses the children in the opposite direction.
-    //scene.add(grid);    // Adds Helping Grid for easy view
+    scene.add(grid);    // Adds Helping Grid for easy view
     scene.add(skyBox);  // Adds SkyBox to Scene
     scene.add(ground);  // Adds Heightmap Ground to Scene
     scene.add(ambientLight);    // Adds Ambiebt Light to Scene
@@ -182,22 +149,13 @@ var init = function() {
         //Water rendering
         water.material.uniforms.time.value += 1.0 / 60.0;
         water.render();
+        createObject.fallingSnowRender(snow);
 /*        var time = Date.now() / 6000;
         for ( var i = 0, l = grassGroup.children.length; i < l; i ++ ) {
             var Posmesh = grassGroup.children[ i ];
             Posmesh.position.x = Math.sin( time * 4 ) * i * i * 0.005;
             Posmesh.position.z = 9.9 + Math.cos( time * 6 ) * i * i * 0.005;
         }*/
-        // Snow movement
-        for(var i = 0; i < snowGroup.children.length; i++) {
-            var particle = snowGroup.children[i];
-            if(particle.position.y <= 1) {
-                particle.position.y = 250;
-                particle.velocity = -(Math.random() * 0.6) - 0.1; // Sets new random velocity rate
-            }else {
-                particle.position.y = particle.position.y + particle.velocity; // Continues down with the same velocity rate
-            }
-        }
     }
 
 window.addEventListener('load', init);
