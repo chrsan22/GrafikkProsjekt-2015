@@ -11,13 +11,11 @@ var init = function() {
     var createLight = new CreateLight(); // Contains functions to create light
     var cleanerMain = new CleanMain(); // Contains functions to clean up the main
 
-    // Camera is positioned towards -z axis
     scene = new THREE.Scene(); // Scene
-    // Adding fog
-   // scene.fog = new THREE.Fog( 0xCCCCCC, 0.0100, 600 );
-    // Adding camera
+
+    // Adding Camera, positioned towards -z axis
     camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1e7);   // Set Camera Perspective
-    camera.position.set(0,150,200);  // Set Camera Position towards -z axis
+    camera.position.set(0,150,400);  // Set Camera Position towards -z axis
     camera.rotation.x = 340*(Math.PI/180) // Set a rotate to watch down on the landscape
 
     // Controls for FlyControls
@@ -32,11 +30,11 @@ var init = function() {
     var lightPoint = createLight.directLight(); // Create Light
     var ambientLight = createLight.ambientLight(1500, 3000, -2000);  // Create atmospheric white light
 
-    var grid = new THREE.GridHelper(250,10); // Create Grid
+    var grid = new THREE.GridHelper(500,10); // Create Grid
     var skyBox = createObject.skyBox("resources/skybox3/", "cube", "tCube", 2100, 4000, 2100)    // Create Skybox
-    var ground = createObject.heightMap("resources/textures/texture_snow.jpg", "heightmap", "terrain", 500, 50, 250, 0, -2, -125)    // Create Heightmap Ground
-    snow = createObject.fallingSnow(300);
-
+    var ground = createObject.heightMap("resources/textures/texture_snow.jpg", "heightmap", "terrain", 500, 75, 500, 0, -2, 0)    // Create Heightmap Ground
+    scene.fog = new THREE.Fog( 0xCCCCCC, 0.0100, 400 );     // Adding fog
+    snow = createObject.fallingSnow(300,250,125,250,0,250,125);   // Adding Snow
 
     //-----------------------------------------------------------------------------------------------------------------
     // Start of Grass testing
@@ -120,7 +118,7 @@ var init = function() {
     //scene.add(grassGroup); // Adds Dynamic Grass to Scene
     ground.add(snow);    // Adds Snowmeshes
     scene.children.reverse();   // Reverses the children in the opposite direction.
-    scene.add(grid);    // Adds Helping Grid for easy view
+    //scene.add(grid);    // Adds Helping Grid for easy view
     scene.add(skyBox);  // Adds SkyBox to Scene
     scene.add(ground);  // Adds Heightmap Ground to Scene
     scene.add(ambientLight);    // Adds Ambiebt Light to Scene
@@ -136,7 +134,6 @@ var init = function() {
         camera.aspect = window.innerWidth / window.innerHeight; // Re-Sets Camera Aspect
         camera.updateProjectionMatrix();    // Updates Projection Matrix
     }
-
     render();   // Render the scene
     window.addEventListener('resize', onWindowResize, false);
 };
@@ -145,12 +142,12 @@ var init = function() {
         var delta = clock.getDelta(); // seconds.
         controls.update( delta );   // Update Controls
         renderer.render(scene, camera); // Repeat Renderer
-        window.requestAnimFrame(render);    // Banana
         //Water rendering
-        water.material.uniforms.time.value += 1.0 / 60.0;
-        water.render();
-        createObject.fallingSnowRender(snow);
-/*        var time = Date.now() / 6000;
+        water.material.uniforms.time.value += 1.0 / 60.0;   // The rate the water will render
+        water.render();     // Rendering water movement
+        createObject.fallingSnowRender(snow);   // Rendering snow movement
+        window.requestAnimFrame(render);    // Reloop
+/*      var time = Date.now() / 6000;
         for ( var i = 0, l = grassGroup.children.length; i < l; i ++ ) {
             var Posmesh = grassGroup.children[ i ];
             Posmesh.position.x = Math.sin( time * 4 ) * i * i * 0.005;

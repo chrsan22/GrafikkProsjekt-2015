@@ -117,7 +117,7 @@ CreateObject.prototype.grass = function () {
 
 };
 
-CreateObject.prototype.fallingSnow = function (particleNr) {
+CreateObject.prototype.fallingSnow = function (particleNr,xPos,xNeg,yPos,yNeg,zPos,zNeg) {
     // create the particle variables
     var particleCount = particleNr;
     var particles = new THREE.Geometry();
@@ -134,9 +134,9 @@ CreateObject.prototype.fallingSnow = function (particleNr) {
     // now create the individual particles
     for(var p = 0; p <= particleCount; p++) {
         object = new THREE.Points(particles, pMaterial);
-        object.position.x = Math.random() * 250 - 125;
-        object.position.y = Math.random() * 250;
-        object.position.z = Math.random() * 125 - 62.5;
+        object.position.x = (Math.random() * xPos) - xNeg;
+        object.position.y = (Math.random() * yPos) - yNeg;
+        object.position.z = (Math.random() * zPos) - zNeg;
         object.velocity = -(Math.random() * 0.5) - 0.1;
         particles.vertices.push(new THREE.Vector3(object.position.x, object.position.y, object.position.z))
         object.sortParticles = true;
