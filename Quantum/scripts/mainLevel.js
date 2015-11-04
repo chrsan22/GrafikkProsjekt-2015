@@ -33,8 +33,8 @@ var init = function() {
     var skyBox = createObject.skyBox("resources/skybox3/", "cube", "tCube", 2100, 4000, 2100)    // Create Skybox
     var ground = createObject.heightMap("resources/textures/texture_snow.jpg", "heightmap", "terrain", 500, 75, 500, 0, -2, 0)    // Create Heightmap Ground
     var water = createObject.createWater(lightPoint, 2000, 2000);     // Adding Water
-    snow = createObject.fallingSnow(300, 250 ,125, 250, 0, 250, 125);     // Adding Snow
-    scene.fog = new THREE.Fog( 0x999999, 0.0100, 400 );     // Adding fog
+    snow = createObject.fallingSnow(300, 1000 ,500, 100, 0, 1000, 500);     // Adding Snow
+    //scene.fog = new THREE.Fog( 0x999999, 0.0100, 500 );     // Adding fog
 
 
     //-----------------------------------------------------------------------------------------------------------------
@@ -120,7 +120,7 @@ var init = function() {
         //Water rendering
         water.material.uniforms.time.value += 1.0 / 60.0;   // The rate the water will render
         water.render();     // Rendering water movement
-        createObject.fallingSnowRender(snow);   // Rendering snow movement
+        createObject.fallingSnowRender(snow, 100);   // Rendering snow movement
         window.requestAnimFrame(render);    // Reloop
 /*      var time = Date.now() / 6000;
         for ( var i = 0, l = grassGroup.children.length; i < l; i ++ ) {

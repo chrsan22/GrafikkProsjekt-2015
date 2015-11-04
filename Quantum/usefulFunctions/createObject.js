@@ -171,11 +171,11 @@ CreateObject.prototype.fallingSnow = function (particleNr,xPos,xNeg,yPos,yNeg,zP
     return snow;
 };
 
-CreateObject.prototype.fallingSnowRender = function (snowGroup) {
+CreateObject.prototype.fallingSnowRender = function (snowGroup, posY) {
     for(var i = 0; i < snowGroup.children.length; i++) {
         var particle = snowGroup.children[i];
         if(particle.position.y <= 1) {
-            particle.position.y = 250;
+            particle.position.y = posY;
             particle.velocity = -(Math.random() * 0.6) - 0.1; // Sets new random velocity rate
         }else {
             particle.position.y = particle.position.y + particle.velocity; // Continues down with the same velocity rate
