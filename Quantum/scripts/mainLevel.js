@@ -29,12 +29,13 @@ var init = function() {
     //initiating vital objects
     var lightPoint = createLight.directLight(); // Create Light
     var ambientLight = createLight.ambientLight(1500, 3000, -2000);  // Create atmospheric white light
-
     var grid = new THREE.GridHelper(500,10); // Create Grid
     var skyBox = createObject.skyBox("resources/skybox3/", "cube", "tCube", 2100, 4000, 2100)    // Create Skybox
     var ground = createObject.heightMap("resources/textures/texture_snow.jpg", "heightmap", "terrain", 500, 75, 500, 0, -2, 0)    // Create Heightmap Ground
+    var water = createObject.createWater(lightPoint,2000,2000);     // Adding Water
+    snow = createObject.fallingSnow(300,250,125,250,0,250,125);     // Adding Snow
     scene.fog = new THREE.Fog( 0xCCCCCC, 0.0100, 400 );     // Adding fog
-    snow = createObject.fallingSnow(300,250,125,250,0,250,125);   // Adding Snow
+
 
     //-----------------------------------------------------------------------------------------------------------------
     // Start of Grass testing
@@ -87,33 +88,6 @@ var init = function() {
     }*/
     // End of Grass testing
     //-----------------------------------------------------------------------------------------------------------------
-    // Start of water implementation
-
-    // Load textures
-    var waterNormals = new THREE.ImageUtils.loadTexture('resources/heightmaps/waternormals.jpg');
-    waterNormals.wrapS = waterNormals.wrapT = THREE.RepeatWrapping;
-
-    // Create the water effect
-    water = new THREE.Water(renderer, camera, scene, {
-        textureWidth: 2000,
-        textureHeight: 2000,
-        waterNormals: waterNormals,
-        alpha: 	1.0,
-        sunDirection: lightPoint.position.normalize(),
-        waterColor: 0x001e0f,
-        betaVersion: 0,
-        side: THREE.DoubleSide
-    });
-    var aMeshMirror = new THREE.Mesh(
-        new THREE.PlaneBufferGeometry(2000, 2000, 10, 10),
-        water.material
-    );
-
-    aMeshMirror.add(water);
-    aMeshMirror.rotation.x = - Math.PI * 0.5;
-    scene.add(aMeshMirror);
-    // End of water implementation
-    //-----------------------------------------------------------------------------------------------------------------
 
     //scene.add(grassGroup); // Adds Dynamic Grass to Scene
     ground.add(snow);    // Adds Snowmeshes
@@ -121,6 +95,7 @@ var init = function() {
     //scene.add(grid);    // Adds Helping Grid for easy view
     scene.add(skyBox);  // Adds SkyBox to Scene
     scene.add(ground);  // Adds Heightmap Ground to Scene
+    scene.add(water);   // Adds Water to Scene
     scene.add(ambientLight);    // Adds Ambiebt Light to Scene
     scene.add(lightPoint);  // Adds Light Point to Scene
 

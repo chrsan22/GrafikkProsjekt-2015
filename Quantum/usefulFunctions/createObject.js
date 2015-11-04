@@ -117,6 +117,32 @@ CreateObject.prototype.grass = function () {
 
 };
 
+CreateObject.prototype.createWater = function (lightPoint,posX, posZ) {
+    // Load textures
+    var waterNormals = new THREE.ImageUtils.loadTexture('resources/heightmaps/waternormals.jpg');
+    waterNormals.wrapS = waterNormals.wrapT = THREE.RepeatWrapping;
+
+    // Create the water effect
+    water = new THREE.Water(renderer, camera, scene, {
+        textureWidth: posX,
+        textureHeight: posZ,
+        waterNormals: waterNormals,
+        alpha: 	1.0,
+        sunDirection: lightPoint.position.normalize(),
+        waterColor: 0x001e0f,
+        betaVersion: 0,
+        side: THREE.DoubleSide
+    });
+    var aMeshMirror = new THREE.Mesh(
+        new THREE.PlaneBufferGeometry(posX, posZ, 10, 10),
+        water.material
+    );
+    aMeshMirror.add(water);
+    aMeshMirror.rotation.x = - Math.PI * 0.5;
+
+    return aMeshMirror;
+}
+
 CreateObject.prototype.fallingSnow = function (particleNr,xPos,xNeg,yPos,yNeg,zPos,zNeg) {
     // create the particle variables
     var particleCount = particleNr;
