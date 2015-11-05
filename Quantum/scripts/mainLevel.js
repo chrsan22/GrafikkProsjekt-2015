@@ -20,7 +20,7 @@ var init = function() {
 
     // Controls for FlyControls
     controls = new THREE.FlyControls( camera ); // Creates Controls
-    controls.movementSpeed = 100; // WASD speed
+    controls.movementSpeed = 500; // WASD speed
     controls.rollSpeed = Math.PI / 24; // Rollspeed for Q and E roll
 
     renderer = cleanerMain.renderSettings(renderer);    // Sets Renderer in a different file
@@ -37,60 +37,67 @@ var init = function() {
     //scene.fog = new THREE.Fog( 0x999999, 0.0100, 500 );     // Adding fog
 
     //-----------------------------------------------------------------------------------------------------------------
-    // Start of Grass testing
+    // Billboard cloud testing
 
-/*    var geometry = new THREE.PlaneBufferGeometry( 20, 20 );
-    var groundUnderGrass = new THREE.CubeGeometry(20, 0, 20);
-    var color = new THREE.MeshBasicMaterial({
-        color: new THREE.Color(0xFFFFFF),
-        //map: THREE.ImageUtils.loadTexture( 'resources/textures/texture_snow.jpg' ), overdraw: false,
-    });
-    var meshing = new THREE.Mesh(groundUnderGrass,color);
-    scene.add(meshing);
-    meshing.position.set(0,0,10);
+    var meshCloud, geometryCloud, materialCloud;
 
-    var texture2 = new THREE.CanvasTexture( generateTexture() );
-    for ( var i = 0; i < 5; i ++ ) {
-        var material = new THREE.MeshBasicMaterial( {
-            color: new THREE.Color(0xFFFFFF),
-            map: texture2,
-            depthTest: false,
-            depthWrite: false,
-            transparent: true
-        } );
+        // Bg gradient
 
-        var grassMesh = new THREE.Mesh( geometry, material );
-        grassMesh.position.y = i * 0.25;
-        grassMesh.rotation.x = - Math.PI / 2;
-
-        grassGroup.add( grassMesh );
-    }
-
-    function generateTexture() {
         var canvas = document.createElement( 'canvas' );
-        canvas.width = 1024;
-        canvas.height = 1024;
+        canvas.width = 32;
+        canvas.height = window.innerHeight;
 
         var context = canvas.getContext( '2d' );
 
-        for ( var i = 0; i < 10000; i ++ ) {
-            context.fillStyle = 'hsl(0,0%,' + ( Math.random() * 50 + 50 ) + '%)';
-            context.beginPath();
-            context.arc( Math.random() * canvas.width, Math.random() * canvas.height, Math.random() + 0.1, 0, Math.PI * 2, true );
-            context.fill();
+        var gradient = context.createLinearGradient( 0, 0, 0, canvas.height );
+        gradient.addColorStop(0, "#1e4877");
+        gradient.addColorStop(0.5, "#4584b4");
+
+        context.fillStyle = gradient;
+        context.fillRect(0, 0, canvas.width, canvas.height);
+
+        geometryCloud = new THREE.Geometry();
+
+        var textureCloud = THREE.ImageUtils.loadTexture( 'resources/cloud10.png', null, null );
+        textureCloud.magFilter = THREE.LinearMipMapLinearFilter;
+        textureCloud.minFilter = THREE.LinearMipMapLinearFilter;
+
+        var fog = new THREE.Fog( 0x4584b4, - 100, 3000 );
+
+        materialCloud = new THREE.ShaderMaterial( {
+
+            uniforms: {
+
+                "map": { type: "t", value: textureCloud },
+                "fogColor" : { type: "c", value: fog.color },
+                "fogNear" : { type: "f", value: fog.near },
+                "fogFar" : { type: "f", value: fog.far },
+
+            },
+            vertexShader: document.getElementById( 'vs' ).textContent,
+            fragmentShader: document.getElementById( 'fs' ).textContent,
+            depthWrite: false,
+            depthTest: false,
+            transparent: true
+
+        } );
+
+        var plane = new THREE.Mesh( new THREE.PlaneGeometry( 64, 64 ) );
+
+        for ( var i = 0; i < 4000; i++ ) {
+
+            plane.position.x = Math.random() * 4000 - 2000;
+            plane.position.y = Math.random() * 200 + 185;
+            plane.position.z = i -2000;
+            plane.rotation.z = Math.random() * Math.PI;
+            plane.scale.x = plane.scale.y = Math.random() * Math.random() * 1.5 + 0.5;
+
+            THREE.GeometryUtils.merge( geometryCloud, plane );
         }
 
-        context.globalAlpha = 0.075;
-        context.globalCompositeOperation = 'lighter';
+        meshCloud = new THREE.Mesh( geometryCloud, materialCloud );
+        scene.add( meshCloud );
 
-        return canvas;
-    }*/
-    // End of Grass testing
-    //-----------------------------------------------------------------------------------------------------------------
-    // Billboard cloud testing
-
-
-    
     // End of Billboard cloud testing
     //-----------------------------------------------------------------------------------------------------------------
 
@@ -147,3 +154,54 @@ window.requestAnimFrame = (function(){
         };
 })();
 
+
+    // Start of Grass testing
+
+    /*    var geometry = new THREE.PlaneBufferGeometry( 20, 20 );
+     var groundUnderGrass = new THREE.CubeGeometry(20, 0, 20);
+     var color = new THREE.MeshBasicMaterial({
+     color: new THREE.Color(0xFFFFFF),
+     //map: THREE.ImageUtils.loadTexture( 'resources/textures/texture_snow.jpg' ), overdraw: false,
+     });
+     var meshing = new THREE.Mesh(groundUnderGrass,color);
+     scene.add(meshing);
+     meshing.position.set(0,0,10);
+
+     var texture2 = new THREE.CanvasTexture( generateTexture() );
+     for ( var i = 0; i < 5; i ++ ) {
+     var material = new THREE.MeshBasicMaterial( {
+     color: new THREE.Color(0xFFFFFF),
+     map: texture2,
+     depthTest: false,
+     depthWrite: false,
+     transparent: true
+     } );
+
+     var grassMesh = new THREE.Mesh( geometry, material );
+     grassMesh.position.y = i * 0.25;
+     grassMesh.rotation.x = - Math.PI / 2;
+
+     grassGroup.add( grassMesh );
+     }
+
+     function generateTexture() {
+     var canvas = document.createElement( 'canvas' );
+     canvas.width = 1024;
+     canvas.height = 1024;
+
+     var context = canvas.getContext( '2d' );
+
+     for ( var i = 0; i < 10000; i ++ ) {
+     context.fillStyle = 'hsl(0,0%,' + ( Math.random() * 50 + 50 ) + '%)';
+     context.beginPath();
+     context.arc( Math.random() * canvas.width, Math.random() * canvas.height, Math.random() + 0.1, 0, Math.PI * 2, true );
+     context.fill();
+     }
+
+     context.globalAlpha = 0.075;
+     context.globalCompositeOperation = 'lighter';
+
+     return canvas;
+     }*/
+    // End of Grass testing
+    //-----------------------------------------------------------------------------------------------------------------
