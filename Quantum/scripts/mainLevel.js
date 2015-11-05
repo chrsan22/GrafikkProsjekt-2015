@@ -45,7 +45,7 @@ var init = function() {
 
         // Bg gradient
 
-        var canvas = document.createElement( 'canvas' );
+/*        var canvas = document.createElement( 'canvas' );
         canvas.width = 32;
         canvas.height = window.innerHeight;
 
@@ -56,7 +56,7 @@ var init = function() {
         gradient.addColorStop(0.5, "#4584b4");
 
         context.fillStyle = gradient;
-        context.fillRect(0, 0, canvas.width, canvas.height);
+        context.fillRect(0, 0, canvas.width, canvas.height);*/
 
         geometryCloud = new THREE.Geometry();
 
@@ -74,7 +74,6 @@ var init = function() {
                 "fogColor" : { type: "c", value: fog.color },
                 "fogNear" : { type: "f", value: fog.near },
                 "fogFar" : { type: "f", value: fog.far },
-
             },
             vertexShader: document.getElementById( 'vs' ).textContent,
             fragmentShader: document.getElementById( 'fs' ).textContent,
@@ -90,7 +89,7 @@ var init = function() {
 
             plane.position.x = Math.random() * 4000 - 2000;
             plane.position.y = Math.random() * 200 + 185;
-            plane.position.z = i -2000;
+            plane.position.z = Math.random() * 4000 - 2000;
             plane.rotation.z = Math.random() * Math.PI;
             plane.scale.x = plane.scale.y = Math.random() * Math.random() * 1.5 + 0.5;
 
