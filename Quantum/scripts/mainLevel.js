@@ -3,6 +3,8 @@
     //var grassGroup = new THREE.Object3D();
     var snow = new THREE.Object3D();
     var createObject;
+    var objects = [];   //  Holds the objects created by picker
+    var raycaster, mouse;   //  Variables used in the picker
 
 
 var init = function() {
@@ -100,6 +102,31 @@ var init = function() {
 
     // End of Billboard cloud testing
     //-----------------------------------------------------------------------------------------------------------------
+    // Picker testing
+    raycaster = new THREE.Raycaster();
+    mouse = new THREE.Vector2();
+    cubeGeo = new THREE.BoxGeometry( 50, 50, 50 );
+    cubeMaterial = new THREE.MeshLambertMaterial( { color: 0xfeb74c, shading: THREE.FlatShading, map: THREE.ImageUtils.loadTexture( "resources/textures/texture_snow.jpg" ) } );
+
+
+    function onDocumentMouseDown( event ) {
+        event.preventDefault();
+        mouse.set( ( event.clientX / window.innerWidth ) * 2 - 1, - ( event.clientY / window.innerHeight ) * 2 + 1 );
+        raycaster.setFromCamera( mouse, camera );
+        var intersects = raycaster.intersectObjects( objects );
+        if ( intersects.length > 0 ) {
+            var intersect = intersects[ 0 ];
+                var voxel = new THREE.Mesh( cubeGeo, cubeMaterial );
+                voxel.position.copy( intersect.point ).add( intersect.face.normal );
+                voxel.position.divideScalar( 50 ).floor().multiplyScalar( 50 ).addScalar( 25 );
+                scene.add( voxel );
+                objects.push( voxel );
+        }
+
+    }
+    document.addEventListener( 'mousedown', onDocumentMouseDown, false );
+    //-----------------------------------------------------------------------------------------------------------------
+
 
     //scene.add(grassGroup); // Adds Dynamic Grass to Scene
     ground.add(snow);    // Adds Snowmeshes
