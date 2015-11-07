@@ -1,28 +1,37 @@
     var camera, controls, scene, renderer;  // Creates Camera, Controls, Scene and Renderer
     var clock = new THREE.Clock();  //Creates Clock
     //var grassGroup = new THREE.Object3D();
-    var snowGroup = new THREE.Object3D();
-    var particleCount, particles, snowMesh;
+    var snow = new THREE.Object3D();
+    var createObject;
+    var objects = [];   //  Holds the objects created by picker
+    var raycaster, mouse;   //  Variables used in the picker
 
 
 var init = function() {
     var canvas = document.getElementById("canvas"); // Canvas
-    var createObject = new CreateObject(); // Contains functions to create usefulFunctions
+    createObject = new CreateObject(); // Contains functions to create usefulFunctions
     var createLight = new CreateLight(); // Contains functions to create light
     var cleanerMain = new CleanMain(); // Contains functions to clean up the main
 
-    // Camera is positioned towards -z axis
     scene = new THREE.Scene(); // Scene
+<<<<<<< HEAD
     // Adding fog
     scene.fog = new THREE.Fog( 0xCCCCCC, 0.0060, 600 );
     // Adding camera
     camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1e7);   // Set Camera Perspective
     camera.position.set(0,70,160);  // Set Camera Position towards -z axis
     camera.rotation.x = 350*(Math.PI/180) // Set a rotate to watch down on the landscape
+=======
+
+    // Adding Camera, positioned towards -z axis
+    camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1e7);   // Set Camera Perspective
+    camera.position.set(0,150,400);  // Set Camera Position towards -z axis
+    camera.rotation.x = 340*(Math.PI/180) // Set a rotate to watch down on the landscape
+>>>>>>> origin/master
 
     // Controls for FlyControls
     controls = new THREE.FlyControls( camera ); // Creates Controls
-    controls.movementSpeed = 100; // WASD speed
+    controls.movementSpeed = 500; // WASD speed
     controls.rollSpeed = Math.PI / 24; // Rollspeed for Q and E roll
 
     renderer = cleanerMain.renderSettings(renderer);    // Sets Renderer in a different file
@@ -31,67 +40,77 @@ var init = function() {
     //initiating vital objects
     var lightPoint = createLight.directLight(); // Create Light
     var ambientLight = createLight.ambientLight(1500, 3000, -2000);  // Create atmospheric white light
+    var grid = new THREE.GridHelper(500,10); // Create Grid
+    var skyBox = createObject.skyBox("resources/skybox3/", "cube", "tCube", 4100, 4000, 4100)    // Create Skybox
+    var ground = createObject.heightMap("resources/textures/texture_snow.jpg", "heightmap", "terrain", 500, 75, 500, 0, -2, 0)    // Create Heightmap Ground
+    var water = createObject.createWater(lightPoint, 4000, 4000);     // Adding Water
+    snow = createObject.fallingSnow(150, 1000 ,500, 100, 0, 1000, 500);     // Adding Snow
+    //scene.fog = new THREE.Fog( 0x999999, 0.0100, 500 );     // Adding fog
 
-    var grid = new THREE.GridHelper(250,10); // Create Grid
-    var skyBox = createObject.skyBox("resources/skybox3/", "cube", "tCube", 2100, 4000, 2100)    // Create Skybox
-    var ground = createObject.heightMap("resources/textures/texture_snow.jpg", "heightmap", "terrain", 500, 50, 250, 0, -2, -125)    // Create Heightmap Ground
+    //-----------------------------------------------------------------------------------------------------------------
+    // Billboard cloud testing
 
+    var meshCloud, geometryCloud, materialCloud;
 
-//-------------------------------------------------------------------------------------------------------------------
-    // Start of Grass testing
-/*    var greenGrass = createObject.boxGeometryColor(0x009900, 500, 1, 100, 0, 0, -200, false, true);
-    scene.add(greenGrass);
-    var greenGrass2 = createObject.boxGeometryColor(0x009900, 100, 1, 400, -200, 0, 50,false, true);
-    scene.add(greenGrass2);*/
+        // Bg gradient
 
-/*    var geometry = new THREE.PlaneBufferGeometry( 20, 20 );
-    var groundUnderGrass = new THREE.CubeGeometry(20, 0, 20);
-    var color = new THREE.MeshBasicMaterial({
-        color: new THREE.Color(0xFFFFFF),
-        //map: THREE.ImageUtils.loadTexture( 'resources/textures/texture_snow.jpg' ), overdraw: false,
-    });
-    var meshing = new THREE.Mesh(groundUnderGrass,color);
-    scene.add(meshing);
-    meshing.position.set(0,0,10);
-
-    var texture2 = new THREE.CanvasTexture( generateTexture() );
-    for ( var i = 0; i < 5; i ++ ) {
-        var material = new THREE.MeshBasicMaterial( {
-            color: new THREE.Color(0xFFFFFF),
-            map: texture2,
-            depthTest: false,
-            depthWrite: false,
-            transparent: true
-        } );
-
-        var grassMesh = new THREE.Mesh( geometry, material );
-        grassMesh.position.y = i * 0.25;
-        grassMesh.rotation.x = - Math.PI / 2;
-
-        grassGroup.add( grassMesh );
-    }
-
-    function generateTexture() {
-        var canvas = document.createElement( 'canvas' );
-        canvas.width = 1024;
-        canvas.height = 1024;
+/*        var canvas = document.createElement( 'canvas' );
+        canvas.width = 32;
+        canvas.height = window.innerHeight;
 
         var context = canvas.getContext( '2d' );
 
-        for ( var i = 0; i < 10000; i ++ ) {
-            context.fillStyle = 'hsl(0,0%,' + ( Math.random() * 50 + 50 ) + '%)';
-            context.beginPath();
-            context.arc( Math.random() * canvas.width, Math.random() * canvas.height, Math.random() + 0.1, 0, Math.PI * 2, true );
-            context.fill();
+        var gradient = context.createLinearGradient( 0, 0, 0, canvas.height );
+        gradient.addColorStop(0, "#1e4877");
+        gradient.addColorStop(0.5, "#4584b4");
+
+        context.fillStyle = gradient;
+        context.fillRect(0, 0, canvas.width, canvas.height);*/
+
+        geometryCloud = new THREE.Geometry();
+
+        var textureCloud = THREE.ImageUtils.loadTexture( 'resources/cloud10.png', null, null );
+        textureCloud.magFilter = THREE.LinearMipMapLinearFilter;
+        textureCloud.minFilter = THREE.LinearMipMapLinearFilter;
+
+        var fog = new THREE.Fog( 0x4584b4, - 100, 3000 );
+
+        materialCloud = new THREE.ShaderMaterial( {
+
+            uniforms: {
+
+                "map": { type: "t", value: textureCloud },
+                "fogColor" : { type: "c", value: fog.color },
+                "fogNear" : { type: "f", value: fog.near },
+                "fogFar" : { type: "f", value: fog.far },
+            },
+            vertexShader: document.getElementById( 'vs' ).textContent,
+            fragmentShader: document.getElementById( 'fs' ).textContent,
+            depthWrite: false,
+            depthTest: false,
+            transparent: true
+
+        } );
+
+        var plane = new THREE.Mesh( new THREE.PlaneGeometry( 64, 64 ) );
+
+        for ( var i = 0; i < 4000; i++ ) {
+
+            plane.position.x = Math.random() * 4000 - 2000;
+            plane.position.y = Math.random() * 200 + 185;
+            plane.position.z = Math.random() * 4000 - 2000;
+            plane.rotation.z = Math.random() * Math.PI;
+            plane.scale.x = plane.scale.y = Math.random() * Math.random() * 1.5 + 0.5;
+
+            THREE.GeometryUtils.merge( geometryCloud, plane );
         }
 
-        context.globalAlpha = 0.075;
-        context.globalCompositeOperation = 'lighter';
+        meshCloud = new THREE.Mesh( geometryCloud, materialCloud );
+        scene.add( meshCloud );
 
-        return canvas;
-    }*/
-    // End of Grass testing
+    // End of Billboard cloud testing
     //-----------------------------------------------------------------------------------------------------------------
+<<<<<<< HEAD
     // Start of snow implementation
     // create the particle variables
      particleCount = 350;
@@ -117,45 +136,41 @@ var init = function() {
         snowMesh.sortParticles = true;
         snowGroup.add(snowMesh);
     }
+=======
+    // Picker testing
+    raycaster = new THREE.Raycaster();
+    mouse = new THREE.Vector2();
+    cubeGeo = new THREE.BoxGeometry( 50, 50, 50 );
+    cubeMaterial = new THREE.MeshLambertMaterial( { color: 0xfeb74c, shading: THREE.FlatShading, map: THREE.ImageUtils.loadTexture( "resources/textures/texture_snow.jpg" ) } );
 
-    // End of snow implementation
-    //-----------------------------------------------------------------------------------------------------------------
-    // Start of water implementation
 
-    // Load textures
-    var waterNormals = new THREE.ImageUtils.loadTexture('resources/heightmaps/waternormals.jpg');
-    waterNormals.wrapS = waterNormals.wrapT = THREE.RepeatWrapping;
+    function onDocumentMouseDown( event ) {
+        event.preventDefault();
+        mouse.set( ( event.clientX / window.innerWidth ) * 2 - 1, - ( event.clientY / window.innerHeight ) * 2 + 1 );
+        raycaster.setFromCamera( mouse, camera );
+        var intersects = raycaster.intersectObjects( objects );
+        if ( intersects.length > 0 ) {
+            var intersect = intersects[ 0 ];
+                var voxel = new THREE.Mesh( cubeGeo, cubeMaterial );
+                voxel.position.copy( intersect.point ).add( intersect.face.normal );
+                voxel.position.divideScalar( 50 ).floor().multiplyScalar( 50 ).addScalar( 25 );
+                scene.add( voxel );
+                objects.push( voxel );
+        }
+>>>>>>> origin/master
 
-    // Create the water effect
-    water = new THREE.Water(renderer, camera, scene, {
-        textureWidth: 2000,
-        textureHeight: 2000,
-        waterNormals: waterNormals,
-        alpha: 	1.0,
-        sunDirection: lightPoint.position.normalize(),
-        waterColor: 0x001e0f,
-        betaVersion: 0,
-        side: THREE.DoubleSide
-    });
-    var aMeshMirror = new THREE.Mesh(
-        new THREE.PlaneBufferGeometry(2000, 2000, 10, 10),
-        water.material
-    );
-
-    aMeshMirror.add(water);
-    aMeshMirror.rotation.x = - Math.PI * 0.5;
-    scene.add(aMeshMirror);
-
-    // End of water implementation
+    }
+    document.addEventListener( 'mousedown', onDocumentMouseDown, false );
     //-----------------------------------------------------------------------------------------------------------------
 
 
     //scene.add(grassGroup); // Adds Dynamic Grass to Scene
-    ground.add(snowGroup);    // Adds Snowmeshes
+    ground.add(snow);    // Adds Snowmeshes
     scene.children.reverse();   // Reverses the children in the opposite direction.
     //scene.add(grid);    // Adds Helping Grid for easy view
     scene.add(skyBox);  // Adds SkyBox to Scene
     scene.add(ground);  // Adds Heightmap Ground to Scene
+    scene.add(water);   // Adds Water to Scene
     scene.add(ambientLight);    // Adds Ambiebt Light to Scene
     scene.add(lightPoint);  // Adds Light Point to Scene
 
@@ -169,7 +184,6 @@ var init = function() {
         camera.aspect = window.innerWidth / window.innerHeight; // Re-Sets Camera Aspect
         camera.updateProjectionMatrix();    // Updates Projection Matrix
     }
-
     render();   // Render the scene
     window.addEventListener('resize', onWindowResize, false);
 };
@@ -178,26 +192,17 @@ var init = function() {
         var delta = clock.getDelta(); // seconds.
         controls.update( delta );   // Update Controls
         renderer.render(scene, camera); // Repeat Renderer
-        window.requestAnimFrame(render);    // Banana
         //Water rendering
-        water.material.uniforms.time.value += 1.0 / 60.0;
-        water.render();
-/*        var time = Date.now() / 6000;
+        water.material.uniforms.time.value += 1.0 / 60.0;   // The rate the water will render
+        water.render();     // Rendering water movement
+        createObject.fallingSnowRender(snow, 100);   // Rendering snow movement
+        window.requestAnimFrame(render);    // Reloop
+/*      var time = Date.now() / 6000;
         for ( var i = 0, l = grassGroup.children.length; i < l; i ++ ) {
             var Posmesh = grassGroup.children[ i ];
             Posmesh.position.x = Math.sin( time * 4 ) * i * i * 0.005;
             Posmesh.position.z = 9.9 + Math.cos( time * 6 ) * i * i * 0.005;
         }*/
-        // Snow movement
-        for(var i = 0; i < snowGroup.children.length; i++) {
-            var particle = snowGroup.children[i];
-            if(particle.position.y <= 1) {
-                particle.position.y = 250;
-                particle.velocity = -(Math.random() * 0.6) - 0.1; // Sets new random velocity rate
-            }else {
-                particle.position.y = particle.position.y + particle.velocity; // Continues down with the same velocity rate
-            }
-        }
     }
 
 window.addEventListener('load', init);
@@ -212,3 +217,54 @@ window.requestAnimFrame = (function(){
         };
 })();
 
+
+    // Start of Grass testing
+
+    /*    var geometry = new THREE.PlaneBufferGeometry( 20, 20 );
+     var groundUnderGrass = new THREE.CubeGeometry(20, 0, 20);
+     var color = new THREE.MeshBasicMaterial({
+     color: new THREE.Color(0xFFFFFF),
+     //map: THREE.ImageUtils.loadTexture( 'resources/textures/texture_snow.jpg' ), overdraw: false,
+     });
+     var meshing = new THREE.Mesh(groundUnderGrass,color);
+     scene.add(meshing);
+     meshing.position.set(0,0,10);
+
+     var texture2 = new THREE.CanvasTexture( generateTexture() );
+     for ( var i = 0; i < 5; i ++ ) {
+     var material = new THREE.MeshBasicMaterial( {
+     color: new THREE.Color(0xFFFFFF),
+     map: texture2,
+     depthTest: false,
+     depthWrite: false,
+     transparent: true
+     } );
+
+     var grassMesh = new THREE.Mesh( geometry, material );
+     grassMesh.position.y = i * 0.25;
+     grassMesh.rotation.x = - Math.PI / 2;
+
+     grassGroup.add( grassMesh );
+     }
+
+     function generateTexture() {
+     var canvas = document.createElement( 'canvas' );
+     canvas.width = 1024;
+     canvas.height = 1024;
+
+     var context = canvas.getContext( '2d' );
+
+     for ( var i = 0; i < 10000; i ++ ) {
+     context.fillStyle = 'hsl(0,0%,' + ( Math.random() * 50 + 50 ) + '%)';
+     context.beginPath();
+     context.arc( Math.random() * canvas.width, Math.random() * canvas.height, Math.random() + 0.1, 0, Math.PI * 2, true );
+     context.fill();
+     }
+
+     context.globalAlpha = 0.075;
+     context.globalCompositeOperation = 'lighter';
+
+     return canvas;
+     }*/
+    // End of Grass testing
+    //-----------------------------------------------------------------------------------------------------------------
