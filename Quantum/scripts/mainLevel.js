@@ -126,7 +126,7 @@ var init = function() {
     document.addEventListener( 'mousedown', onDocumentMouseDown, false );
     //-----------------------------------------------------------------------------------------------------------------
 
-
+    // MATS IS POOPFACE
     //scene.add(grassGroup); // Adds Dynamic Grass to Scene
     ground.add(snow);    // Adds Snowmeshes
     scene.children.reverse();   // Reverses the children in the opposite direction.
