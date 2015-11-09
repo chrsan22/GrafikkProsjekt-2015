@@ -104,10 +104,10 @@ var init = function() {
     // Picker testing
     raycaster = new THREE.Raycaster();
     mouse = new THREE.Vector2();
-    cubeGeo = new THREE.BoxGeometry( 50, 50, 50 );
+    cubeGeo = new THREE.BoxGeometry( 5, 5, 5 );
     cubeMaterial = new THREE.MeshLambertMaterial( { color: 0xfeb74c, shading: THREE.FlatShading, map: THREE.ImageUtils.loadTexture( "resources/textures/texture_snow.jpg" ) } );
 
-
+    // Function that executes on mouse click!
     function onDocumentMouseDown( event ) {
         event.preventDefault();
         mouse.set( ( event.clientX / window.innerWidth ) * 2 - 1, - ( event.clientY / window.innerHeight ) * 2 + 1 );
@@ -117,7 +117,7 @@ var init = function() {
             var intersect = intersects[ 0 ];
                 var voxel = new THREE.Mesh( cubeGeo, cubeMaterial );
                 voxel.position.copy( intersect.point ).add( intersect.face.normal );
-                voxel.position.divideScalar( 50 ).floor().multiplyScalar( 50 ).addScalar( 25 );
+                voxel.position.divideScalar( 5 ).floor().multiplyScalar( 5 ).addScalar( 2.5 );
                 scene.add( voxel );
                 objects.push( voxel );
         }
@@ -126,7 +126,6 @@ var init = function() {
     document.addEventListener( 'mousedown', onDocumentMouseDown, false );
     //-----------------------------------------------------------------------------------------------------------------
 
-    // MATS IS POOPFACE
     //scene.add(grassGroup); // Adds Dynamic Grass to Scene
     ground.add(snow);    // Adds Snowmeshes
     scene.children.reverse();   // Reverses the children in the opposite direction.
@@ -136,6 +135,12 @@ var init = function() {
     scene.add(water);   // Adds Water to Scene
     scene.add(ambientLight);    // Adds Ambiebt Light to Scene
     scene.add(lightPoint);  // Adds Light Point to Scene
+
+    //  Adds mesh'es to the objects list
+    objects.push (skyBox);
+    objects.push (ground);
+    objects.push (water);
+
 
     //  Useful for later, position on the heightmap!
     //  var temp = createObject.boxGeometry("resources/textures/texture_snow.jpg", 1, 1, 1, 0, 0, 0, true, true);
