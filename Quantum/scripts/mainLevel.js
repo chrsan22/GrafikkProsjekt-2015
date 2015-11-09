@@ -5,6 +5,7 @@
     var createObject;
     var objects = [];   //  Holds the objects created by picker
     var raycaster, mouse;   //  Variables used in the picker
+    var objectInt = 0;
 
 
 var init = function() {
@@ -115,12 +116,8 @@ var init = function() {
         var intersects = raycaster.intersectObjects( objects );
         if ( intersects.length > 0 ) {
             var intersect = intersects[ 0 ];
-               // var voxel = new THREE.Mesh( cubeGeo, cubeMaterial );
-               // voxel.position.copy( intersect.point ).add( intersect.face.normal );
-               // voxel.position.divideScalar( 5 ).floor().multiplyScalar( 5 ).addScalar( 2.5 );
-               // scene.add( voxel );
-               // objects.push( voxel );
 
+            if (objectInt == 0) {
             var tieLoaderMTL = new THREE.OBJMTLLoader();
             tieLoaderMTL.load("scripts/tree-toon.obj", "scripts/tree-toon.mtl", function (object) {
                 var tempMesh;
@@ -131,10 +128,28 @@ var init = function() {
                 tempMesh.position.divideScalar( 5 ).floor().multiplyScalar( 5 ).addScalar( 4.5 );
                 ground.add(tempMesh);
                 objects.push( tempMesh );
-                console.log(tempMesh.position);
+                //console.log(tempMesh.position);
             });
-        }
+            } else if (objectInt == 1) {
 
+            } else if (objectInt == 2) {
+
+            } else if (objectInt == 3) {
+
+            } else if (objectInt == 4) {
+
+            } else if (objectInt == 5) {
+
+            } else if (objectInt == 6) {
+
+            } else if (objectInt == 7) {
+
+            } else if (objectInt == 8) {
+
+            } else if (objectInt == 9) {
+
+            }
+        }
     }
     document.addEventListener( 'mousedown', onDocumentMouseDown, false );
     //-----------------------------------------------------------------------------------------------------------------
