@@ -14,20 +14,11 @@ var init = function() {
     var cleanerMain = new CleanMain(); // Contains functions to clean up the main
 
     scene = new THREE.Scene(); // Scene
-<<<<<<< HEAD
-    // Adding fog
-    scene.fog = new THREE.Fog( 0xCCCCCC, 0.0060, 600 );
-    // Adding camera
-    camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1e7);   // Set Camera Perspective
-    camera.position.set(0,70,160);  // Set Camera Position towards -z axis
-    camera.rotation.x = 350*(Math.PI/180) // Set a rotate to watch down on the landscape
-=======
 
     // Adding Camera, positioned towards -z axis
     camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1e7);   // Set Camera Perspective
     camera.position.set(0,150,400);  // Set Camera Position towards -z axis
     camera.rotation.x = 340*(Math.PI/180) // Set a rotate to watch down on the landscape
->>>>>>> origin/master
 
     // Controls for FlyControls
     controls = new THREE.FlyControls( camera ); // Creates Controls
@@ -110,33 +101,6 @@ var init = function() {
 
     // End of Billboard cloud testing
     //-----------------------------------------------------------------------------------------------------------------
-<<<<<<< HEAD
-    // Start of snow implementation
-    // create the particle variables
-     particleCount = 350;
-     particles = new THREE.Geometry();
-     pMaterial = new THREE.PointsMaterial({
-            color: 0xFFFFFF,
-            size: 1,
-            map: THREE.ImageUtils.loadTexture(
-                "resources/particle.png"
-            ),
-            blending: THREE.AdditiveBlending,
-            transparent: true
-        });
-
-    // now create the individual particles
-    for(var p = 0; p <= particleCount; p++) {
-        snowMesh = new THREE.Points(particles, pMaterial);
-        snowMesh.position.x = Math.random() * 250 - 125;
-        snowMesh.position.y = Math.random() * 250;
-        snowMesh.position.z = Math.random() * 125 - 62.5;
-        snowMesh.velocity = -(Math.random() * 0.5) - 0.1;
-        particles.vertices.push(new THREE.Vector3(snowMesh.position.x, snowMesh.position.y, snowMesh.position.z))
-        snowMesh.sortParticles = true;
-        snowGroup.add(snowMesh);
-    }
-=======
     // Picker testing
     raycaster = new THREE.Raycaster();
     mouse = new THREE.Vector2();
@@ -157,7 +121,6 @@ var init = function() {
                 scene.add( voxel );
                 objects.push( voxel );
         }
->>>>>>> origin/master
 
     }
     document.addEventListener( 'mousedown', onDocumentMouseDown, false );
