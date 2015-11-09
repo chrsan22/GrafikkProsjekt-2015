@@ -128,7 +128,7 @@ var init = function() {
                 //tempMesh.rotation.y = 180*(Math.PI/180);
                 tempMesh.name = "tree" + i;
                 tempMesh.position.copy( intersect.point ).add( intersect.face.normal );
-                tempMesh.position.divideScalar( 5 ).floor().multiplyScalar( 5 ).addScalar( 3.5 );
+                tempMesh.position.divideScalar( 5 ).floor().multiplyScalar( 5 ).addScalar( 4.5 );
                 ground.add(tempMesh);
                 objects.push( tempMesh );
                 console.log(tempMesh.position);
