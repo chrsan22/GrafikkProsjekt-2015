@@ -115,11 +115,23 @@ var init = function() {
         var intersects = raycaster.intersectObjects( objects );
         if ( intersects.length > 0 ) {
             var intersect = intersects[ 0 ];
-                var voxel = new THREE.Mesh( cubeGeo, cubeMaterial );
-                voxel.position.copy( intersect.point ).add( intersect.face.normal );
-                voxel.position.divideScalar( 5 ).floor().multiplyScalar( 5 ).addScalar( 2.5 );
-                scene.add( voxel );
-                objects.push( voxel );
+               // var voxel = new THREE.Mesh( cubeGeo, cubeMaterial );
+               // voxel.position.copy( intersect.point ).add( intersect.face.normal );
+               // voxel.position.divideScalar( 5 ).floor().multiplyScalar( 5 ).addScalar( 2.5 );
+               // scene.add( voxel );
+               // objects.push( voxel );
+
+            var tieLoaderMTL = new THREE.OBJMTLLoader();
+            tieLoaderMTL.load("scripts/tree-toon.obj", "scripts/tree-toon.mtl", function (object) {
+                var tempMesh;
+                tempMesh = object;
+                //tempMesh.rotation.y = 180*(Math.PI/180);
+                tempMesh.name = "tree" + i;
+                tempMesh.position.copy( intersect.point ).add( intersect.face.normal );
+                tempMesh.position.divideScalar( 5 ).floor().multiplyScalar( 5 ).addScalar( 2.5 );
+                ground.add(tempMesh);
+                objects.push( tempMesh );
+            });
         }
 
     }
