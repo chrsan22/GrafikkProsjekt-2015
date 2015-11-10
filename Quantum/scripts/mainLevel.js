@@ -10,7 +10,8 @@
 
 var init = function() {
     var canvas = document.getElementById("canvas"); // Canvas
-    createObject = new CreateObject(); // Contains functions to create usefulFunctions
+    createObject = new CreateObject(); // Contains functions to create objects
+    objectPlacer = new ObjectPlacer(); // Contains functions to create objects with picker
     var createLight = new CreateLight(); // Contains functions to create light
     var cleanerMain = new CleanMain(); // Contains functions to clean up the main
 
@@ -116,41 +117,11 @@ var init = function() {
         var intersects = raycaster.intersectObjects( objects );
         if ( intersects.length > 0 ) {
             var intersect = intersects[ 0 ];
-
-            if (objectInt == 0) {
-            var tieLoaderMTL = new THREE.OBJMTLLoader();
-            tieLoaderMTL.load("scripts/tree-toon.obj", "scripts/tree-toon.mtl", function (object) {
-                var tempMesh;
-                tempMesh = object;
-                //tempMesh.rotation.y = 180*(Math.PI/180);
-                tempMesh.name = "tree" + i;
-                tempMesh.position.copy( intersect.point ).add( intersect.face.normal );
-                tempMesh.position.divideScalar( 5 ).floor().multiplyScalar( 5 ).addScalar( 4.5 );
-                ground.add(tempMesh);
-                objects.push( tempMesh );
-                //console.log(tempMesh.position);
-            });
-            } else if (objectInt == 1) {
-
-            } else if (objectInt == 2) {
-
-            } else if (objectInt == 3) {
-
-            } else if (objectInt == 4) {
-
-            } else if (objectInt == 5) {
-
-            } else if (objectInt == 6) {
-
-            } else if (objectInt == 7) {
-
-            } else if (objectInt == 8) {
-
-            } else if (objectInt == 9) {
-
+            var createdObject = objectPlacer.objectToPlace(objectInt, intersect);
+            ground.add(createdObject);
+            objects.push( createdObject );
             }
         }
-    }
     document.addEventListener( 'mousedown', onDocumentMouseDown, false );
     //-----------------------------------------------------------------------------------------------------------------
 
