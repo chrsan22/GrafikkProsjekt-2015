@@ -6,12 +6,13 @@ function ObjectPlacer() {
 }
 
 /*
- Prototype function that creates MTL Object and returns it
+    Prototype function that creates MTL Object and returns it
  */
 ObjectPlacer.prototype.objectToPlace = function(objNr, intersect) {
     var objectLoad = new THREE.OBJMTLLoader();
-    var obj = "tree-toon";
-    objectLoad.load("scripts/" + obj + ".obj", "scripts/" + obj + ".mtl", function (object) {
+    var obj = selectObject(objNr);
+    console.log(obj);
+    objectLoad.load("resources/objects/" + obj + ".obj", "resources/objects/" + obj + ".mtl", function (object) {
         var mesh = object;
         mesh.name = obj;
         mesh.position.copy(intersect.point).add(intersect.face.normal);
@@ -19,3 +20,41 @@ ObjectPlacer.prototype.objectToPlace = function(objNr, intersect) {
         return mesh;
     })
 };
+
+/*
+    Function for changing the object being placed based on integer set in mainLevel
+ */
+function selectObject(objNr) {
+    switch(objNr) {
+        case 0:
+            return "tree-toon";
+            break;
+        case 1:
+            return "starwars-tie-fighter";
+            break;
+        case 2:
+            return "apartment-house";
+            break;
+        case 3:
+            return "stone-house";
+            break;
+        case 4:
+            return "medieval-house-2";
+            break;
+        case 5:
+            return "starwars-tie-fighter";
+            break;
+        case 6:
+            return "starwars-tie-fighter";
+            break;
+        case 7:
+            return "starwars-tie-fighter";
+            break;
+        case 8:
+            return "starwars-tie-fighter";
+            break;
+        case 9:
+            return "starwars-tie-fighter";
+            break;
+    }
+}
