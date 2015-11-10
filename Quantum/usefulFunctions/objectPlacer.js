@@ -8,7 +8,7 @@ function ObjectPlacer() {
 /*
     Prototype function that creates MTL Object and returns it
  */
-ObjectPlacer.prototype.objectToPlace = function(objNr, intersect) {
+ObjectPlacer.prototype.objectToPlace = function(objNr, intersect, callback) {
     var objectLoad = new THREE.OBJMTLLoader();
     var obj = selectObject(objNr);
     console.log(obj);
@@ -17,7 +17,7 @@ ObjectPlacer.prototype.objectToPlace = function(objNr, intersect) {
         mesh.name = obj;
         mesh.position.copy(intersect.point).add(intersect.face.normal);
         mesh.position.divideScalar(5).floor().multiplyScalar(5).addScalar(4.5);
-        return mesh;
+        callback(mesh);
     })
 };
 
@@ -42,10 +42,10 @@ function selectObject(objNr) {
             return "medieval-house-2";
             break;
         case 5:
-            return "starwars-tie-fighter";
+            return "tardis";
             break;
         case 6:
-            return "starwars-tie-fighter";
+            return "rainbow-dash";
             break;
         case 7:
             return "starwars-tie-fighter";

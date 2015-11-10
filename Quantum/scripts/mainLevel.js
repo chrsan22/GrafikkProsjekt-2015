@@ -117,9 +117,10 @@ var init = function() {
         var intersects = raycaster.intersectObjects( objects );
         if ( intersects.length > 0 ) {
             var intersect = intersects[ 0 ];
-            var createdObject = objectPlacer.objectToPlace(objectInt, intersect);
-            ground.add(createdObject);
-            objects.push( createdObject );
+            objectPlacer.objectToPlace(objectInt, intersect, function(mesh) {
+                ground.add(mesh);
+                objects.push( mesh );
+            });
             }
         }
     document.addEventListener( 'mousedown', onDocumentMouseDown, false );
