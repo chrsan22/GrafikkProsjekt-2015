@@ -1,6 +1,6 @@
     var camera, controls, scene, renderer;  // Creates Camera, Controls, Scene and Renderer
     var clock = new THREE.Clock();  //Creates Clock
-    //var grassGroup = new THREE.Object3D();
+    var cloudGroup = new THREE.Object3D();
     var snow = new THREE.Object3D();
     var createObject;
     var objects = [];   //  Holds the objects created by picker
@@ -43,26 +43,10 @@ var init = function() {
     //-----------------------------------------------------------------------------------------------------------------
     // Billboard cloud testing
 
-    var meshCloud, geometryCloud, materialCloud;
-
-        // Bg gradient
-
-/*        var canvas = document.createElement( 'canvas' );
-        canvas.width = 32;
-        canvas.height = window.innerHeight;
-
-        var context = canvas.getContext( '2d' );
-
-        var gradient = context.createLinearGradient( 0, 0, 0, canvas.height );
-        gradient.addColorStop(0, "#1e4877");
-        gradient.addColorStop(0.5, "#4584b4");
-
-        context.fillStyle = gradient;
-        context.fillRect(0, 0, canvas.width, canvas.height);*/
+    var geometryCloud, materialCloud, textureCloud;
 
         geometryCloud = new THREE.Geometry();
-
-        var textureCloud = THREE.ImageUtils.loadTexture( 'resources/cloud10.png', null, null );
+        textureCloud = THREE.ImageUtils.loadTexture( 'resources/cloud10.png', null, null );
         textureCloud.magFilter = THREE.LinearMipMapLinearFilter;
         textureCloud.minFilter = THREE.LinearMipMapLinearFilter;
 
@@ -85,21 +69,18 @@ var init = function() {
 
         } );
 
-        var plane = new THREE.Mesh( new THREE.PlaneGeometry( 64, 64 ) );
-
         for ( var i = 0; i < 4000; i++ ) {
-
+            var plane = new THREE.Mesh( new THREE.PlaneGeometry( 64, 64 ), materialCloud );
             plane.position.x = Math.random() * 4000 - 2000;
-            plane.position.y = Math.random() * 200 + 185;
+            plane.position.y = Math.random() * 300 + 285;
             plane.position.z = Math.random() * 4000 - 2000;
             plane.rotation.z = Math.random() * Math.PI;
             plane.scale.x = plane.scale.y = Math.random() * Math.random() * 1.5 + 0.5;
 
             THREE.GeometryUtils.merge( geometryCloud, plane );
+            cloudGroup.add(plane);
         }
-
-        meshCloud = new THREE.Mesh( geometryCloud, materialCloud );
-        scene.add( meshCloud );
+        scene.add( cloudGroup );
 
     // End of Billboard cloud testing
     //-----------------------------------------------------------------------------------------------------------------
@@ -165,12 +146,12 @@ var init = function() {
         water.render();     // Rendering water movement
         createObject.fallingSnowRender(snow, 100);   // Rendering snow movement
         window.requestAnimFrame(render);    // Reloop
-/*      var time = Date.now() / 6000;
-        for ( var i = 0, l = grassGroup.children.length; i < l; i ++ ) {
-            var Posmesh = grassGroup.children[ i ];
-            Posmesh.position.x = Math.sin( time * 4 ) * i * i * 0.005;
-            Posmesh.position.z = 9.9 + Math.cos( time * 6 ) * i * i * 0.005;
-        }*/
+
+        // Billboard clouds watching you while you sleep, walk etc.
+        for( var i = 0, l = cloudGroup.children.length; i < l; i ++ ) {
+            var cloudMesh = cloudGroup.children[i];
+            cloudMesh.lookAt(camera.position);
+        }
     }
 
 window.addEventListener('load', init);
@@ -184,7 +165,6 @@ window.requestAnimFrame = (function(){
             window.setTimeout(callback, 1000 / 60);
         };
 })();
-
 
     // Start of Grass testing
 
@@ -233,6 +213,14 @@ window.requestAnimFrame = (function(){
      context.globalCompositeOperation = 'lighter';
 
      return canvas;
-     }*/
+     }
+
+
+        var time = Date.now() / 6000;
+        for ( var i = 0, l = grassGroup.children.length; i < l; i ++ ) {
+            var Posmesh = grassGroup.children[ i ];
+            Posmesh.position.x = Math.sin( time * 4 ) * i * i * 0.005;
+            Posmesh.position.z = 9.9 + Math.cos( time * 6 ) * i * i * 0.005;
+        }*/
     // End of Grass testing
     //-----------------------------------------------------------------------------------------------------------------
