@@ -35,7 +35,7 @@ var init = function() {
     var ambientLight = createLight.ambientLight(1500, 3000, -2000);  // Create atmospheric white light
     var grid = new THREE.GridHelper(500,10); // Create Grid
     var skyBox = createObject.skyBox("resources/skybox3/", "cube", "tCube", 4100, 4000, 4100)    // Create Skybox
-    var ground = createObject.heightMap("resources/textures/texture_snow.jpg", "heightmap", "terrain", 500, 75, 500, 0, -2, 0)    // Create Heightmap Ground
+    var ground = createObject.heightMap("resources/textures/texture_snow.jpg", "heightmap", "terrain", 500, 45, 500, 0, -2, 0)    // Create Heightmap Ground
     var water = createObject.createWater(lightPoint, 4000, 4000);     // Adding Water
     snow = createObject.fallingSnow(150, 1000 ,500, 100, 0, 1000, 500);     // Adding Snow
     //scene.fog = new THREE.Fog( 0x999999, 0.0100, 500 );     // Adding fog
@@ -104,6 +104,7 @@ var init = function() {
             });
             }
         }
+    document.addEventListener( 'mousedown', onDocumentMouseDown, false );
     document.addEventListener( 'mousedown', onDocumentMouseDown, false );
     //-----------------------------------------------------------------------------------------------------------------
 
