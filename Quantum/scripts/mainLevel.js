@@ -89,6 +89,9 @@ var init = function() {
     mouse = new THREE.Vector2();
     cubeGeo = new THREE.BoxGeometry( 5, 5, 5 );
     cubeMaterial = new THREE.MeshLambertMaterial( { color: 0xfeb74c, shading: THREE.FlatShading, map: THREE.ImageUtils.loadTexture( "resources/textures/texture_snow.jpg" ) } );
+    if (keyboard.pressed('1')) {
+        objectInt = 1;
+    }
 
     // Function that executes on mouse click!
     function onDocumentMouseDown( event ) {
@@ -104,7 +107,7 @@ var init = function() {
             });
             }
         }
-    document.addEventListener( 'mousedown', onDocumentMouseDown, false );
+
     document.addEventListener( 'mousedown', onDocumentMouseDown, false );
     //-----------------------------------------------------------------------------------------------------------------
 
