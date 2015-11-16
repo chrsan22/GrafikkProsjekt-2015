@@ -70,6 +70,7 @@ THREEx.KeyboardState.ALIAS	= {
     'pageup'	: 33,
     'pagedown'	: 34,
     'tab'		: 9,
+    'zero'      : 48,
     'one'       : 49,
     'two'       : 50,
     'three'     : 51,

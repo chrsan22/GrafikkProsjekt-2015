@@ -5,7 +5,7 @@
     var createObject;
     var objects = [];   //  Holds the objects created by picker
     var raycaster, mouse;   //  Variables used in the picker
-    var objectInt = 1;
+    var objectInt = 0;
     var keyboard;
 
 
@@ -26,7 +26,7 @@ var init = function() {
 
     // Controls for FlyControls
     controls = new THREE.FlyControls( camera ); // Creates Controls
-    controls.movementSpeed = 500; // WASD speed
+    controls.movementSpeed = 100; // WASD speed
     controls.rollSpeed = Math.PI / 24; // Rollspeed for Q and E roll
 
     renderer = cleanerMain.renderSettings(renderer);    // Sets Renderer in a different file
