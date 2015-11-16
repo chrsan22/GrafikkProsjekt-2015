@@ -5,7 +5,8 @@
     var createObject;
     var objects = [];   //  Holds the objects created by picker
     var raycaster, mouse;   //  Variables used in the picker
-    var objectInt = 0;
+    var objectInt = 1;
+    var keyboard;
 
 
 var init = function() {
@@ -16,6 +17,7 @@ var init = function() {
     var cleanerMain = new CleanMain(); // Contains functions to clean up the main
 
     scene = new THREE.Scene(); // Scene
+    keyboard = new THREEx.KeyboardState();
 
     // Adding Camera, positioned towards -z axis
     camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1e7);   // Set Camera Perspective
@@ -89,9 +91,6 @@ var init = function() {
     mouse = new THREE.Vector2();
     cubeGeo = new THREE.BoxGeometry( 5, 5, 5 );
     cubeMaterial = new THREE.MeshLambertMaterial( { color: 0xfeb74c, shading: THREE.FlatShading, map: THREE.ImageUtils.loadTexture( "resources/textures/texture_snow.jpg" ) } );
-    /*if (keyboard.pressed('1')) {
-        objectInt = 1;
-    }*/
 
     // Function that executes on mouse click!
     function onDocumentMouseDown( event ) {
@@ -151,6 +150,29 @@ var init = function() {
         createObject.fallingSnowRender(snow, 100);   // Rendering snow movement
         window.requestAnimFrame(render);    // Reloop
 
+        // Picks the object to be placed
+        if (keyboard.pressed('one')) {
+            objectInt = 1;
+        } else if (keyboard.pressed('two')) {
+            objectInt = 2;
+        } else if (keyboard.pressed('three')){
+            objectInt = 3;
+        } else if (keyboard.pressed('four')){
+            objectInt = 4;
+        } else if (keyboard.pressed('five')){
+            objectInt = 5;
+        } else if (keyboard.pressed('six')){
+            objectInt = 6;
+        } else if (keyboard.pressed('seven')){
+            objectInt = 7;
+        } else if (keyboard.pressed('eight')){
+            objectInt = 8;
+        } else if (keyboard.pressed('nine')){
+            objectInt = 9;
+        } else if (keyboard.pressed('zero')){
+            objectInt = 0;
+        }
+
         // Billboard clouds watching you while you sleep, walk etc.
         for( var i = 0, l = cloudGroup.children.length; i < l; i ++ ) {
             var cloudMesh = cloudGroup.children[i];
@@ -168,7 +190,9 @@ window.requestAnimFrame = (function(){
         function( callback ){
             window.setTimeout(callback, 1000 / 60);
         };
+
 })();
+
 
     // Start of Grass testing
 
