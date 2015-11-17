@@ -23,27 +23,53 @@
     <img src="resources/heightmaps/heightmap_test.jpg" id="heightmap" hidden/>
 
 
-
     <style>
         body {
             padding: 0;
             margin: 0;
             overflow: hidden;
-            background:#000;
+            background: #000;
             color: #eee;
-            font-family:Monospace;
-            font-size:13px;
-            text-align:center;
-        }
-        #info {
-            position: absolute;
-            top: 0px; width: 100%;
-            padding: 5px;
-            z-index:100;
+            font-family: Monospace;
+            font-size: 13px;
+            text-align: center;
         }
 
-        a { color: #0080ff }
-        b { color:orange }
+        #info {
+            position: absolute;
+            top: 0px;
+            width: 100%;
+            padding: 5px;
+            z-index: 100;
+        }
+
+        #object-pics {
+            position: absolute;
+            padding:0;
+            margin: 0;
+        }
+
+        #table-pics td {
+            border: 1px;
+            background-color: rgba(3,3,3,.4);
+            color: #fff;
+            padding: 10px;
+
+        }
+        #table-numb td {
+            color: black;
+            font-size: 15px;
+            text-align: center;
+            text-decoration: solid;
+        }
+
+        a {
+            color: #0080ff
+        }
+
+        b {
+            color: orange
+        }
     </style>
 </head>
 <body>
@@ -52,8 +78,10 @@
     _gaq.push(['_setAccount', 'UA-86951-7']);
     _gaq.push(['_trackPageview']);
 
-    (function() {
-        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    (function () {
+        var ga = document.createElement('script');
+        ga.type = 'text/javascript';
+        ga.async = true;
         ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
         (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ga);
     })();
@@ -64,6 +92,7 @@
 				vUv = uv;
 				gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
 			}
+
 </script>
 <script id="fs" type="x-shader/x-fragment">
 
@@ -79,9 +108,28 @@
 				gl_FragColor.w *= pow( gl_FragCoord.z, 20.0 );
 				gl_FragColor = mix( gl_FragColor, vec4( fogColor, gl_FragColor.w ), fogFactor );
 			}
+
 </script>
+
+<div id="object-pics">
+    <table>
+        <tr id="table-pics">
+            <td><img src="resources/objectpngs/treetoon.png" width="25px"></td>
+            <td><img src="resources/objectpngs/tiefighter.png" width="25px"></td>
+            <td><img src="resources/objectpngs/apartmenthouse.png" width="25px"></td>
+            <td><img src="resources/objectpngs/stonehouse.png" width="25px"></td>
+            <td><img src="resources/objectpngs/medieval%20house.png" width="25px"></td>
+            <td><img src="resources/objectpngs/tardis.png" width="25px"></td>
+            <td><img src="resources/objectpngs/rainbowdash.png" width="25px"></td>
+        </tr>
+        <tr id="table-numb">
+            <td>0</td><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td>
+        </tr>
+    </table>
+</div>
 <div id="info"><br/>
-    <b>WASD</b> move, <b>SPACE|C</b> up | down, <b>Q|E</b> roll, <b>up|down</b> pitch, <b>left|right</b> yaw, <b>P</b> pause<br/>
+    <b>WASD</b> move, <b>SPACE|C</b> up | down, <b>Q|E</b> roll, <b>up|down</b> pitch, <b>left|right</b> yaw, <b>P</b>
+    pause<br/>
 </div>
 <canvas id="canvas">
 </canvas>
