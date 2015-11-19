@@ -9,7 +9,7 @@ Ks 0.500000 0.500000 0.500000
 Ni 1.000000
 d 1.000000
 illum 2
-map_Kd __auto_.png
+map_Kd ../objecttextures/__auto_.png
 
 newmtl __auto_1
 Ns 96.078431
@@ -19,7 +19,7 @@ Ks 0.500000 0.500000 0.500000
 Ni 1.000000
 d 1.000000
 illum 2
-map_Kd __auto_1.png
+map_Kd ../objecttextures/__auto_1.png
 
 newmtl __auto_2
 Ns 96.078431
@@ -29,7 +29,7 @@ Ks 0.500000 0.500000 0.500000
 Ni 1.000000
 d 1.000000
 illum 2
-map_Kd __auto_2.png
+map_Kd ../objecttextures/__auto_2.png
 
 newmtl __auto_3
 Ns 96.078431
@@ -39,7 +39,7 @@ Ks 0.500000 0.500000 0.500000
 Ni 1.000000
 d 1.000000
 illum 2
-map_Kd __auto_3.png
+map_Kd ../objecttextures/__auto_3.png
 
 newmtl __auto_4
 Ns 96.078431
@@ -58,4 +58,4 @@ Ks 0.500000 0.500000 0.500000
 Ni 1.000000
 d 1.000000
 illum 2
-map_Kd __auto_5.png
+map_Kd ../objecttextures/__auto_5.png

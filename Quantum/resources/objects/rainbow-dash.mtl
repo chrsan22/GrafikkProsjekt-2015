@@ -9,7 +9,7 @@ Ks 0.500000 0.500000 0.500000
 Ni 1.000000
 d 1.000000
 illum 2
-map_Kd rainbow_dash_body.png
+map_Kd ../objecttextures/rainbow_dash_body.png
 
 newmtl 10
 Ns 96.078431
@@ -19,7 +19,7 @@ Ks 0.500000 0.500000 0.500000
 Ni 1.000000
 d 1.000000
 illum 2
-map_Kd rainbow_dash_tail.png
+map_Kd ../objecttextures/rainbow_dash_tail.png
 
 newmtl 2
 Ns 96.078431
@@ -29,7 +29,7 @@ Ks 0.500000 0.500000 0.500000
 Ni 1.000000
 d 1.000000
 illum 2
-map_Kd rainbow_dash_wings.png
+map_Kd ../objecttextures/rainbow_dash_wings.png
 
 newmtl 3
 Ns 96.078431
@@ -39,7 +39,7 @@ Ks 0.500000 0.500000 0.500000
 Ni 1.000000
 d 1.000000
 illum 2
-map_Kd txtr_pony_tongue.png
+map_Kd ../objecttextures/txtr_pony_tongue.png
 
 newmtl 4
 Ns 96.078431
@@ -49,7 +49,7 @@ Ks 0.500000 0.500000 0.500000
 Ni 1.000000
 d 1.000000
 illum 2
-map_Kd txtr_pony_teeth.png
+map_Kd ../objecttextures/txtr_pony_teeth.png
 
 newmtl 5
 Ns 96.078431
@@ -59,7 +59,7 @@ Ks 0.500000 0.500000 0.500000
 Ni 1.000000
 d 1.000000
 illum 2
-map_Kd txtr_pony_teeth.png
+map_Kd ../objecttextures/txtr_pony_teeth.png
 
 newmtl 6
 Ns 96.078431
@@ -69,7 +69,7 @@ Ks 0.500000 0.500000 0.500000
 Ni 1.000000
 d 1.000000
 illum 2
-map_Kd rainbow_dash_eyes.png
+map_Kd ../objecttextures/rainbow_dash_eyes.png
 
 newmtl 7
 Ns 96.078431
@@ -79,7 +79,7 @@ Ks 0.500000 0.500000 0.500000
 Ni 1.000000
 d 1.000000
 illum 2
-map_Kd txtr_pony_eyelashes.png
+map_Kd ../objecttextures/txtr_pony_eyelashes.png
 
 newmtl 8
 Ns 96.078431
@@ -89,7 +89,7 @@ Ks 0.500000 0.500000 0.500000
 Ni 1.000000
 d 1.000000
 illum 2
-map_Kd rainbow_dash_hair_back.png
+map_Kd ../objecttextures/rainbow_dash_hair_back.png
 
 newmtl 9
 Ns 96.078431
@@ -99,4 +99,4 @@ Ks 0.500000 0.500000 0.500000
 Ni 1.000000
 d 1.000000
 illum 2
-map_Kd rainbow_dash_hair_front.png
+map_Kd ../objecttextures/rainbow_dash_hair_front.png

@@ -9,8 +9,8 @@ Ks 0.170588 0.170588 0.170588
 Ni 1.000000
 d 1.000000
 illum 2
-map_Bump GreyBricks2.jpg
-map_Kd GreyBricks2.jpg
+map_Bump ../objecttextures/GreyBricks2.jpg
+map_Kd ../objecttextures/GreyBricks2.jpg
 
 newmtl DoorType1_2__DoorType1_2_jpg
 Ns 96.078431
@@ -20,8 +20,8 @@ Ks 0.200000 0.200000 0.200000
 Ni 1.000000
 d 1.000000
 illum 2
-map_Bump DoorType1_2.jpg
-map_Kd DoorType1_2.jpg
+map_Bump ../objecttextures/DoorType1_2.jpg
+map_Kd ../objecttextures/DoorType1_2.jpg
 
 newmtl GreyBrick2__GreyBricks2_jpg
 Ns 96.078431
@@ -31,8 +31,8 @@ Ks 0.366667 0.366667 0.366667
 Ni 1.000000
 d 1.000000
 illum 2
-map_Bump GreyBricks2.jpg
-map_Kd GreyBricks2.jpg
+map_Bump ../objecttextures/GreyBricks2.jpg
+map_Kd ../objecttextures/GreyBricks2.jpg
 
 newmtl GreyStone2__GreyStone2_jpg
 Ns 96.078431
@@ -42,8 +42,8 @@ Ks 0.170588 0.170588 0.170588
 Ni 1.000000
 d 1.000000
 illum 2
-map_Bump Stone.jpg
-map_Kd Stone.jpg
+map_Bump ../objecttextures/Stone.jpg
+map_Kd ../objecttextures/Stone.jpg
 
 newmtl LogEdgeWeathered__TreeLogEdgeWeathered_jpg
 Ns 96.078431
@@ -53,8 +53,8 @@ Ks 0.278431 0.278431 0.278431
 Ni 1.000000
 d 1.000000
 illum 2
-map_Bump TreeLogEdgeWeathered.jpg
-map_Kd TreeLogEdgeWeathered.jpg
+map_Bump ../objecttextures/TreeLogEdgeWeathered.jpg
+map_Kd ../objecttextures/TreeLogEdgeWeathered.jpg
 
 newmtl LogEdgeWeathered__Wood_jpg
 Ns 96.078431
@@ -64,8 +64,8 @@ Ks 0.311765 0.311765 0.311765
 Ni 1.000000
 d 1.000000
 illum 2
-map_Bump TreeLogEdgeWeathered.jpg
-map_Kd TreeLogEdgeWeathered.jpg
+map_Bump ../objecttextures/TreeLogEdgeWeathered.jpg
+map_Kd ../objecttextures/TreeLogEdgeWeathered.jpg
 
 newmtl LogEdgeWeathered__Wood_jpg_002
 Ns 96.078431
@@ -75,8 +75,8 @@ Ks 0.286275 0.286275 0.286275
 Ni 1.000000
 d 1.000000
 illum 2
-map_Bump TreeLogEdgeWeathered.jpg
-map_Kd TreeLogEdgeWeathered.jpg
+map_Bump ../objecttextures/TreeLogEdgeWeathered.jpg
+map_Kd ../objecttextures/TreeLogEdgeWeathered.jpg
 
 newmtl Plaster__PlasterLarge_jpg
 Ns 96.078431
@@ -86,8 +86,8 @@ Ks 0.245098 0.245098 0.245098
 Ni 1.000000
 d 1.000000
 illum 2
-map_Bump PlasterLarge.jpg
-map_Kd PlasterLarge.jpg
+map_Bump ../objecttextures/PlasterLarge.jpg
+map_Kd ../objecttextures/PlasterLarge.jpg
 
 newmtl RoofTiles__RoofTiles_jpg
 Ns 96.078431
@@ -97,8 +97,8 @@ Ks 0.378431 0.378431 0.378431
 Ni 1.000000
 d 1.000000
 illum 2
-map_Bump RoofTiles.jpg
-map_Kd RoofTiles.jpg
+map_Bump ../objecttextures/RoofTiles.jpg
+map_Kd ../objecttextures/RoofTiles.jpg
 
 newmtl RustedMetal__Rusted_Metal_jpg
 Ns 96.078431
@@ -108,8 +108,8 @@ Ks 0.500000 0.500000 0.500000
 Ni 1.000000
 d 1.000000
 illum 2
-map_Bump Rusted Metal.jpg
-map_Kd Rusted Metal.jpg
+map_Bump ../objecttextures/Rusted Metal.jpg
+map_Kd ../objecttextures/Rusted Metal.jpg
 
 newmtl Stone__Stone_jpg
 Ns 96.078431
@@ -119,8 +119,8 @@ Ks 0.196078 0.196078 0.196078
 Ni 1.000000
 d 1.000000
 illum 2
-map_Bump Stone.jpg
-map_Kd Stone.jpg
+map_Bump ../objecttextures/Stone.jpg
+map_Kd ../objecttextures/Stone.jpg
 
 newmtl WindowBlue1__WindowBlue1
 Ns 96.078431
@@ -130,8 +130,8 @@ Ks 0.500000 0.500000 0.500000
 Ni 1.000000
 d 1.000000
 illum 2
-map_Bump WindowBlue1.jpg
-map_Kd WindowBlue1.jpg
+map_Bump ../objecttextures/WindowBlue1.jpg
+map_Kd ../objecttextures/WindowBlue1.jpg
 
 newmtl WindowBlue2__WindowsBlue2_jpg
 Ns 96.078431
@@ -141,8 +141,8 @@ Ks 0.500000 0.500000 0.500000
 Ni 1.000000
 d 1.000000
 illum 2
-map_Bump WindowsBlue2.jpg
-map_Kd WindowsBlue2.jpg
+map_Bump ../objecttextures/WindowsBlue2.jpg
+map_Kd ../objecttextures/WindowsBlue2.jpg
 
 newmtl Wood_001
 Ns 96.078431
@@ -152,8 +152,8 @@ Ks 0.256863 0.256863 0.256863
 Ni 1.000000
 d 1.000000
 illum 2
-map_Bump Wood.jpg
-map_Kd Wood.jpg
+map_Bump ../objecttextures/Wood.jpg
+map_Kd ../objecttextures/Wood.jpg
 
 newmtl Wood_001__Wood_jpg
 Ns 96.078431
@@ -163,8 +163,8 @@ Ks 0.180392 0.180392 0.180392
 Ni 1.000000
 d 1.000000
 illum 2
-map_Bump Wood.jpg
-map_Kd Wood.jpg
+map_Bump ../objecttextures/Wood.jpg
+map_Kd ../objecttextures/Wood.jpg
 
 newmtl Wood__Wood_jpg
 Ns 96.078431
@@ -174,5 +174,5 @@ Ks 0.200000 0.200000 0.200000
 Ni 1.000000
 d 1.000000
 illum 2
-map_Bump Wood.jpg
-map_Kd Wood.jpg
+map_Bump ../objecttextures/Wood.jpg
+map_Kd ../objecttextures/Wood.jpg
