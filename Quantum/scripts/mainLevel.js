@@ -243,29 +243,28 @@ function render() {
     if (keyboard.pressed('one')) {
         document.getElementById(objectInt).style.backgroundColor = "rgba(3,3,3,.4)";
         objectInt = 1;
-        document.getElementById("1").style.backgroundColor = "yellow";
+        document.getElementById("1").style.backgroundColor = "rgba(255,255,0,.4)";
     } else if (keyboard.pressed('two')) {
         document.getElementById(objectInt).style.backgroundColor = "rgba(3,3,3,.4)";
         objectInt = 2;
-        document.getElementById("2").style.backgroundColor = "yellow";
+        document.getElementById("2").style.backgroundColor = "rgba(255,255,0,.4)";
     } else if (keyboard.pressed('three')) {
         document.getElementById(objectInt).style.backgroundColor = "rgba(3,3,3,.4)";
         objectInt = 3;
-        document.getElementById("3").style.backgroundColor = "yellow";
+        document.getElementById("3").style.backgroundColor = "rgba(255,255,0,.4)";
     } else if (keyboard.pressed('four')) {
         document.getElementById(objectInt).style.backgroundColor = "rgba(3,3,3,.4)";
         objectInt = 4;
-        document.getElementById("4").style.backgroundColor = "yellow";
+        document.getElementById("4").style.backgroundColor = "rgba(255,255,0,.4)";
     } else if (keyboard.pressed('five')) {
         document.getElementById(objectInt).style.backgroundColor = "rgba(3,3,3,.4)";
         objectInt = 5;
-        document.getElementById("5").style.backgroundColor = "yellow";
+        document.getElementById("5").style.backgroundColor = "rgba(255,255,0,.4)";
     } else if (keyboard.pressed('zero')) {
         document.getElementById(objectInt).style.backgroundColor = "rgba(3,3,3,.4)";
         objectInt = 0;
-        document.getElementById("0").style.backgroundColor = "yellow";
+        document.getElementById("0").style.backgroundColor = "rgba(255,255,0,.4)";
     }
-
 
 
     // Billboard clouds watching you while you sleep, walk etc.
