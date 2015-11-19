@@ -36,25 +36,13 @@ function selectObject(objNr) {
             return "apartment-house";
             break;
         case 3:
-            return "stone-house";
-            break;
-        case 4:
             return "medieval-house-2";
             break;
-        case 5:
+        case 4:
             return "tardis";
             break;
-        case 6:
+        case 5:
             return "rainbow-dash";
-            break;
-        case 7:
-            return "starwars-tie-fighter";
-            break;
-        case 8:
-            return "starwars-tie-fighter";
-            break;
-        case 9:
-            return "starwars-tie-fighter";
             break;
     }
 }

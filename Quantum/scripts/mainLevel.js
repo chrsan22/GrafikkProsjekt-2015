@@ -250,14 +250,6 @@ function render() {
         objectInt = 4;
     } else if (keyboard.pressed('five')) {
         objectInt = 5;
-    } else if (keyboard.pressed('six')) {
-        objectInt = 6;
-    } else if (keyboard.pressed('seven')) {
-        objectInt = 7;
-    } else if (keyboard.pressed('eight')) {
-        objectInt = 8;
-    } else if (keyboard.pressed('nine')) {
-        objectInt = 9;
     } else if (keyboard.pressed('zero')) {
         objectInt = 0;
     }
