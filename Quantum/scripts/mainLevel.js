@@ -61,7 +61,8 @@ var init = function () {
     // Tie Squadron
 
         tieSquadron = createObject.tieSquadronType1(2100, 75, 2100, 8, 0.7, function (tieSquad){
-                    tieSquadron = tieSquad;
+            tieSquadron = tieSquad;
+            scene.add(tieSquadron);
                     });
 
         tieSquadron2 = createObject.tieSquadronType2(1900, 75, 1900, 8, 0.7);
