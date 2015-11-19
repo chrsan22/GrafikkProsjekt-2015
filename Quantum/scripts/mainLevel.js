@@ -7,21 +7,9 @@ var objects = [];   //  Holds the objects created by picker
 var raycaster, mouse;   //  Variables used in the picker
 var objectInt = 0;
 var keyboard;
-var tieSquadron;
+var tieForce = [];
+var tieSquadron1 = new THREE.Object3D();
 var tieSquadron2 = new THREE.Object3D();
-var tieSquadron3 = new THREE.Object3D();
-var tieSquadron4 = new THREE.Object3D();
-var tieSquadron5 = new THREE.Object3D();
-var tieSquadron6 = new THREE.Object3D();
-var tieSquadron7 = new THREE.Object3D();
-var tieSquadron8 = new THREE.Object3D();
-var tieSquadron9 = new THREE.Object3D();
-var tieSquadron10 = new THREE.Object3D();
-var tieSquadron11 = new THREE.Object3D();
-var tieSquadron12 = new THREE.Object3D();
-var tieSquadron13 = new THREE.Object3D();
-var tieSquadron14 = new THREE.Object3D();
-var tieSquadron15 = new THREE.Object3D();
 
 var init = function () {
     var canvas = document.getElementById("canvas"); // Canvas
@@ -58,70 +46,83 @@ var init = function () {
 
 
     //-----------------------------------------------------------------------------------------------------------------
-    // Tie Squadron
+    // Tie Squadron2
+/*
+    createObject.tieSquadronType1(2100, 75, 2100, 8, 0.7, function(tieSquad){
+        tieSquadron1 = tieSquad;
+        tieForce.push(tieSquadron1);
+        scene.add(tieSquadron1);
+    });
 
-        tieSquadron = createObject.tieSquadronType1(2100, 75, 2100, 8, 0.7, function (tieSquad){
-            tieSquadron = tieSquad;
-            scene.add(tieSquadron);
-                    });
+    createObject.tieSquadronType2(1900, 75, 1900, 8, 0.7, function(tieSquad){
+        tieSquadron2 = tieSquad;
+        tieForce.push(tieSquadron2);
+        console.log(tieForce[0]);
+        scene.add(tieSquadron2);
+    });
 
-        tieSquadron2 = createObject.tieSquadronType2(1900, 75, 1900, 8, 0.7, function (tieSquad){
-            tieSquadron2 = tieSquad;
-            scene.add(tieSquadron2);
-        });
 
-        tieSquadron3 = createObject.tieSquadronType1(1700,75, 1700, 8, 0.7, function (tieSquad){
-            tieSquadron3 = tieSquad;
-            scene.add(tieSquadron3);
-        });
-        tieSquadron4 = createObject.tieSquadronType2(1500,75, 1500, 8, 0.7, function (tieSquad){
-            tieSquadron4 = tieSquad;
-            scene.add(tieSquadron4);
-        });
-        tieSquadron5 = createObject.tieSquadronType1(1000,75, 1000, 8, 0.7, function (tieSquad){
-            tieSquadron5 = tieSquad;
-            scene.add(tieSquadron5);
-        });
-        tieSquadron6 = createObject.tieSquadronType1(700,75, 700, 8, 0.7, function (tieSquad){
-            tieSquadron6 = tieSquad;
-            scene.add(tieSquadron6);
-        });
-        tieSquadron7 = createObject.tieSquadronType2(300,75, 300, 8, 0.7, function (tieSquad){
-            tieSquadron7 = tieSquad;
-            scene.add(tieSquadron7);
-        });
-        tieSquadron8 = createObject.tieSquadronType2(100,75, 100, 8, 0.7, function (tieSquad){
-            tieSquadron8 = tieSquad;
-            scene.add(tieSquadron8);
-        });
-        tieSquadron9 = createObject.tieSquadronType1(0,75, 0, 8, 0.7, function (tieSquad){
-            tieSquadron9 = tieSquad;
-            scene.add(tieSquadron9);
-        });
-        tieSquadron10 = createObject.tieSquadronType1(-100,75, -100, 8, 0.7, function (tieSquad){
-            tieSquadron10 = tieSquad;
-            scene.add(tieSquadron10);
-        });
-        tieSquadron11 = createObject.tieSquadronType1(-500,75, -500, 8, 0.7, function (tieSquad){
-            tieSquadron11 = tieSquad;
-            scene.add(tieSquadron11);
-        });
-        tieSquadron12 = createObject.tieSquadronType2(-900,75, -900, 8, 0.7, function (tieSquad){
-            tieSquadron12 = tieSquad;
-            scene.add(tieSquadron12);
-        });
-        tieSquadron13 = createObject.tieSquadronType1(-1200,75, -1200, 8, 0.7, function (tieSquad){
-            tieSquadron13 = tieSquad;
-            scene.add(tieSquadron13);
-        });
-        tieSquadron14 = createObject.tieSquadronType2(-1500,75, -1500, 8, 0.7, function (tieSquad){
-            tieSquadron14 = tieSquad;
-            scene.add(tieSquadron14);
-        });
-        tieSquadron15 = createObject.tieSquadronType1(-1900,75, -1900, 8, 0.7, function (tieSquad){
-            tieSquadron15 = tieSquad;
-            scene.add(tieSquadron15);
-        });
+    for(var i = 0; i<100; i++){
+        var startPos = Math.random()* 4200 - 2100;
+        var squadType = Math.random()* 10 + 1;
+        var directionX = Math.random()* 1.3 + 0.7;
+        var directionZ = Math.random()* 1.3 + 0.7;
+
+        if(squadType > 4){
+            var tieSquadron = new THREE.Object3D();
+            tieSquadron = tieSquadron1.clone();
+          // console.log(tieSquadron);
+            tieSquadron.position.x = startPos;
+            tieSquadron.position.z = startPos;
+            tieSquadron.directionX = directionX;
+            tieSquadron.directionZ = directionZ;
+
+            tieForce.push(tieSquadron);
+
+        } else {
+            var tieSquadron = new THREE.Object3D();
+            tieSquadron = tieSquadron2.clone();
+            // console.log(tieSquadron);
+            tieSquadron.position.x = startPos;
+            tieSquadron.position.z = startPos;
+            tieSquadron.directionX = directionX;
+            tieSquadron.directionZ = directionZ;
+
+            tieForce.push(tieSquadron);
+        }
+    }
+*/
+    for(var i = 0; i<20; i++){
+        var startPos = Math.random()* 4200 - 2100;
+        var squadType = Math.random()* 10 + 1;
+
+        if(squadType > 4){
+            var tieSquadron = new THREE.Object3D();
+
+            createObject.tieSquadronType1(startPos, 75, startPos, 8, 0.7, function(tieSquad){
+                tieSquadron = tieSquad;
+                tieForce.push(tieSquadron);
+                scene.add(tieSquadron);
+            });
+
+            tieSquadron.position.x = startPos;
+            tieSquadron.position.z = startPos;
+
+            tieForce.push(tieSquadron);
+
+        } else {
+            var tieSquadron = new THREE.Object3D();
+
+            createObject.tieSquadronType2(startPos, 75, startPos, 8, 0.7, function(tieSquad){
+                tieSquadron = tieSquad;
+                tieForce.push(tieSquadron);
+                scene.add(tieSquadron);
+            });
+
+            tieSquadron.position.x = startPos;
+            tieSquadron.position.z = startPos;
+        }
+    }
 
 
     // End of Tie Squadron
@@ -149,7 +150,7 @@ var init = function () {
         vertexShader: document.getElementById('vs').textContent,
         fragmentShader: document.getElementById('fs').textContent,
         depthWrite: false,
-        depthTest: false,
+        depthTest: true,
         transparent: true
 
     });
@@ -268,136 +269,7 @@ function render() {
     }
 
     //tie Squadron section
-    //TieSquadrons.moveSquadrons();
-
-    if (tieSquadron.position.z > 2201) {
-        tieSquadron.position.z = -2100;
-        tieSquadron.position.x = -2100;
-        tieSquadron.position.y = 75;
-    }else{
-        tieSquadron.position.z += tieSquadron.forwardSpeed;
-        tieSquadron.position.x += tieSquadron.forwardSpeed;
-    }
-
-    if (tieSquadron2.position.z > 2201) {
-        tieSquadron2.position.z = -2100;
-        tieSquadron2.position.x = -2100;
-        tieSquadron2.position.y = 75;
-    }else{
-        tieSquadron2.position.z += tieSquadron.forwardSpeed*1.1;
-        tieSquadron2.position.x += tieSquadron.forwardSpeed;
-    }
-    if (tieSquadron3.position.z > 2201) {
-        tieSquadron3.position.z = -2100;
-        tieSquadron3.position.x = -2100;
-        tieSquadron3.position.y = 75;
-    }else{
-        tieSquadron3.position.z += tieSquadron.forwardSpeed*0.9;
-        tieSquadron3.position.x += tieSquadron.forwardSpeed;
-    }
-
-    if (tieSquadron4.position.z > 2201) {
-        tieSquadron4.position.z = -2100;
-        tieSquadron4.position.x = -2100;
-        tieSquadron4.position.y = 75;
-    }else{
-        tieSquadron4.position.z += tieSquadron.forwardSpeed*1.1;
-        tieSquadron4.position.x += tieSquadron.forwardSpeed;
-    }
-
-    if (tieSquadron5.position.z > 2201) {
-        tieSquadron5.position.z = -2100;
-        tieSquadron5.position.x = -2100;
-        tieSquadron5.position.y = 75;
-    }else{
-        tieSquadron5.position.z += tieSquadron.forwardSpeed;
-        tieSquadron5.position.x += tieSquadron.forwardSpeed;
-    }
-
-    if (tieSquadron6.position.z > 2201) {
-        tieSquadron6.position.z = -2100;
-        tieSquadron6.position.x = -2100;
-        tieSquadron6.position.y = 75;
-    }else{
-        tieSquadron6.position.z += tieSquadron.forwardSpeed*0.9;
-        tieSquadron6.position.x += tieSquadron.forwardSpeed;
-    }
-
-    if (tieSquadron7.position.z > 2201) {
-        tieSquadron7.position.z = -2100;
-        tieSquadron7.position.x = -2100;
-        tieSquadron7.position.y = 75;
-    }else{
-        tieSquadron7.position.z += tieSquadron.forwardSpeed;
-        tieSquadron7.position.x += tieSquadron.forwardSpeed*0.9;
-    }
-
-    if (tieSquadron8.position.z > 2201) {
-        tieSquadron8.position.z = -2100;
-        tieSquadron8.position.x = -2100;
-        tieSquadron8.position.y = 75;
-
-    }else{
-        tieSquadron8.position.z += tieSquadron.forwardSpeed*1.1;
-        tieSquadron8.position.x += tieSquadron.forwardSpeed;
-    }
-    if (tieSquadron9.position.z > 2201) {
-        tieSquadron9.position.z = -2100;
-        tieSquadron9.position.x = -2100;
-        tieSquadron9.position.y = 75;
-    }else{
-        tieSquadron9.position.z += tieSquadron.forwardSpeed*0.9;
-        tieSquadron9.position.x += tieSquadron.forwardSpeed;
-    }
-
-    if (tieSquadron10.position.z > 2201) {
-        tieSquadron10.position.z = -2100;
-        tieSquadron10.position.x = -2100;
-        tieSquadron10.position.y = 75;
-    }else{
-        tieSquadron10.position.z += tieSquadron.forwardSpeed;
-        tieSquadron10.position.x += tieSquadron.forwardSpeed*1.1;
-    }
-    if (tieSquadron11.position.z > 2201) {
-        tieSquadron11.position.z = -2100;
-        tieSquadron11.position.x = -2100;
-        tieSquadron11.position.y = 75;
-    }else{
-        tieSquadron11.position.z += tieSquadron.forwardSpeed;
-        tieSquadron11.position.x += tieSquadron.forwardSpeed*1.1;
-    }
-    if (tieSquadron12.position.z > 2201) {
-        tieSquadron12.position.z = -2100;
-        tieSquadron12.position.x = -2100;
-        tieSquadron12.position.y = 75;
-    }else{
-        tieSquadron12.position.z += tieSquadron.forwardSpeed;
-        tieSquadron12.position.x += tieSquadron.forwardSpeed*1.1;
-    }
-    if (tieSquadron13.position.z > 2201) {
-        tieSquadron13.position.z = -2100;
-        tieSquadron13.position.x = -2100;
-        tieSquadron13.position.y = 75;
-    }else{
-        tieSquadron13.position.z += tieSquadron.forwardSpeed*1.2;
-        tieSquadron13.position.x += tieSquadron.forwardSpeed;
-    }
-    if (tieSquadron14.position.z > 2201) {
-        tieSquadron14.position.z = -2100;
-        tieSquadron14.position.x = -2100;
-        tieSquadron14.position.y = 75;
-    }else{
-        tieSquadron14.position.z += tieSquadron.forwardSpeed;
-        tieSquadron14.position.x += tieSquadron.forwardSpeed*1.2;
-    }
-    if (tieSquadron15.position.z > 2201) {
-        tieSquadron15.position.z = -2100;
-        tieSquadron15.position.x = -2100;
-        tieSquadron15.position.y = 75;
-    }else{
-        tieSquadron15.position.z += tieSquadron.forwardSpeed;
-        tieSquadron15.position.x += tieSquadron.forwardSpeed*1.3;
-    }
+    createObject.tieSquadronRendering();
 
 }
 
@@ -414,62 +286,3 @@ window.requestAnimFrame = (function () {
 
 })();
 
-
-// Start of Grass testing
-
-/*    var geometry = new THREE.PlaneBufferGeometry( 20, 20 );
- var groundUnderGrass = new THREE.CubeGeometry(20, 0, 20);
- var color = new THREE.MeshBasicMaterial({
- color: new THREE.Color(0xFFFFFF),
- //map: THREE.ImageUtils.loadTexture( 'resources/textures/texture_snow.jpg' ), overdraw: false,
- });
- var meshing = new THREE.Mesh(groundUnderGrass,color);
- scene.add(meshing);
- meshing.position.set(0,0,10);
-
- var texture2 = new THREE.CanvasTexture( generateTexture() );
- for ( var i = 0; i < 5; i ++ ) {
- var material = new THREE.MeshBasicMaterial( {
- color: new THREE.Color(0xFFFFFF),
- map: texture2,
- depthTest: false,
- depthWrite: false,
- transparent: true
- } );
-
- var grassMesh = new THREE.Mesh( geometry, material );
- grassMesh.position.y = i * 0.25;
- grassMesh.rotation.x = - Math.PI / 2;
-
- grassGroup.add( grassMesh );
- }
-
- function generateTexture() {
- var canvas = document.createElement( 'canvas' );
- canvas.width = 1024;
- canvas.height = 1024;
-
- var context = canvas.getContext( '2d' );
-
- for ( var i = 0; i < 10000; i ++ ) {
- context.fillStyle = 'hsl(0,0%,' + ( Math.random() * 50 + 50 ) + '%)';
- context.beginPath();
- context.arc( Math.random() * canvas.width, Math.random() * canvas.height, Math.random() + 0.1, 0, Math.PI * 2, true );
- context.fill();
- }
-
- context.globalAlpha = 0.075;
- context.globalCompositeOperation = 'lighter';
-
- return canvas;
- }
-
-
- var time = Date.now() / 6000;
- for ( var i = 0, l = grassGroup.children.length; i < l; i ++ ) {
- var Posmesh = grassGroup.children[ i ];
- Posmesh.position.x = Math.sin( time * 4 ) * i * i * 0.005;
- Posmesh.position.z = 9.9 + Math.cos( time * 6 ) * i * i * 0.005;
- }*/
-// End of Grass testing
-//-----------------------------------------------------------------------------------------------------------------
