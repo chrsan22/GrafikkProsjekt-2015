@@ -2,7 +2,7 @@
  * Created by Mats on 15.10.2015.
  */
 
-THREE.FlyControls = function ( object, domElement ) {
+THREE.FlyControls2 = function ( object, domElement ) {
 
     this.object = object;
 
@@ -13,6 +13,7 @@ THREE.FlyControls = function ( object, domElement ) {
 
     this.movementSpeed = 1.0;
     this.rollSpeed = 0.01;
+    //this.autoForward = true;
 
     this.tmpQuaternion = new THREE.Quaternion();
 
@@ -35,39 +36,35 @@ THREE.FlyControls = function ( object, domElement ) {
         }
         switch ( event.keyCode ) {
 
-            case 87: /*W*/ this.moveState.forward = 2; break;
-            case 83: /*S*/ this.moveState.back = 2; break;
+            case 73: /*I*/ this.moveState.forward = 1; break;
+            case 75: /*K*/ this.moveState.back = 1; break;
 
-           /*            case 65: /!*A*!/ this.moveState.left = 2;
-                this.moveState.forward = 1;
-                this.object.rotation.z += 0.01;
-                this.object.rotation.y += 0.01; break;
-            case 68: /!*D*!/ this.moveState.right = 2;
-                this.moveState.forward = 1;
-                this.object.rotation.z -= 0.01;
-                this.object.rotation.y -= 0.01; break;*/
+            case 76: /*J*/ this.moveState.left = 1; this.moveState.forward = 1; this.object.rotation.z += 0.05; this.object.rotation.y -= 0.05; break;
+            case 74: /*L*/ this.moveState.right = 1; this.moveState.forward = 1; this.object.rotation.z -= 0.05; this.object.rotation.y += 0.05; break;
+/*
 
-            case 65: /*A*/ this.moveState.left = 1; break;
-            case 68: /*D*/ this.moveState.right = 1; break;
+            case 32: /!*SPACE*!/ this.moveState.up = 1; break;
+            case 67: /!*C*!/ this.moveState.down = 1; break;
 
-            case 32: /*SPACE*/ this.moveState.up = 1; break;
-            case 67: /*C*/ this.moveState.down = 1; break;
+            case 40: /!*up*!/ this.moveState.pitchUp = 1; break;
+            case 38: /!*down*!/ this.moveState.pitchDown = 1; break;
 
-            case 40: /*up*/ this.moveState.pitchUp = 0.7; break;
-            case 38: /*down*/ this.moveState.pitchDown = 0.7; break;
+            case 37: /!*left*!/ this.moveState.yawLeft = 1; break;
+            case 39: /!*right*!/ this.moveState.yawRight = 1; break;
+*/
 
-            case 37: /*left*/ this.moveState.yawLeft = 1; break;
-            case 39: /*right*/ this.moveState.yawRight = 1; break;
+            case 85: /*U*/ this.moveState.rollLeft = 1; break;
+            case 79: /*O*/ this.moveState.rollRight = 1; break;
 
-            case 81: /*Q*/ this.moveState.rollLeft = 1; break;
-            case 69: /*E*/ this.moveState.rollRight = 1; break;
 
-            case 80: /*P*/
+                /*
+                 case 80: //P
                 if(this.mouseStatus == 0) {
                     this.mouseStatus = 1;
                     this.moveState.yawLeft = this.moveState.pitchDown = 0;
                     break;
                 }else { this.mouseStatus = 0; break;}
+            */
         }
         this.updateMovementVector();
         this.updateRotationVector();
@@ -77,32 +74,23 @@ THREE.FlyControls = function ( object, domElement ) {
     this.keyup = function( event ) {
         switch ( event.keyCode ) {
 
-            case 87: /*W*/ this.moveState.forward = 0; break;
-            case 83: /*S*/ this.moveState.back = 0; break;
+            case 73: /*I*/  this.moveState.forward = 0; break;
+            case 75: /*K*/  this.moveState.back = 0; break;
 
-          /*  case 65: /!*A*!/ this.moveState.left = 0;
-                this.moveState.forward = 0;
-                this.object.rotation.z += 0.05;
-                this.object.rotation.y += 0.05; break;
-            case 68: /!*D*!/ this.moveState.right = 0;
-                this.moveState.forward = 0;
-                this.object.rotation.z -= 0.05;
-                this.object.rotation.y -= 0.05; break;*/
+            case 76: /*J*/ this.moveState.left = 0; this.moveState.forward = 0; this.object.rotation.z += 0.05; this.object.rotation.y -= 0.05;  break;
+            case 74: /*L*/ this.moveState.right = 0; this.moveState.forward = 0; this.object.rotation.z -= 0.05; this.object.rotation.y += 0.05; break;
+/*
+            case 32: /!*SPACE*!/ this.moveState.up = 0; break;
+            case 67: /!*C*!/ this.moveState.down = 0; break;
 
-            case 65: /*A*/ this.moveState.left = 0; break;
-            case 68: /*D*/ this.moveState.right = 0; break;
+           case 40: /!*up*!/ this.moveState.pitchUp = 0; break;
+            case 38: /!*down*!/ this.moveState.pitchDown = 0; break;
 
-            case 32: /*SPACE*/ this.moveState.up = 0; break;
-            case 67: /*C*/ this.moveState.down = 0; break;
-
-            case 40: /*up*/ this.moveState.pitchUp = 0; break;
-            case 38: /*down*/ this.moveState.pitchDown = 0; break;
-
-            case 37: /*left*/ this.moveState.yawLeft = 0; break;
-            case 39: /*right*/ this.moveState.yawRight = 0; break;
-
-            case 81: /*Q*/ this.moveState.rollLeft = 0; break;
-            case 69: /*E*/ this.moveState.rollRight = 0; break;
+            case 37: /!*left*!/ this.moveState.yawLeft = 0; break;
+            case 39: /!*right*!/ this.moveState.yawRight = 0; break;
+*/
+            case 85: /*U*/ this.moveState.rollLeft = 0; break;
+            case 79: /*O*/ this.moveState.rollRight = 0; break;
 
             //case 80: /*P*/ this.mouseStatus = 0; break;
         }
@@ -177,7 +165,7 @@ THREE.FlyControls = function ( object, domElement ) {
     };
 
     this.updateMovementVector = function() {
-        var forward = ( this.moveState.forward ) ? 1 : 0;
+        var forward = ( this.moveState.forward /*|| (  this.autoForward && ! this.moveState.back) */) ? 1 : 0;
         this.moveVector.x = ( - this.moveState.left    + this.moveState.right );
         this.moveVector.y = ( - this.moveState.down    + this.moveState.up );
         this.moveVector.z = ( - forward + this.moveState.back );

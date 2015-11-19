@@ -5,6 +5,8 @@ var tieMesh;
 var keyboard;
 var flightControlGroup = new THREE.Object3D();
 var water;
+var controls2;
+
 
 var init = function () {
     var canvas = document.getElementById("canvas"); // Canvas
@@ -15,19 +17,25 @@ var init = function () {
     keyboard = new THREEx.KeyboardState();
     //TIE-fighter object loading section
     var tieLoaderMTL = new THREE.OBJMTLLoader();
-    tieLoaderMTL.load("scripts/starwars-tie-fighter.obj", "scripts/starwars-tie-fighter.mtl", function (object) {
+    tieLoaderMTL.load("resources/objects/starwars-tie-fighter.obj", "resources/objects/starwars-tie-fighter.mtl", function (object) {
         tieMesh = object;
         tieMesh.rotation.y = 180*(Math.PI/180);
         tieMesh.name = "tieMesh";
         tieMesh.castShadow = true;
 
+        /*
+        controls2 = new THREE.FlyControls2( tieMesh ); // Creates Control2
+        controls2.movementSpeed = 30; // IJKL speed
+        controls2.rollSpeed = Math.PI / 24; // Rollspeed for Q and E roll
+      //  controls2.object= tieMesh;
+*/
         flightControlGroup.add(camera);
         flightControlGroup.add(tieMesh);
         flightControlGroup.position.y = 50;
         flightControlGroup.position.z = 100;
 
         tieMesh.position.set(0,0, -35);
-        controls.object = flightControlGroup;
+       // controls.object = flightControlGroup;
         scene.add(flightControlGroup);
     });
 
@@ -38,9 +46,9 @@ var init = function () {
     //camera.position.set(0, 50, 100);  // Set Camera Position towards -z axis
 
     // Controls for FlyControls
-    controls = new THREE.FlyControls( camera ); // Creates Controls
+    controls = new THREE.FlyControls( flightControlGroup ); // Creates Controls
     controls.movementSpeed = 30; // WASD speed
-    controls.rollSpeed = Math.PI / 24; // Rollspeed for Q and E roll
+    controls.rollSpeed = Math.PI / 15; // Rollspeed for Q and E roll
 
     renderer = cleanerMain.renderSettings(renderer);
     document.body.appendChild(renderer.domElement);   // Sets Size
@@ -150,6 +158,7 @@ var init = function () {
 function render() {
     var delta = clock.getDelta(); // seconds.
     controls.update(delta);   // Update Controls
+    //controls2.update(delta);   // Update Controls2
     water.material.uniforms.time.value += 1.0 / 60.0;
     water.render();
     renderer.render(scene, camera); // Repeat Renderer
@@ -163,8 +172,7 @@ function render() {
         Posmesh.position.z = 50 + Math.cos(time * 6) * i * i * 0.005;
     }
 */
-     //TIE- control section
-    //  var tieMesh = scene.getObjectByName("tieMesh");
+
      var moveDistance = 50 * delta; // 50 pixels per second
      var rotateAngle = Math.PI / 2 * delta;   // pi/2 radians (90 degrees) per second
 
@@ -187,9 +195,23 @@ function render() {
      if (keyboard.pressed("y")) {
      tieMesh.rotateOnAxis(new THREE.Vector3(0, 0, 1), -rotateAngle);
      }
-    // camera.position.set(tieMesh.position.x,tieMesh.position.y+5,tieMesh.position.z+30);
 
 
+    if (keyboard.pressed("j")) {
+        this.moveState.left = 2;
+        this.moveState.forward = 1;
+        this.object.rotation.z += 0.05;
+        this.object.rotation.y += 0.05;
+
+
+    }
+    if (keyboard.pressed("l")) {
+        this.moveState.right = 2;
+        this.moveState.forward = 1;
+        this.object.rotation.z -= 0.05;
+        this.object.rotation.y -=0.05;
+
+    }
 }
 
 window.addEventListener('load', init);
@@ -203,80 +225,3 @@ window.requestAnimFrame = (function () {
             window.setTimeout(callback, 1000 / 60);
         };
 })();
-
-/*******************
-    Ocean section
-  ******************/
-
-/*
-function initiateOcean(){
-var gsize = 512;
-var res = 1024;
-var gres = res / 2;
-var origx = -gsize / 2;
-var origz = -gsize / 2;
-ocean = new THREE.Ocean(renderer, this.camera, this.scene,
-    {
-        USE_HALF_FLOAT : hash === 'half-float',
-        INITIAL_SIZE : 256.0,
-        INITIAL_WIND : [10.0, 10.0],
-        INITIAL_CHOPPINESS : 1.5,
-        CLEAR_COLOR : [1.0, 1.0, 1.0, 0.0],
-        GEOMETRY_ORIGIN : [origx, origz],
-        SUN_DIRECTION : [-1.0, 1.0, 1.0],
-        OCEAN_COLOR: new THREE.Vector3(0.004, 0.016, 0.047),
-        SKY_COLOR: new THREE.Vector3(3.2, 9.6, 12.8),
-        EXPOSURE : 0.35,
-        GEOMETRY_RESOLUTION: gres,
-        GEOMETRY_SIZE : gsize,
-        RESOLUTION : res
-    });
-    ocean.materialOcean.uniforms.u_projectionMatrix = { type: "m4", value: camera.projectionMatrix };
-    ocean.materialOcean.uniforms.u_viewMatrix = { type: "m4", value: camera.matrixWorldInverse };
-    ocean.materialOcean.uniforms.u_cameraPosition = { type: "v3", value: camera.position };
-    scene.add(ocean.oceanMesh);
-
-var gui = new dat.GUI();
-var c1 = gui.add(ocean, "size",100, 5000);
-c1.onChange(function(v) {
-    this.object.size = v;
-    this.object.changed = true;
-});
-var c2 = gui.add(ocean, "choppiness", 0.1, 4);
-c2.onChange(function (v) {
-    this.object.choppiness = v;
-    this.object.changed = true;
-});
-var c3 = gui.add(ocean, "windX",-15, 15);
-c3.onChange(function (v) {
-    this.object.windX = v;
-    this.object.changed = true;
-});
-var c4 = gui.add(ocean, "windY", -15, 15);
-c4.onChange(function (v) {
-    this.object.windY = v;
-    this.object.changed = true;
-});
-var c5 = gui.add(ocean, "sunDirectionX", -1.0, 1.0);
-c5.onChange(function (v) {
-    this.object.sunDirectionX = v;
-    this.object.changed = true;
-});
-var c6 = gui.add(ocean, "sunDirectionY", -1.0, 1.0);
-c6.onChange(function (v) {
-    this.object.sunDirectionY = v;
-    this.object.changed = true;
-});
-var c7 = gui.add(this.ms_Ocean, "sunDirectionZ", -1.0, 1.0);
-c7.onChange(function (v) {
-    this.object.sunDirectionZ = v;
-    this.object.changed = true;
-});
-var c8 = gui.add(this.ms_Ocean, "exposure", 0.0, 0.5);
-c8.onChange(function (v) {
-    this.object.exposure = v;
-    this.object.changed = true;
-});
-
-}
-*/

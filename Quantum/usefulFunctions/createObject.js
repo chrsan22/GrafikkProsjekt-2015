@@ -182,3 +182,65 @@ CreateObject.prototype.fallingSnowRender = function (snowGroup, posY) {
         }
     }
 }
+
+
+CreateObject.prototype.tieSquadronType1 = function(posX, posY, posZ, speed, rotation,callback){
+    var tieLoaderMTL = new THREE.OBJMTLLoader();
+    tieLoaderMTL.load("resources/objects/starwars-tie-fighter.obj", "resources/objects/starwars-tie-fighter.mtl", function (object) {
+        var tieMesh = object;
+        tieMesh.name = "tieMesh";
+        tieMesh.castShadow = true;
+        var tieMesh2 = tieMesh.clone();
+        var tieMesh3 = tieMesh.clone();
+        var tieMesh4 = tieMesh.clone();
+
+        var tieSquadron = new THREE.Object3D();
+
+        tieSquadron.add(tieMesh);
+        tieSquadron.add(tieMesh2);
+        tieSquadron.add(tieMesh3);
+        tieSquadron.add(tieMesh4);
+
+        tieSquadron.position.x = posX;
+        tieSquadron.position.z = posZ;
+        tieSquadron.position.y = posY;
+        tieSquadron.forwardSpeed = speed;
+        tieSquadron.rotation.y = rotation;
+
+        tieMesh.position.set(0, 10, 0);
+        tieMesh2.position.set(0, -7, -2);
+        tieMesh3.position.set(12, 0, 1);
+        tieMesh4.position.set(-10, 0, -1);
+
+        callback(tieSquadron);
+    });
+}
+
+    CreateObject.prototype.tieSquadronType2 = function(posX, posY, posZ, speed, rotation, callback){
+        var tieLoaderMTL = new THREE.OBJMTLLoader();
+        tieLoaderMTL.load("resources/objects/starwars-tie-fighter.obj", "resources/objects/starwars-tie-fighter.mtl", function (object) {
+            var tieMesh = object;
+            tieMesh.name = "tieMesh";
+            tieMesh.castShadow = true;
+
+            var tieMesh2 = tieMesh.clone();
+            var tieMesh3 = tieMesh.clone();
+
+            var tieSquadron = new THREE.Object3D();
+
+            tieSquadron.add(tieMesh2);
+            tieSquadron.add(tieMesh2);
+
+            tieSquadron.position.x = posX;
+            tieSquadron.position.z = posZ;
+            tieSquadron.position.y = posY;
+            tieSquadron.forwardSpeed = speed;
+            tieSquadron.rotation.y = rotation;
+
+            tieMesh.position.set(0, 10, 0);
+            tieMesh2.position.set(0, -7, -2);
+            tieMesh3.position.set(12, 0, 1);
+
+            callback(tieSquadron);
+        });
+    }
