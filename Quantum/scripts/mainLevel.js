@@ -242,17 +242,25 @@ function render() {
     // Picks the object to be placed
     if (keyboard.pressed('one')) {
         objectInt = 1;
+        document.getElementById("1").style.backgroundColor = "yellow";
     } else if (keyboard.pressed('two')) {
         objectInt = 2;
+        document.getElementById("2").style.backgroundColor = "yellow";
     } else if (keyboard.pressed('three')) {
         objectInt = 3;
+        document.getElementById("3").style.backgroundColor = "yellow";
     } else if (keyboard.pressed('four')) {
         objectInt = 4;
+        document.getElementById("4").style.backgroundColor = "yellow";
     } else if (keyboard.pressed('five')) {
         objectInt = 5;
+        document.getElementById("5").style.backgroundColor = "yellow";
     } else if (keyboard.pressed('zero')) {
         objectInt = 0;
+        document.getElementById("0").style.backgroundColor = "yellow";
     }
+
+
 
     // Billboard clouds watching you while you sleep, walk etc.
     for (var i = 0, l = cloudGroup.children.length; i < l; i++) {
