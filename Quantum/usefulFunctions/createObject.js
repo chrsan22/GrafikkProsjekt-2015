@@ -228,8 +228,9 @@ CreateObject.prototype.tieSquadronType1 = function(posX, posY, posZ, speed, rota
 
             var tieSquadron = new THREE.Object3D();
 
+            tieSquadron.add(tieMesh);
             tieSquadron.add(tieMesh2);
-            tieSquadron.add(tieMesh2);
+            tieSquadron.add(tieMesh3);
 
             tieSquadron.position.x = posX;
             tieSquadron.position.z = posZ;

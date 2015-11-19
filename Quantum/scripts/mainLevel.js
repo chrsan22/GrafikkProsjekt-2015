@@ -65,36 +65,64 @@ var init = function () {
             scene.add(tieSquadron);
                     });
 
-        tieSquadron2 = createObject.tieSquadronType2(1900, 75, 1900, 8, 0.7);
-        tieSquadron3 = createObject.tieSquadronType1(1700,75, 1700, 8, 0.7);
-        tieSquadron4 = createObject.tieSquadronType2(1500,75, 1500, 8, 0.7);
-        tieSquadron5 = createObject.tieSquadronType1(1000,75, 1000, 8, 0.7);
-        tieSquadron6 = createObject.tieSquadronType1(700,75, 700, 8, 0.7);
-        tieSquadron7 = createObject.tieSquadronType2(300,75, 300, 8, 0.7);
-        tieSquadron8 = createObject.tieSquadronType2(100,75, 100, 8, 0.7);
-        tieSquadron9 = createObject.tieSquadronType1(0,75, 0, 8, 0.7);
-        tieSquadron10 = createObject.tieSquadronType1(-100,75, -100, 8, 0.7);
-        tieSquadron11 = createObject.tieSquadronType1(-500,75, -500, 8, 0.7);
-        tieSquadron12 = createObject.tieSquadronType2(-900,75, -900, 8, 0.7);
-        tieSquadron13 = createObject.tieSquadronType1(-1200,75, -1200, 8, 0.7);
-        tieSquadron14 = createObject.tieSquadronType2(-1500,75, -1500, 8, 0.7);
-        tieSquadron15 = createObject.tieSquadronType1(-1900,75, -1900, 8, 0.7);
+        tieSquadron2 = createObject.tieSquadronType2(1900, 75, 1900, 8, 0.7, function (tieSquad){
+            tieSquadron2 = tieSquad;
+            scene.add(tieSquadron2);
+        });
 
-        scene.add(tieSquadron);
-        scene.add(tieSquadron2);
-        scene.add(tieSquadron3);
-        scene.add(tieSquadron4);
-        scene.add(tieSquadron5);
-        scene.add(tieSquadron6);
-        scene.add(tieSquadron7);
-        scene.add(tieSquadron8);
-        scene.add(tieSquadron9);
-        scene.add(tieSquadron10);
-        scene.add(tieSquadron11);
-        scene.add(tieSquadron12);
-        scene.add(tieSquadron13);
-        scene.add(tieSquadron14);
-        scene.add(tieSquadron15);
+        tieSquadron3 = createObject.tieSquadronType1(1700,75, 1700, 8, 0.7, function (tieSquad){
+            tieSquadron3 = tieSquad;
+            scene.add(tieSquadron3);
+        });
+        tieSquadron4 = createObject.tieSquadronType2(1500,75, 1500, 8, 0.7, function (tieSquad){
+            tieSquadron4 = tieSquad;
+            scene.add(tieSquadron4);
+        });
+        tieSquadron5 = createObject.tieSquadronType1(1000,75, 1000, 8, 0.7, function (tieSquad){
+            tieSquadron5 = tieSquad;
+            scene.add(tieSquadron5);
+        });
+        tieSquadron6 = createObject.tieSquadronType1(700,75, 700, 8, 0.7, function (tieSquad){
+            tieSquadron6 = tieSquad;
+            scene.add(tieSquadron6);
+        });
+        tieSquadron7 = createObject.tieSquadronType2(300,75, 300, 8, 0.7, function (tieSquad){
+            tieSquadron7 = tieSquad;
+            scene.add(tieSquadron7);
+        });
+        tieSquadron8 = createObject.tieSquadronType2(100,75, 100, 8, 0.7, function (tieSquad){
+            tieSquadron8 = tieSquad;
+            scene.add(tieSquadron8);
+        });
+        tieSquadron9 = createObject.tieSquadronType1(0,75, 0, 8, 0.7, function (tieSquad){
+            tieSquadron9 = tieSquad;
+            scene.add(tieSquadron9);
+        });
+        tieSquadron10 = createObject.tieSquadronType1(-100,75, -100, 8, 0.7, function (tieSquad){
+            tieSquadron10 = tieSquad;
+            scene.add(tieSquadron10);
+        });
+        tieSquadron11 = createObject.tieSquadronType1(-500,75, -500, 8, 0.7, function (tieSquad){
+            tieSquadron11 = tieSquad;
+            scene.add(tieSquadron11);
+        });
+        tieSquadron12 = createObject.tieSquadronType2(-900,75, -900, 8, 0.7, function (tieSquad){
+            tieSquadron12 = tieSquad;
+            scene.add(tieSquadron12);
+        });
+        tieSquadron13 = createObject.tieSquadronType1(-1200,75, -1200, 8, 0.7, function (tieSquad){
+            tieSquadron13 = tieSquad;
+            scene.add(tieSquadron13);
+        });
+        tieSquadron14 = createObject.tieSquadronType2(-1500,75, -1500, 8, 0.7, function (tieSquad){
+            tieSquadron14 = tieSquad;
+            scene.add(tieSquadron14);
+        });
+        tieSquadron15 = createObject.tieSquadronType1(-1900,75, -1900, 8, 0.7, function (tieSquad){
+            tieSquadron15 = tieSquad;
+            scene.add(tieSquadron15);
+        });
+
 
     // End of Tie Squadron
     //-----------------------------------------------------------------------------------------------------------------
