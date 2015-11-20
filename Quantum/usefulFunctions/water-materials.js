@@ -194,7 +194,7 @@ THREE.Water = function (renderer, camera, scene, options) {
         fragmentShader: mirrorShader.fragmentShader,
         vertexShader: mirrorShader.vertexShader,
         uniforms: mirrorUniforms,
-        transparent: true,
+        transparent: false,
         side: this.side,
         fog: this.fog
     });
