@@ -42,11 +42,56 @@ var init = function () {
     var ground = createObject.heightMap("resources/textures/texture_snow.jpg", "heightmap", "terrain", 500, 45, 500, 0, -2, 0)    // Create Heightmap Ground
     var water = createObject.createWater(lightPoint, 4000, 4000);     // Adding Water
     snow = createObject.fallingSnow(200, 1000 ,500, 100, 0, 1000, 500);     // Adding Snow
+    //scene.fog = new THREE.Fog( 0x999999, 0.0100, 500 );     // Adding fog
 
-    /*
-        Creates Tie Fighter squadrons
-        TODO Explain?
-     */
+
+    //-----------------------------------------------------------------------------------------------------------------
+    // Tie Squadron2
+/*
+    createObject.tieSquadronType1(2100, 75, 2100, 8, 0.7, function(tieSquad){
+        tieSquadron1 = tieSquad;
+        tieForce.push(tieSquadron1);
+        scene.add(tieSquadron1);
+    });
+
+    createObject.tieSquadronType2(1900, 75, 1900, 8, 0.7, function(tieSquad){
+        tieSquadron2 = tieSquad;
+        tieForce.push(tieSquadron2);
+        console.log(tieForce[0]);
+        scene.add(tieSquadron2);
+    });
+
+
+    for(var i = 0; i<100; i++){
+        var startPos = Math.random()* 4200 - 2100;
+        var squadType = Math.random()* 10 + 1;
+        var directionX = Math.random()* 1.3 + 0.7;
+        var directionZ = Math.random()* 1.3 + 0.7;
+
+        if(squadType > 4){
+            var tieSquadron = new THREE.Object3D();
+            tieSquadron = tieSquadron1.clone();
+          // console.log(tieSquadron);
+            tieSquadron.position.x = startPos;
+            tieSquadron.position.z = startPos;
+            tieSquadron.directionX = directionX;
+            tieSquadron.directionZ = directionZ;
+
+            tieForce.push(tieSquadron);
+
+        } else {
+            var tieSquadron = new THREE.Object3D();
+            tieSquadron = tieSquadron2.clone();
+            // console.log(tieSquadron);
+            tieSquadron.position.x = startPos;
+            tieSquadron.position.z = startPos;
+            tieSquadron.directionX = directionX;
+            tieSquadron.directionZ = directionZ;
+
+            tieForce.push(tieSquadron);
+        }
+    }
+*/
     for(var i = 0; i<10; i++){
         var startPos = Math.random()* 4200 - 2100;
         var squadType = Math.random()* 10 + 1;
@@ -79,6 +124,10 @@ var init = function () {
         }
     }
 
+
+    // End of Tie Squadron
+    //-----------------------------------------------------------------------------------------------------------------
+
     /*
         Creates clouds using the cloud function in createObjects.js
         Static function with no user input
@@ -86,55 +135,56 @@ var init = function () {
     var cloudGroup = createObject.clouds();
     scene.add( cloudGroup );
 
-    /*
-        Implementation of Picker.
-        Uses RayCaster and a array of objects in order to find where you click
-     */
-    raycaster = new THREE.Raycaster();  //  Creates RayCaster
+    //-----------------------------------------------------------------------------------------------------------------
+    // Picker testing
+    raycaster = new THREE.Raycaster();
     mouse = new THREE.Vector2();
-    document.addEventListener('mousedown', onDocumentMouseDown, false); // Creates event listener for left mouse click
+    cubeGeo = new THREE.BoxGeometry(5, 5, 5);
+    cubeMaterial = new THREE.MeshLambertMaterial({
+        color: 0xfeb74c,
+        shading: THREE.FlatShading,
+        map: THREE.ImageUtils.loadTexture("resources/textures/texture_snow.jpg")
+    });
 
-    /*
-        On click(left) event using the RayCaster
-        The function gathers information from RayCaster and finds the first object in the path of your mouse when click(left)
-        Executes the objectToPlace function in objectPlacer which plases a object (based on selection by numbers 0-5)
-        and the intersects gathered from RayCaster.
-     */
+    // Function that executes on mouse click!
     function onDocumentMouseDown(event) {
         event.preventDefault();
-        mouse.set(( event.clientX / window.innerWidth ) * 2 - 1, -( event.clientY / window.innerHeight ) * 2 + 1);  //  Registers mous position
-        raycaster.setFromCamera(mouse, camera); //  Bases RayCaster off current camera position
+        mouse.set(( event.clientX / window.innerWidth ) * 2 - 1, -( event.clientY / window.innerHeight ) * 2 + 1);
+        raycaster.setFromCamera(mouse, camera);
         var intersects = raycaster.intersectObjects(objects);
         if (intersects.length > 0) {
             var intersect = intersects[0];
             objectPlacer.objectToPlace(objectInt, intersect, function (mesh) {
-                ground.add(mesh);   //  Adds mesh to ground(Heightmap)
-                objects.push(mesh); //  Pushes mesh to objects
+                ground.add(mesh);
+                objects.push(mesh);
             });
         }
     }
 
-    /*
-        All Mesh that does not need to be added in spesific areas are added here
-        Followed by pushing some Mesh to the objects array which is used in the RayCaster/Picker
-     */
+    document.addEventListener('mousedown', onDocumentMouseDown, false);
+    //-----------------------------------------------------------------------------------------------------------------
+
+    //scene.add(grassGroup); // Adds Dynamic Grass to Scene
     ground.add(snow);    // Adds Snowmeshes
     scene.children.reverse();   // Reverses the children in the opposite direction.
+    //scene.add(grid);    // Adds Helping Grid for easy view
     scene.add(skyBox);  // Adds SkyBox to Scene
     scene.add(ground);  // Adds Heightmap Ground to Scene
     scene.add(water);   // Adds Water to Scene
-    scene.add(ambientLight);    // Adds Ambient Light to Scene
+    scene.add(ambientLight);    // Adds Ambiebt Light to Scene
     scene.add(lightPoint);  // Adds Light Point to Scene
-    objects.push(skyBox);   //  Pushes skyBox to objects
-    objects.push(ground);   // Pushes ground to objects
-    objects.push(water);    // Pushes water to objects
+
+    //  Adds mesh'es to the objects list
+    objects.push(skyBox);
+    objects.push(ground);
+    objects.push(water);
 
 
-    /*
-        Resize function
-        Re-Sets the size of view based on window size
-        Also executes the render function
-     */
+    //  Useful for later, position on the heightmap!
+    //  var temp = createObject.boxGeometry("resources/textures/texture_snow.jpg", 1, 1, 1, 0, 0, 0, true, true);
+    //  ground.add(temp);
+    //  temp.position.y = ground.getHeightAtPoint(temp.position) + 0.5;
+
     function onWindowResize() {
         renderer.setSize(window.innerWidth, window.innerHeight); // Re-Sets Renderer size
         camera.aspect = window.innerWidth / window.innerHeight; // Re-Sets Camera Aspect
@@ -145,37 +195,17 @@ var init = function () {
     window.addEventListener('resize', onWindowResize, false);
 };
 
-/*
-    Render function which is updated constantly as events occur in the application
- */
 function render() {
     var delta = clock.getDelta(); // seconds.
     controls.update(delta);   // Update Controls
     renderer.render(scene, camera); // Repeat Renderer
-
-    /*
-        Sets render rates of water
-        Renders water movement
-     */
+    //Water rendering
     water.material.uniforms.time.value += 1.0 / 60.0;   // The rate the water will render
     water.render();     // Rendering water movement
-
-    /*
-        Creates falling snow
-     */
     createObject.fallingSnowRender(snow, 100);   // Rendering snow movement
-
-    /*
-        TODO Explain?
-     */
     window.requestAnimFrame(render);    // Reloop
 
-    /*
-        Reacts to pressed Keys in order to select which object the picker should place once click(left) is executed
-        0-5 (6 Objects to choose from)
-        Once a object is selected the menu in the top left corner of screen will highlight selected object
-        Highlighted object will be placed on click(left)
-     */
+    // Picks the object to be placed
     if (keyboard.pressed('one')) {
         document.getElementById(objectInt).style.backgroundColor = "rgba(3,3,3,.4)";
         objectInt = 1;
@@ -203,27 +233,20 @@ function render() {
     }
 
 
-    /*
-        Updates clouds based on camera angle
-     */
+    // Billboard clouds watching you while you sleep, walk etc.
     for (var i = 0, l = cloudGroup.children.length; i < l; i++) {
         var cloudMesh = cloudGroup.children[i];
         cloudMesh.lookAt(camera.position);
     }
 
-    /*
-        TODO Magnus what this do? Describe! Describe!
-     */
+    //tie Squadron section
     createObject.tieSquadronRendering();
 
 }
 
 window.addEventListener('load', init);
 
-/*
-    Shim layer with setTimeout fallback
-    TODO Better description?
- */
+// shim layer with setTimeout fallback
 window.requestAnimFrame = (function () {
     return window.requestAnimationFrame ||
         window.webkitRequestAnimationFrame ||
