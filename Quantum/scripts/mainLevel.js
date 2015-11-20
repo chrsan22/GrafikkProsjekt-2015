@@ -127,48 +127,14 @@ var init = function () {
 
     // End of Tie Squadron
     //-----------------------------------------------------------------------------------------------------------------
-    // Billboard cloud testing
 
-    var geometryCloud, materialCloud, textureCloud;
-
-    geometryCloud = new THREE.Geometry();
-    textureCloud = THREE.ImageUtils.loadTexture('resources/cloud10.png', null, null);
-    textureCloud.magFilter = THREE.LinearMipMapLinearFilter;
-    textureCloud.minFilter = THREE.LinearMipMapLinearFilter;
-
-    var fog = new THREE.Fog(0x4584b4, -100, 3000);
-
-    materialCloud = new THREE.ShaderMaterial({
-
-        uniforms: {
-
-            "map": {type: "t", value: textureCloud},
-            "fogColor": {type: "c", value: fog.color},
-            "fogNear": {type: "f", value: fog.near},
-            "fogFar": {type: "f", value: fog.far},
-        },
-        vertexShader: document.getElementById('vs').textContent,
-        fragmentShader: document.getElementById('fs').textContent,
-        depthWrite: false,
-        depthTest: true,
-        transparent: true
-
-    });
-
-    for (var i = 0; i < 2000; i++) {
-        var plane = new THREE.Mesh(new THREE.PlaneGeometry(64, 64), materialCloud);
-        plane.position.x = Math.random() * 4000 - 2000;
-        plane.position.y = Math.random() * 300 + 285;
-        plane.position.z = Math.random() * 4000 - 2000;
-        plane.rotation.z = Math.random() * Math.PI;
-        plane.scale.x = plane.scale.y = Math.random() * Math.random() * 1.5 + 0.5;
-
-        THREE.GeometryUtils.merge(geometryCloud, plane);
-        cloudGroup.add(plane);
-    }
+    /*
+        Creates clouds using the cloud function in createObjects.js
+        Static function with no user input
+     */
+    var cloudGroup = createObject.clouds();
     scene.add( cloudGroup );
 
-    // End of Billboard cloud testing
     //-----------------------------------------------------------------------------------------------------------------
     // Picker testing
     raycaster = new THREE.Raycaster();
