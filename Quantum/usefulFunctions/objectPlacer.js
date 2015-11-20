@@ -44,5 +44,7 @@ function selectObject(objNr) {
         case 6:
             return "rainbow-dash";
             break;
+        default:
+            return "tree-toon";
     }
 }
