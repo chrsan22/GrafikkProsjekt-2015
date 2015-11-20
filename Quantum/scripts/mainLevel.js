@@ -8,7 +8,6 @@ var raycaster, mouse;   //  Variables used in the picker
 var objectInt = 1;
 var keyboard;
 var tieForce = [];
-var tieSquadron1 = new THREE.Object3D();
 var tieSquadron2 = new THREE.Object3D();
 
 var init = function () {
