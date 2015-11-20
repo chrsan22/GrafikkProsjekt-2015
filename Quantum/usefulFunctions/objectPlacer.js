@@ -26,22 +26,22 @@ ObjectPlacer.prototype.objectToPlace = function(objNr, intersect, callback) {
  */
 function selectObject(objNr) {
     switch(objNr) {
-        case 0:
+        case 1:
             return "tree-toon";
             break;
-        case 1:
+        case 2:
             return "starwars-tie-fighter";
             break;
-        case 2:
+        case 3:
             return "apartment-house";
             break;
-        case 3:
+        case 4:
             return "medieval-house-2";
             break;
-        case 4:
+        case 5:
             return "tardis";
             break;
-        case 5:
+        case 6:
             return "rainbow-dash";
             break;
     }

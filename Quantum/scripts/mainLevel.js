@@ -5,7 +5,7 @@ var snow = new THREE.Object3D();
 var createObject;
 var objects = [];   //  Holds the objects created by picker
 var raycaster, mouse;   //  Variables used in the picker
-var objectInt = 0;
+var objectInt = 1;
 var keyboard;
 var tieForce = [];
 var tieSquadron1 = new THREE.Object3D();
@@ -177,27 +177,27 @@ function render() {
      */
     if (keyboard.pressed('one')) {
         document.getElementById(objectInt).style.backgroundColor = "rgba(3,3,3,.4)";
-        objectInt = 0;
+        objectInt = 1;
         document.getElementById("1").style.backgroundColor = "rgba(255,255,0,.4)";
     } else if (keyboard.pressed('two')) {
         document.getElementById(objectInt).style.backgroundColor = "rgba(3,3,3,.4)";
-        objectInt = 1;
+        objectInt = 2;
         document.getElementById("2").style.backgroundColor = "rgba(255,255,0,.4)";
     } else if (keyboard.pressed('three')) {
         document.getElementById(objectInt).style.backgroundColor = "rgba(3,3,3,.4)";
-        objectInt = 2;
+        objectInt = 3;
         document.getElementById("3").style.backgroundColor = "rgba(255,255,0,.4)";
     } else if (keyboard.pressed('four')) {
         document.getElementById(objectInt).style.backgroundColor = "rgba(3,3,3,.4)";
-        objectInt = 3;
+        objectInt = 4;
         document.getElementById("4").style.backgroundColor = "rgba(255,255,0,.4)";
     } else if (keyboard.pressed('five')) {
         document.getElementById(objectInt).style.backgroundColor = "rgba(3,3,3,.4)";
-        objectInt = 4;
+        objectInt = 5;
         document.getElementById("5").style.backgroundColor = "rgba(255,255,0,.4)";
     } else if (keyboard.pressed('six')) {
         document.getElementById(objectInt).style.backgroundColor = "rgba(3,3,3,.4)";
-        objectInt = 5;
+        objectInt = 6;
         document.getElementById("6").style.backgroundColor = "rgba(255,255,0,.4)";
     }
 
