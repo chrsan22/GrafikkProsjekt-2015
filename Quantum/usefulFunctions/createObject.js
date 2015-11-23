@@ -305,8 +305,8 @@ CreateObject.prototype.clouds = function () {
 
     });
 
-    for (var i = 0; i < 2000; i++) {
-        var plane = new THREE.Mesh(new THREE.PlaneGeometry(64, 64), materialCloud);
+    for (var i = 0; i < 1000; i++) {
+        var plane = new THREE.Mesh(new THREE.PlaneGeometry(120, 120), materialCloud);
         plane.position.x = Math.random() * 4000 - 2000;
         plane.position.y = Math.random() * 300 + 285;
         plane.position.z = Math.random() * 4000 - 2000;

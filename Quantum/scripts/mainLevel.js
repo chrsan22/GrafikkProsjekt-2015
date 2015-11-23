@@ -40,13 +40,13 @@ var init = function () {
     var skyBox = createObject.skyBox("resources/skybox3/", "cube", "tCube", 4100, 4000, 4100)    // Create Skybox
     var ground = createObject.heightMap("resources/textures/texture_snow.jpg", "heightmap", "terrain", 500, 45, 500, 0, -2, 0)    // Create Heightmap Ground
     var water = createObject.createWater(lightPoint, 4000, 4000);     // Adding Water
-    snow = createObject.fallingSnow(200, 1000 ,500, 100, 0, 1000, 500);     // Adding Snow
+    snow = createObject.fallingSnow(150, 1000 ,500, 100, 0, 1000, 500);     // Adding Snow
 
     /*
         Creates Tie Fighter squadrons
         TODO Explain?
      */
-    for(var i = 0; i<10; i++){
+    for(var i = 0; i<5; i++){
         var startPos = Math.random()* 4200 - 2100;
         var squadType = Math.random()* 10 + 1;
 
